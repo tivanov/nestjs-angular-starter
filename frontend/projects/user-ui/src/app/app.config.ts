@@ -3,7 +3,12 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
+import { EnvironmentServiceProvider } from './core/environment/environment-factory.service';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideClientHydration()]
+  providers: [
+    provideRouter(routes), 
+    provideClientHydration(),
+    EnvironmentServiceProvider
+  ]
 };

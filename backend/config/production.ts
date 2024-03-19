@@ -4,12 +4,11 @@ const config: IConfig = {
   app: {
     isProduction: true,
     enableCors: true,
-    corsOrigins: ['http://localhost:5002', 'http://localhost:5001'],
+    corsOrigins: ['http://localhost:5100', 'http://localhost:5200'],
     port: 8200,
   },
   db: {
-    mongoUri:
-      'mongodb+srv://ibet:aZriYdFwSXh212xI@cluster0.pmztb.mongodb.net/ib18-wallet?retryWrites=true&w=majority',
+    mongoUri: 'mongodb://localhost/nest-angular-starter-prod',
   },
   auth: {
     jwtSecret: 'YOURJWTSECRETCHANGEIT55',

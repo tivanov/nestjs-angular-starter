@@ -5,7 +5,16 @@
     "outDir": "../../out-tsc/app",
     "types": [
       "node"
-    ]
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@app/contracts": [
+        "../../../backend/libs/contracts/src"
+      ],
+      "@app/contracts/*": [
+        "../../../backend/libs/contracts/src/*"
+      ],
+    }
   },
   "files": [
     "src/main.ts",
