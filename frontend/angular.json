@@ -30,6 +30,7 @@
               "projects/admin-ui/src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/admin-ui/src/styles.scss"
             ],
             "scripts": []
@@ -90,6 +91,7 @@
               "projects/admin-ui/src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/admin-ui/src/styles.scss"
             ],
             "scripts": []
