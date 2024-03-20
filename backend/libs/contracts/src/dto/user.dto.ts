@@ -16,5 +16,5 @@ export class UserDto {
   referer?: UserDto | string;
   agent?: UserDto | string;
   avatar?: string;
-  settings: UserSettingsDto;
+  settings?: UserSettingsDto;
 }

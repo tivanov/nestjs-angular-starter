@@ -13,7 +13,7 @@ import { Request } from 'express';
 import { getClientIp } from 'request-ip';
 import { UserMappers } from '../../users/mappers';
 import { IAuthConfig } from '../../../config/model';
-import { ErrorCode } from '@app/contracts';
+import { ErrorCode, UserDto } from '@app/contracts';
 
 @Injectable()
 export class AuthService {

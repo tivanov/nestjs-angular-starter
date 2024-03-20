@@ -20,7 +20,7 @@ App config is in the `config` folder as a javascript object.
 
 ## Frontend
 
-The frontend contains two projects and a library for shared code. 
+The frontend contains two projects and a library for shared code.
 The projects are meant to represent an admin interface and user interface.
 
 Both projects use signals + local storage for state management.
@@ -29,16 +29,29 @@ Both projects use signals + local storage for state management.
 
 There are 3 package.json files: in the project root, frontend and backend dirs. You need to first install those.
 
+From the project root run:
+
 ```bash
   npm i
-  cd backend && npm i
-  cd ../frontend && npm i
+  cd frontend && npm i
+  cd ../backend && npm i
 ```
 
-Then you can run everything in dev mode by simply running 
+While in the `backend` folder you can run the db seed script:
+
+```bash
+  npm run init-db:dev
+```
+
+This will:
+
+- create the db as configured in the `development.ts` config file
+- create a user for every specified role in the UserRoleEnum
+
+Then you can run everything in dev mode from the project root by simply running
 
 ```bash
   npm run dev
 ```
 
-from the main root.
+Or you can look in the separate package.json files for individual run scripts.

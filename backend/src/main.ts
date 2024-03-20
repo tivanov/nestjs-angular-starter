@@ -39,25 +39,7 @@ const setupCors = (app: INestApplication, appConfig: IAppConfig) => {
   });
 };
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  const configService = app.get(ConfigService);
-  const appConfig = configService.get<IAppConfig>('app');
-
-  setupCors(app, appConfig);
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true, // cut additional properties that do not have class-validator decorators
-    }),
-  );
-
-  app.use((req, res, next) => {
-    res.set('Cache-Control', 'no-store');
-    next();
-  });
-
+const setupLogging = (app: INestApplication) => {
   app.use((req, res, next) => {
     const { method, originalUrl } = req;
     const start = process.hrtime();
@@ -77,9 +59,32 @@ async function bootstrap() {
 
     next();
   });
+};
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  const configService = app.get(ConfigService);
+  const appConfig = configService.get<IAppConfig>('app');
+
+  setupCors(app, appConfig);
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // cut additional properties that do not have class-validator decorators
+    }),
+  );
+
+  app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+  });
+
+  setupLogging(app);
 
   app.enableVersioning({
     type: VersioningType.URI,
+    defaultVersion: '1',
   });
 
   let port = 8200;
