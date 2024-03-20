@@ -8,8 +8,8 @@ import { HttpAuthInterceptor } from '../../../common-ui/auth/http-auth.intercept
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes), 
+    provideRouter(routes),
     provideAnimationsAsync(),
     { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },
-]
+  ]
 };
