@@ -16,7 +16,7 @@ You can add any other library projects there.
 
 ### Config
 
-App config is in the `config` folder as a javascript object.
+Backend config is in the `config` folder as a javascript object.
 
 ## Frontend
 
