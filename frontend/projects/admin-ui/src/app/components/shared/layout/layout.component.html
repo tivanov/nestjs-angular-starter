@@ -1,14 +1,15 @@
 <mat-sidenav-container class="h-full">
     <mat-sidenav #drawer [mode]="sidenavMode" [opened]="(isHandset$ | async) === false">
-        <div class="font-bold text-xl my-4 mx-6">
+        <div class="font-bold text-indigo-950 text-xl my-4 mx-6">
             Menu
         </div>
         <mat-nav-list>
             <a mat-list-item *ngFor="let menuItem of menuItems; let i = index" [routerLink]="menuItem.link"
                 routerLinkActive #rla="routerLinkActive" [routerLinkActiveOptions]="{exact:true}"
                 [ngClass]="{'active': rla.isActive}">
-                <div class="flex flex-row items-center text-white mt-0">
-                    <span class="ml-2 text-black">{{ menuItem.label }}</span>
+                <div class="flex flex-row items-center">
+                    <fa-icon [icon]="menuItem.icon" class="h-6 w-6 text-indigo-950"></fa-icon>
+                    <span class="font-bold text-indigo-950">{{ menuItem.label }}</span>
                 </div>
             </a>
         </mat-nav-list>

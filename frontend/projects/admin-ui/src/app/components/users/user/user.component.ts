@@ -65,8 +65,8 @@ export class UserComponent {
     return this.fb.group({
       _id: [],
       firstName: ['', [Validators.required]],
-      userName: ['', [Validators.required]],
-      password: ['', Validators.required],
+      userName: ['', [Validators.required, Validators.minLength(5)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['', Validators.required]
     });
   }

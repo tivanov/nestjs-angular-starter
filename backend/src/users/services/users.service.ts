@@ -1,5 +1,5 @@
 import { AppBadRequestException } from './../../shared/exceptions/app-bad-request-exception';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { BaseService } from 'src/shared/base/base-service';
 import { User } from '../model/user';
 import { InjectModel } from '@nestjs/mongoose';
@@ -171,6 +171,14 @@ export class UsersService extends BaseService<User> {
       { new: true },
     );
   }
+
+  async deleteUser(userId: string): Promise<void> {
+    const user = await this.objectModel.findOneAndDelete({ _id: userId });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+  }
+
 
   public async updatePassword(command: UpdateUserPasswordCommand) {
     const user = await this.expectEntityExists(

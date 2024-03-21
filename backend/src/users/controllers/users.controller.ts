@@ -11,6 +11,7 @@ import {
   HttpStatus,
   UseGuards,
   Req,
+  Delete,
 } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guards/jwt.guard';
 import { UserMappers } from '../mappers';
@@ -22,7 +23,7 @@ import {
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) { }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -47,6 +48,16 @@ export class UsersController {
       await this.usersService.updateBasicData(userId, command),
     );
   }
+
+  @Delete(':id')
+  @UseGuards(JwtGuard)
+  public async delete(
+    @Param('id') userId: string,
+  ) {
+    await this.usersService.deleteUser(userId);
+    return { message: 'User deleted successfully' };
+  }
+
 
   @Get()
   @HttpCode(HttpStatus.OK)

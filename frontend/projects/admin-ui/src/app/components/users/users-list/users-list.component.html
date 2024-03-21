@@ -9,7 +9,7 @@
         [routerLink]="'create'"><mat-icon>add</mat-icon>CREATE</button>
 </div>
 <div class="bg-card" [ngClass]="{'is-phone-portrait': isPhonePortrait}">
-    <table mat-table class="full-width-table" matSort [dataSource]="this.usersDs">
+    <table mat-table class="full-width-table" [dataSource]="this.usersDs" matSort>
 
         <ng-container matColumnDef="firstName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>FirstName</th>

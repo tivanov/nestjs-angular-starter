@@ -29,8 +29,8 @@ export class LoginComponent {
   }
   initForm() {
     return this.fb.group({
-      userName: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(3)]]
+      userName: ['', [Validators.required, Validators.minLength(5)]],
+      password: ['', [Validators.required, Validators.minLength(5)]]
     });
   }
   onSubmit() {
