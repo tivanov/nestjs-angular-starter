@@ -19,7 +19,11 @@
                 <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
             </button>
             <span>Admin-UI</span>
-
+            <div class="ml-auto w-24 text-white">
+                <button mat-raised-button color="warn" (click)="logout()">
+                    LOGOUT
+                </button>
+            </div>
         </mat-toolbar>
         <router-outlet></router-outlet>
     </mat-sidenav-content>

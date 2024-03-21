@@ -11,6 +11,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Observable } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
 
 interface MenuItem {
   label: string;
@@ -31,7 +32,6 @@ export class LayoutComponent {
 
   menuItems: MenuItem[] = [
     { label: 'Users', link: '/users-list' },
-    { label: 'User', link: '/users-list/create' },
     // Add more menu items here as needed
   ];
 
@@ -40,7 +40,8 @@ export class LayoutComponent {
   @ViewChild('drawer') drawer: any;
 
   constructor(
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) { }
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -56,4 +57,8 @@ export class LayoutComponent {
         return result.matches;
       }),
     );
+
+  logout() {
+    this.authService.logout()
+  }
 }

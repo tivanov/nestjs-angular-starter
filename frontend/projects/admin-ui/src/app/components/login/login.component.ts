@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent {
   errorMessage: string = ''
 
   constructor(
+    private authService: AuthService,
     private router: Router,
     private fb: FormBuilder,
   ) {
@@ -27,8 +29,8 @@ export class LoginComponent {
   }
   initForm() {
     return this.fb.group({
-      email: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      userName: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(3)]]
     });
   }
   onSubmit() {
@@ -38,14 +40,17 @@ export class LoginComponent {
 
     const val = this.form.value;
 
-    //  this.authService.login(val).subscribe(
-    //  {
-    //    next: (responseData) => {
-    //      console.log('responseData', responseData);
-    //      this.router.navigate(['./jackpots-list'])
-    //    },
-    //  }
-    //  );
+    this.authService.login(val).subscribe(
+      {
+        next: (responseData) => {
+          console.log('responseData', responseData);
+          localStorage.setItem('token', responseData.token);
+          this.authService.currentUserSig.set(responseData.user);
+          this.router.navigate(['./users-list']);
+          console.log(this.authService.currentUserSig().userName);
+        },
+      }
+    );
     this.form.reset();
   }
 }
