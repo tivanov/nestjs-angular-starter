@@ -1,4 +1,16 @@
-<!-- Test za TailwindCSS -->
-<h1 class="text-3xl font-bold underline">
-    Hello world!
-</h1>
+<div class="flex justify-center items-center overflow-hidden m-4 lg:mt-40">
+    <form class="bg-gray-100 p-8 rounded-lg shadow-md flex flex-col w-96" [formGroup]="form">
+        <mat-form-field class="mb-4">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" class="w-full">
+        </mat-form-field>
+
+        <mat-form-field class="mb-4">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" class="w-full">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="onSubmit()"
+            class="bg-blue-500 text-white">Login</button>
+    </form>
+</div>
