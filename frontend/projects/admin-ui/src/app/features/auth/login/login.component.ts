@@ -7,9 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AuthSignal, logIn } from '../../../../../common-ui/auth/auth.signal';
-import { BaseComponent } from '../../../../../common-ui/base/base.component';
-import { AuthService } from '../../../../../common-ui/auth/auth.service';
+import { AuthSignal, logIn } from '../../../../../../common-ui/auth/auth.signal';
+import { BaseComponent } from '../../../../../../common-ui/base/base.component';
+import { AuthService } from '../../../../../../common-ui/auth/auth.service';
 
 @Component({
   selector: 'app-login',
