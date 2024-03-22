@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
@@ -10,6 +11,11 @@ import {
 } from '@nestjs/common';
 
 const logger = new Logger('HTTP');
+
+const os = require('os');
+const cluster = require('cluster');
+const fs = require('fs');
+
 
 const getDurationInMilliseconds = (start: [number, number]) => {
   const NS_PER_SEC = 1e9;
@@ -93,5 +99,21 @@ async function bootstrap() {
   }
   await app.listen(port);
   Logger.log(`Application is running on: ${await app.getUrl()}`);
+};
+
+
+const numCPUs = os.cpus().length;
+
+if (cluster.isPrimary) {
+  Logger.log(`Master server started on ${process.pid}`);
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+  cluster.on('exit', (worker, code, signal) => {
+    Logger.log(`Worker ${worker.process.pid} died. Restarting`);
+    cluster.fork();
+  });
+} else {
+  Logger.log(`Cluster server started on ${process.pid}`);
+  bootstrap();
 }
-bootstrap();
