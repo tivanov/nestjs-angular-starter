@@ -1,7 +1,7 @@
 import { UserRoleEnum } from '@app/contracts';
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './auth/login/login.component';
 import { isLoggedIn } from '../../../common-ui/auth/is-logged-in.guard';
 import { hasRole } from '../../../common-ui/auth/has-role.guard';
 
@@ -20,7 +20,7 @@ export const routes: Routes = [
         },
         canActivate: [isLoggedIn, hasRole],
         canActivateChild: [isLoggedIn, hasRole],
-        loadChildren: () => import('./components/users/users.routes').then(m => m.routes)
+        loadChildren: () => import('./features/users/users.routes').then(m => m.routes)
     },
     {
         path: '**',

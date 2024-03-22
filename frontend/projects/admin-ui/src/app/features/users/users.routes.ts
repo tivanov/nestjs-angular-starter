@@ -9,17 +9,14 @@ export const routes: Route[] = [
     {
         path: 'list',
         component: UsersListComponent,
-        canActivate: [isLoggedIn],
         providers: []
     },
     {
         path: 'create',
-        canActivate: [isLoggedIn],
         component: UserComponent
     },
     {
         path: ':id',
-        canActivate: [isLoggedIn],
         component: UserComponent
     },
 
