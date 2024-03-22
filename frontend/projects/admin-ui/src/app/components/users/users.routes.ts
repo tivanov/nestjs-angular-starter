@@ -5,6 +5,7 @@ import { isLoggedIn } from "../../../../../common-ui/auth/is-logged-in.guard";
 
 
 export const routes: Route[] = [
+
     {
         path: 'list',
         component: UsersListComponent,

@@ -14,7 +14,6 @@ import { Observable } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { AuthService } from '../../../../common-ui/auth/auth.service';
 import { logOut } from '../../../../common-ui/auth/auth.signal';
 
 interface MenuItem {
@@ -36,7 +35,7 @@ export class LayoutComponent {
   sidenavMode: 'over' | 'side' = 'side';
 
   menuItems: MenuItem[] = [
-    { label: 'Users', link: '/users-list', icon: faUser },
+    { label: 'Users', link: '/users/list', icon: faUser },
     // Add more menu items here as needed
   ];
 

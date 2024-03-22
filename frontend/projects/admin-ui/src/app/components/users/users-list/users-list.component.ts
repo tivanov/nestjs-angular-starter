@@ -9,9 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { DialogService } from '../../../services/dialog.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Observable, map, merge, of as observableOf, takeUntil } from 'rxjs';
+import { map, of as observableOf, takeUntil } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersService } from '../../../../../../common-ui/services/users.service';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
@@ -26,7 +25,7 @@ import { MatSelectModule } from '@angular/material/select';
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss'
 })
-export class UsersListComponent extends BaseListComponent<UserDto> implements OnInit{
+export class UsersListComponent extends BaseListComponent<UserDto> implements OnInit {
   roles = Object.values(UserRoleEnum)
 
   isPhonePortrait = false;
@@ -37,7 +36,7 @@ export class UsersListComponent extends BaseListComponent<UserDto> implements On
     private responsive: BreakpointObserver,
     private fb: FormBuilder
   ) {
-    super();    
+    super();
     this.displayedColumns = ['userName', 'role', 'actions'];
 
   }
@@ -65,20 +64,10 @@ export class UsersListComponent extends BaseListComponent<UserDto> implements On
   onDelete(user: UserDto): void {
     if (confirm('Are you sure to delete this record?')) {
       this.usersService.delete(user.id).subscribe(() => {
-        this.load({pageIndex: 0}); // Assuming this method reloads the user list
+        this.load({ pageIndex: 0 });
         this.snackBar.open('Record deleted.', '', { duration: 2000 });
       });
     }
-
-    // const dialogRef = this.dialogService.openConfirmDialog('Are you sure to delete this record');
-    // dialogRef.afterClosed().subscribe(response => {
-    //   if (response) {
-    //     this.usersService.delete(user.id).subscribe(() => {
-    //       this.load({pageIndex: 0}); // Assuming this method reloads the user list
-    //       this.snackBar.open('Record deleted.', '', { duration: 2000 });
-    //     });
-    //   }
-    // });
   }
 
   public load($event: { pageIndex: any; pageSize?: any; }) {
@@ -87,11 +76,11 @@ export class UsersListComponent extends BaseListComponent<UserDto> implements On
     filter.limit = $event.pageSize || this.itemsPerPage;
 
     this.usersService.get(filter)
-    .pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((users: any) => {
-      this.dataSource.data = users.docs;
-    });
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      ).subscribe((users: any) => {
+        this.dataSource.data = users.docs;
+      });
   }
 
 }
