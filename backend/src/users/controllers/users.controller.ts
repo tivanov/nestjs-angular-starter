@@ -23,7 +23,7 @@ import {
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) { }
+  constructor(private usersService: UsersService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -51,13 +51,9 @@ export class UsersController {
 
   @Delete(':id')
   @UseGuards(JwtGuard)
-  public async delete(
-    @Param('id') userId: string,
-  ) {
-    await this.usersService.deleteUser(userId);
-    return { message: 'User deleted successfully' };
+  public async delete(@Param('id') userId: string) {
+    return await this.usersService.deleteUser(userId);
   }
-
 
   @Get()
   @HttpCode(HttpStatus.OK)
