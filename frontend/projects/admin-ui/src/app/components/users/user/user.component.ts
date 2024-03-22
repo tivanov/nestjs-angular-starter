@@ -85,7 +85,7 @@ export class UserComponent {
         {
           next: (responseData) => {
             console.log('responseData', responseData);
-            this.router.navigate(['./users-list'])
+            this.router.navigate(['./users/list'])
           },
 
           error: err => {
@@ -98,7 +98,7 @@ export class UserComponent {
         {
           next: (responseData) => {
             console.log('responseData', responseData);
-            this.router.navigate(['./users-list'])
+            this.router.navigate(['./users/list'])
           },
 
           error: err => {
@@ -120,7 +120,7 @@ export class UserComponent {
   }
 
   exitRoute() {
-    this.router.navigate(['/users-list']);
+    this.router.navigate(['/users/list']);
   }
 
 }
