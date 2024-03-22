@@ -64,6 +64,7 @@ export class LayoutComponent {
 
   logout() {
     logOut();
+    location.reload();
   }
 
 }

@@ -9,7 +9,7 @@ export const routes: Routes = [
 
     {
         path: 'auth',
-        component: LoginComponent,        
+        component: LoginComponent,
     },
 
     {
@@ -19,7 +19,7 @@ export const routes: Routes = [
             roles: [UserRoleEnum.Admin]
         },
         canActivate: [isLoggedIn, hasRole],
-        canActivateChild: [isLoggedIn, hasRole], 
+        canActivateChild: [isLoggedIn, hasRole],
         loadChildren: () => import('./components/users/users.routes').then(m => m.routes)
     },
     {

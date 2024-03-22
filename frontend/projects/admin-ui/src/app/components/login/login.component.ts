@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { logIn } from '../../../../../common-ui/auth/auth.signal';
+import { AuthSignal, logIn } from '../../../../../common-ui/auth/auth.signal';
 import { BaseComponent } from '../../../../../common-ui/base/base.component';
 import { AuthService } from '../../../../../common-ui/auth/auth.service';
 
@@ -28,11 +28,14 @@ export class LoginComponent extends BaseComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
   ) {
-    super();    
+    super();
   }
 
   ngOnInit(): void {
     this.form = this.initForm();
+    if (AuthSignal().isAuthenticated) {
+      this.redirect()
+    }
   }
 
   initForm() {
@@ -53,9 +56,13 @@ export class LoginComponent extends BaseComponent implements OnInit {
       const loginResponse = await firstValueFrom(this.authService.login(val));
       logIn(loginResponse);
       this.form.reset();
-      this.router.navigate(['./users-list']);      
+      this.redirect();
     } catch (error) {
       this.errorMessage = error.message;
     }
+  }
+
+  redirect() {
+    this.router.navigate(['./users/list']);
   }
 }
