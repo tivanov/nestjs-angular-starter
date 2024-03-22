@@ -10,11 +10,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { UsersService } from '../../../services/users.service';
 import { DialogService } from '../../../services/dialog.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable, map, merge, of as observableOf } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
+import { UsersService } from '../../../../../../common-ui/services/users.service';
 
 @Component({
   selector: 'app-users-list',
@@ -116,7 +116,10 @@ export class UsersListComponent {
   }
 
   loadUsers(): void {
-    this.usersService.getUsers(1, 100).subscribe((users: any) => {
+    this.usersService.get({
+      page: 1,
+      limit: 100
+    }).subscribe((users: any) => {
       this.usersDs.data = users.docs;
     });
   }

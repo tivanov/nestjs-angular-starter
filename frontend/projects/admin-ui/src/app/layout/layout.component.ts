@@ -11,10 +11,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../../services/auth.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../../../common-ui/auth/auth.service';
+import { logOut } from '../../../../common-ui/auth/auth.signal';
 
 interface MenuItem {
   label: string;
@@ -45,7 +46,6 @@ export class LayoutComponent {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
   ) { }
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -63,7 +63,7 @@ export class LayoutComponent {
     );
 
   logout() {
-    this.authService.logout()
+    logOut();
   }
 
 }

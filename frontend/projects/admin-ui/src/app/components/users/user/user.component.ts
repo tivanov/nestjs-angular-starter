@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UsersService } from '../../../services/users.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
@@ -9,6 +8,7 @@ import { UserRoleItem } from '../../../models/user.model';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { UsersService } from '../../../../../../common-ui/services/users.service';
 
 @Component({
   selector: 'app-user',
@@ -49,7 +49,7 @@ export class UserComponent {
   }
 
   loadUser() {
-    this.usersService.getOne(this.userId)
+    this.usersService.getById(this.userId)
       .pipe()
       .subscribe({
         next: (users: any) => {
@@ -81,7 +81,7 @@ export class UserComponent {
     if (this.userId) {
       // UPDATE User
       val._id = this.userId;
-      this.usersService.update(this.userId, val).subscribe(
+      this.usersService.updateBasicData(this.userId, val).subscribe(
         {
           next: (responseData) => {
             console.log('responseData', responseData);

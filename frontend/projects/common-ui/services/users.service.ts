@@ -1,4 +1,4 @@
-import { CreateUserCommand, GetUsersQuery, PagedListDto, UserDto } from '@app/contracts';
+import { CreateUserCommand, GetUsersQuery, PagedListDto, UserDto, UpdateUserDataCommand } from '@app/contracts';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { EnvironmentService } from "./environment.service";
@@ -19,11 +19,15 @@ export class UsersService {
     return this.http.post<UserDto>(`${this.env.apiUrl}/users`, command);
   }
 
-  public updateBasicData(userId: string, command: any): Observable<UserDto> {
+  public updateBasicData(userId: string, command: UpdateUserDataCommand): Observable<UserDto> {
     return this.http.put<UserDto>(`${this.env.apiUrl}/users/${userId}`, command);
   }
 
   public getById(userId: string): Observable<UserDto> {
     return this.http.get<UserDto>(`${this.env.apiUrl}/users/${userId}`);
+  }
+
+  public delete(id: string): Observable<UserDto> {
+    return this.http.delete<UserDto>(`${this.env.apiUrl}/users/${id}`);
   }
 }
