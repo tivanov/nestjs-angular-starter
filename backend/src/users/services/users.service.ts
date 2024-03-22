@@ -103,6 +103,14 @@ export class UsersService extends BaseService<User> {
   async get(query: GetUsersQuery): Promise<PaginateResult<User>> {
     const filter: { [key: string]: any } = {};
 
+    if (query.userName) {
+      filter.userName = query.userName;
+    }
+
+    if (query.role) {
+      filter.role = query.role;
+    }
+
     return await (this.objectModel as PaginateModel<User>).paginate(
       filter,
       this.getPaginationOptions(query),

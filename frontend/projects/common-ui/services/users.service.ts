@@ -12,7 +12,15 @@ export class UsersService {
   }
 
   public get(query: GetUsersQuery): Observable<PagedListDto<UserDto>> {
-    return this.http.get<PagedListDto<UserDto>>(`${this.env.apiUrl}/users`, { params: query as any });
+    const params = {};
+    const queryKeys = Object.keys(query);
+    queryKeys.forEach(key => {
+      if (query[key]) {
+        params[key] = query[key];
+      }
+    });
+
+    return this.http.get<PagedListDto<UserDto>>(`${this.env.apiUrl}/users`, { params: params as any });
   }
 
   public create(command: CreateUserCommand): Observable<UserDto> {

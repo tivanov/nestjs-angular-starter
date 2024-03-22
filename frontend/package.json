@@ -28,6 +28,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "angular-font-awesome": "^3.1.2",
+    "class-validator": "^0.14.1",
     "express": "^4.18.2",
     "font-awesome": "^4.7.0",
     "rxjs": "~7.8.0",

@@ -1,15 +1,23 @@
-<div class="bg-card flex flex-row justify-between m-2" [ngClass]="{'is-phone-portrait': isPhonePortrait}">
-    <form [formGroup]="searchForm" (ngSubmit)="onSearchSubmit()">
-        <mat-form-field class="example-full-width">
-            <mat-label>Search user by name</mat-label>
-            <input matInput placeholder="Search ..." formControlName="searchValue">
-        </mat-form-field>
-    </form>
+<div class="bg-card flex flex-row-reverse justify-between px-4 pt-4" [ngClass]="{'is-phone-portrait': isPhonePortrait}">
     <button mat-raised-button class="mr-1" color="primary"
         [routerLink]="'create'"><mat-icon>add</mat-icon>CREATE</button>
 </div>
-<div class="bg-card" [ngClass]="{'is-phone-portrait': isPhonePortrait}">
-    <table mat-table class="full-width-table" [dataSource]="this.usersDs" matSort>
+<form class="bg-card flex flex-row items-center px-4 w-full" [ngClass]="{'is-phone-portrait': isPhonePortrait}"
+    [formGroup]="filterForm" (ngSubmit)="this.load({pageIndex: 0})">
+    <mat-form-field class="w-full lg:w-1/4">
+        <mat-label>UserName</mat-label>
+        <input matInput formControlName="userName">
+    </mat-form-field>
+    <mat-form-field class="w-full lg:w-1/4 lg:pl-2">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+            <mat-option *ngFor="let role of this.roles" [value]="role">{{role}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button class="lg:ml-auto" mat-raised-button color="primary" (click)="this.load({pageIndex: 0})">Filter</button>
+</form>
+<div class="bg-card m-4" [ngClass]="{'is-phone-portrait': isPhonePortrait}">
+    <table mat-table class="full-width-table" [dataSource]="this.dataSource" matSort>
 
         <ng-container matColumnDef="firstName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>FirstName</th>
@@ -40,6 +48,6 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator #usersPaginator [pageIndex]="0" [pageSize]="pageSize"
-        [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+    <mat-paginator #mainPaginator [pageIndex]="0" [pageSize]="this.itemsPerPage"
+        [pageSizeOptions]="this.pageSizeOptions" (page)="this.load($event)"></mat-paginator>
 </div>
