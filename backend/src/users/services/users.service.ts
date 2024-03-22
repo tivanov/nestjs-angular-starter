@@ -180,13 +180,14 @@ export class UsersService extends BaseService<User> {
     );
   }
 
-  async deleteUser(userId: string): Promise<void> {
-    const user = await this.objectModel.findOneAndDelete({ _id: userId });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  async deleteUser(userId: string): Promise<User> {
+    const existing = await this.expectEntityExists(
+      userId,
+      ErrorCode.USER_NOT_FOUND,
+    );
+    await this.objectModel.findOneAndDelete({ _id: userId });
+    return existing;
   }
-
 
   public async updatePassword(command: UpdateUserPasswordCommand) {
     const user = await this.expectEntityExists(
