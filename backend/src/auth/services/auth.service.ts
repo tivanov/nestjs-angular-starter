@@ -2,7 +2,7 @@ import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthor
 import { TokenPayload } from '../model/token-payload';
 import { ConfigService } from '@nestjs/config';
 import { RefreshToken } from '../model/refresh-token';
-import { User } from '../../users/model/user';
+import { User } from '../../users/model/user.model';
 import { Injectable, Logger } from '@nestjs/common';
 import { UsersService } from '../../users/services/users.service';
 import * as bcrypt from 'bcrypt';

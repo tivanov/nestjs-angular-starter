@@ -1,7 +1,7 @@
 import { AppBadRequestException } from './../../shared/exceptions/app-bad-request-exception';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { BaseService } from 'src/shared/base/base-service';
-import { User } from '../model/user';
+import { User } from '../model/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { IAuthConfig } from 'config/model';
 import {
@@ -11,7 +11,7 @@ import {
   PaginateResult,
   Types,
 } from 'mongoose';
-import { UserSettings } from '../model/userSettings';
+import { UserSettings } from '../model/userSettings.model';
 import { ConfigService } from '@nestjs/config';
 import {
   ErrorCode,

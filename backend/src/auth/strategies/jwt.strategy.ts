@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-import { User } from '../../users/model/user';
+import { User } from '../../users/model/user.model';
 import { Request } from 'express';
 import { IAuthConfig } from '../../../config/model';
 import { ErrorCode } from '@app/contracts';

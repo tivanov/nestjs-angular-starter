@@ -1,6 +1,6 @@
 import { UsersService } from '../../users/services/users.service';
 
-import { User } from './../../users/model/user';
+import { User } from '../../users/model/user.model';
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';

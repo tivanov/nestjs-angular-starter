@@ -1,4 +1,3 @@
-
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../shared/base/base-entity';

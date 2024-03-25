@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
-import { UserSettings, UserSettingsSchema } from './userSettings';
+import { UserSettings, UserSettingsSchema } from './userSettings.model';
 import { UserRoleEnum } from '@app/contracts';
 
 @Schema({

@@ -14,8 +14,6 @@ const logger = new Logger('HTTP');
 
 const os = require('os');
 const cluster = require('cluster');
-const fs = require('fs');
-
 
 const getDurationInMilliseconds = (start: [number, number]) => {
   const NS_PER_SEC = 1e9;
@@ -99,10 +97,13 @@ async function bootstrap() {
   }
   await app.listen(port);
   Logger.log(`Application is running on: ${await app.getUrl()}`);
-};
+}
 
+let numCPUs = os.cpus().length;
 
-const numCPUs = os.cpus().length;
+if (process.env.NODE_ENV === 'development') {
+  numCPUs = 1;
+}
 
 if (cluster.isPrimary) {
   Logger.log(`Master server started on ${process.pid}`);

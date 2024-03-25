@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Document, Types } from 'mongoose';
-import { User } from '../../users/model/user';
+import { User } from '../../users/model/user.model';
 import { BaseEntity } from '../../shared/base/base-entity';
 
 export type IdentityDocument = Identity & Document;

@@ -15,7 +15,6 @@ export interface IDbConfig {
 }
 
 export interface IAuthConfig {
-  cookieMaxAge: number;
   jwtSecret: string;
   encryptJwtSecret: string;
   jwtExpirationTime: number;
@@ -25,10 +24,6 @@ export interface IAuthConfig {
   jwtRefreshExpirationTime: number;
   userBlockTime: number;
   loginAttempts: number;
-
-  sessionStoreDir: any;
-  sessionStoreDbName: any;
-  sessionCookieSecret: string;
 }
 
 export interface IConfig {

@@ -20,11 +20,6 @@ const config: IConfig = {
     jwtRefreshExpirationTime: 604800000,
     userBlockTime: 86400000,
     loginAttempts: 10,
-
-    sessionCookieSecret: 'YOURSESSIONSECRETCHANGEIT',
-    cookieMaxAge: 30 * 60 * 1000,
-    sessionStoreDir: './sessions',
-    sessionStoreDbName: 'sessions.db',
   },
 };
 

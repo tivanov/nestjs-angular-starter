@@ -1,10 +1,10 @@
 import { CqrsModule } from '@nestjs/cqrs';
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from './model/user';
+import { User, UserSchema } from './model/user.model';
 import { UsersService } from './services/users.service';
 import { UsersController } from './controllers/users.controller';
-import { UserSettings, UserSettingsSchema } from './model/userSettings';
+import { UserSettings, UserSettingsSchema } from './model/userSettings.model';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({

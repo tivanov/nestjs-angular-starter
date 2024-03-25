@@ -1,8 +1,8 @@
 import { PaginateResult, Types } from 'mongoose';
 import { BaseMapper } from '../shared/base/base-mapper';
 import { PagedListDto, UserDto, UserSettingsDto } from '@app/contracts';
-import { User } from './model/user';
-import { UserSettings } from './model/userSettings';
+import { User } from './model/user.model';
+import { UserSettings } from './model/userSettings.model';
 
 export class UserMappers extends BaseMapper {
   public static usersToDtoPaginated(
