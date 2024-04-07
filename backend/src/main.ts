@@ -71,6 +71,9 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const appConfig = configService.get<IAppConfig>('app');
 
+  // raise the limit of the request body
+  (app as any).useBodyParser('json', { limit: '10mb' });
+
   setupCors(app, appConfig);
 
   app.useGlobalPipes(
