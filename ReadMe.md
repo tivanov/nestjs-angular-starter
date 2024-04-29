@@ -24,10 +24,25 @@ Backend config is in the `config` folder as a javascript object. It can be overr
 
 ## Frontend
 
-The frontend contains two projects and a library for shared code.
-The projects are meant to represent an admin interface and user interface.
+The frontend contains two projects. Both projects use signals + local storage for state management.
 
-Both projects use signals + local storage for state management.
+Tailwind is also setup with default config.
+
+### Admin UI
+
+The Admin UI project is located in the `frontend/projects/admin-ui` folder. The project uses Material Components to build a simple admin user interface.
+
+Curently it only contains the user management section, but can be easily expanded. 
+
+The user managemet section is an example of a pattern to be used in the future for managing lists of entities (see `BaseListComponent` class).
+
+### User UI
+
+The user-facing part of the application. It is just a blank project that uses SSR.
+
+### Common UI
+
+Just a folder with code meant to be shared between projects. Contains auth interceptors, services, base classes etc.
 
 ## Setup & Run
 
