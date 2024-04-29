@@ -13,8 +13,5 @@ export class UserDto {
   phone?: string;
   country?: string;
   creator?: UserDto | string;
-  referer?: UserDto | string;
-  agent?: UserDto | string;
-  avatar?: string;
   settings?: UserSettingsDto;
 }

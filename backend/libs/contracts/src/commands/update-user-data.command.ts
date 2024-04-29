@@ -1,4 +1,10 @@
-import { MaxLength, IsString, IsOptional, IsEmail } from 'class-validator';
+import {
+  MaxLength,
+  IsString,
+  IsOptional,
+  IsEmail,
+  MinLength,
+} from 'class-validator';
 
 export class UpdateUserDataCommand {
   @MaxLength(200)
@@ -10,11 +16,6 @@ export class UpdateUserDataCommand {
   @IsString()
   @IsOptional()
   lastName?: string;
-
-  @MaxLength(300)
-  @IsString()
-  @IsOptional()
-  displayName?: string;
 
   @IsOptional()
   @IsEmail()
@@ -28,4 +29,9 @@ export class UpdateUserDataCommand {
   @IsOptional()
   @MaxLength(200)
   phone?: string;
+
+  @IsOptional()
+  @MaxLength(10)
+  @MinLength(2)
+  country?: string;
 }

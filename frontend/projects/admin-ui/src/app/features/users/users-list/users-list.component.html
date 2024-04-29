@@ -1,32 +1,37 @@
-<div class="bg-card flex flex-row-reverse justify-between px-4 pt-4" [ngClass]="{'is-phone-portrait': isPhonePortrait}">
-    <button mat-raised-button class="mr-1" color="primary"
-        [routerLink]="'/users/create'"><mat-icon>add</mat-icon>CREATE</button>
+<div class="flex justify-between p-4">
+    <button mat-raised-button color="primary" [routerLink]="'/users/create'"><mat-icon>add</mat-icon>Create</button>
 </div>
-<form class="bg-card flex flex-row items-center px-4 w-full" [ngClass]="{'is-phone-portrait': isPhonePortrait}"
-    [formGroup]="filterForm" (ngSubmit)="this.load({pageIndex: 0})">
+<form class="flex items-center px-4 w-full" [ngClass]="{'is-phone-portrait': isPhonePortrait}" [formGroup]="filterForm"
+    (ngSubmit)="this.load({pageIndex: 0})">
     <mat-form-field class="w-full lg:w-1/4">
         <mat-label>UserName</mat-label>
         <input matInput formControlName="userName">
     </mat-form-field>
-    <mat-form-field class="w-full lg:w-1/4 lg:pl-2">
+    <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
         <mat-label>Role</mat-label>
         <mat-select formControlName="role">
             <mat-option *ngFor="let role of this.roles" [value]="role">{{role}}</mat-option>
         </mat-select>
     </mat-form-field>
-    <button class="lg:ml-auto" mat-raised-button color="primary" (click)="this.load({pageIndex: 0})">Filter</button>
+    <button mat-button (click)="this.filterForm.reset()" class="ml-auto">Clear</button>
+    <button mat-raised-button class="mx-2" color="primary"
+        (click)="this.load({pageIndex: 0})"><mat-icon>refresh</mat-icon> Refresh</button>
 </form>
-<div class="bg-card m-4" [ngClass]="{'is-phone-portrait': isPhonePortrait}">
+<div class="m-4">
     <table mat-table class="full-width-table" [dataSource]="this.dataSource" matSort>
-
-        <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>FirstName</th>
-            <div *ngIf="isPhonePortrait"></div>
-            <td mat-cell *matCellDef="let row">{{row.firstName}}</td>
-        </ng-container>
         <ng-container matColumnDef="userName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>UserName</th>
             <td mat-cell *matCellDef="let row">{{row.userName}}</td>
+        </ng-container>
+        <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+            <div *ngIf="isPhonePortrait"></div>
+            <td mat-cell *matCellDef="let row">{{row.firstName}}</td>
+        </ng-container>
+        <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+            <div *ngIf="isPhonePortrait"></div>
+            <td mat-cell *matCellDef="let row">{{row.lastName}}</td>
         </ng-container>
         <ng-container matColumnDef="role">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>

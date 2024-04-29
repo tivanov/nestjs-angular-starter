@@ -37,9 +37,6 @@ export class User extends Document {
   })
   role: UserRoleEnum;
 
-  @Prop({ maxlength: 300 })
-  displayName?: string;
-
   @Prop({
     lowercase: true,
     minlength: 5,

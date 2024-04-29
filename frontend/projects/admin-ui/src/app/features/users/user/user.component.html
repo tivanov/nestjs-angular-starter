@@ -1,17 +1,41 @@
 <form class="bg-card flex flex-row w-full flex-wrap p-4" [formGroup]="form">
     <mat-form-field class="w-full sm:px-2 sm:w-1/2">
-        <mat-label>FirstName</mat-label>
+        <mat-label>Last Name</mat-label>
         <input matInput formControlName="firstName">
     </mat-form-field>
 
     <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName">
+    </mat-form-field>
+
+    <mat-form-field class="w-full sm:px-2 sm:w-1/2">
         <mat-label>UserName</mat-label>
-        <input matInput formControlName="userName">
+        <input matInput [formControl]="this.userName">
+        <mat-error *hasError="'required'">Enter a username</mat-error>
+        <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
     </mat-form-field>
 
     <mat-form-field class="w-full sm:px-2 sm:w-1/2">
         <mat-label>Password</mat-label>
-        <input matInput formControlName="password">
+        <input matInput [formControl]="this.password">
+        <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+        <mat-label>Email</mat-label>
+        <input matInput [formControl]="this.email">
+        <mat-error *hasError="'email'">Enter a valid e-mail address</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone">
+    </mat-form-field>
+
+    <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+        <mat-label>Address</mat-label>
+        <input matInput formControlName="address">
     </mat-form-field>
 
     <mat-form-field class="w-full sm:px-2 sm:w-1/2">
@@ -23,15 +47,19 @@
         </mat-select>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" class="ml-2 font-bold rounded" [disabled]="!form.valid"
-        (click)="onSubmit()">{{ (userId ? 'UPDATE':'CREATE') }}
+    <div class="w-full flex flex-row-reverse">
+        <button mat-raised-button color="primary" class="ml-2 font-bold rounded" [disabled]="!form.valid"
+        (click)="onSubmit()">{{ (userId ? 'Save':'Create') }}
     </button>
 
-    <button mat-raised-button color="accent" class="ml-2 font-bold rounded" (click)="clearUserEnteredData()">
+    <button mat-button color="warn" class="ml-2 font-bold rounded" (click)="clearUserEnteredData()">
         Cancel
     </button>
 
-    <button mat-raised-button color="warn" class="ml-2 font-bold rounded" (click)="exitRoute()">
+    <button mat-button color="warn" class="ml-2 font-bold rounded" (click)="exitRoute()">
         Exit
     </button>
+    </div>
+
+    
 </form>

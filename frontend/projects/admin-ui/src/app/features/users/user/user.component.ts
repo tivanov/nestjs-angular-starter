@@ -1,6 +1,6 @@
-import { UserRoleEnum } from '@app/contracts';
+import { UserRoleEnum, UserDto } from '@app/contracts';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,40 +9,43 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { UsersService } from '../../../../../../common-ui/services/users.service';
+import { BaseComponent } from '../../../../../../common-ui/base/base.component';
+import { DirectivesModule } from '../../../../../../common-ui/directives/directives.module';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule,
-    MatOptionModule, MatSelectModule, MatInputModule, MatButtonModule],
+  imports: [CommonModule, MatFormFieldModule, ReactiveFormsModule, DirectivesModule,
+    MatOptionModule, MatSelectModule, MatInputModule, MatButtonModule, MatSnackBarModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
-export class UserComponent {
+export class UserComponent extends BaseComponent{
 
   userId: string | null = null;
 
   form: FormGroup;
-  initialFormValue: any;
+  user: UserDto;
 
   roles = Object.values(UserRoleEnum);
 
   constructor(private fb: FormBuilder,
     private router: Router,
     private usersService: UsersService,
+    private snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute) {
-    this.form = this.initForm();
+    super();
   }
 
   ngOnInit(): void {
+    this.form = this.initForm();
     this.activatedRoute.paramMap.pipe()
       .subscribe({
         next: data => {
           if (data.get('id')) {
-            console.log(data);
             this.userId = data.get('id');
             this.loadUser();
-            console.log(this.userId);
           }
         }
       })
@@ -52,21 +55,31 @@ export class UserComponent {
     this.usersService.getById(this.userId)
       .pipe()
       .subscribe({
-        next: (users: any) => {
-          console.log(users);
-          this.form.patchValue(users);
-          this.initialFormValue = this.form.value;
+        next: (user) => {
+          this.user = user;
+          this.form.patchValue(user);
+          this.form.get('password').clearValidators();
+          this.form.get('password').disable();
+          this.form.get('role').disable();
+          this.form.get('userName').disable();
+        },
+        error: err => {
+          this.snackBar.open(this.extractErrorMessage(err), 'Close', { duration: 5000 });
+          console.error(err)
         }
-        // error: error => this.snackbar.open('There was an error', this.translate.instant('Dismiss'), {duration: 8000})
       });
   }
 
   initForm() {
     return this.fb.group({
-      _id: [],
-      firstName: ['', [Validators.required]],
+      id: [{ value: '', disabled: true}],
+      firstName: ['', [Validators.maxLength(200)]],
+      lastName: ['', [Validators.maxLength(200)]],
       userName: ['', [Validators.required, Validators.minLength(5)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.minLength(6)]],
+      email: ['', [Validators.email]],
+      phone: ['', [Validators.maxLength(200)]],
+      address: ['', [Validators.maxLength(1000)]],
       role: ['', Validators.required]
     });
   }
@@ -76,33 +89,35 @@ export class UserComponent {
       return;
     }
 
-    const val = this.form.value;
+    const val = this.form.getRawValue();
 
-    if (this.userId) {
-      // UPDATE User
-      val._id = this.userId;
-      this.usersService.updateBasicData(this.userId, val).subscribe(
+    if (val.id) {
+      this.usersService.updateBasicData(val.id, val).subscribe(
         {
           next: (responseData) => {
-            console.log('responseData', responseData);
             this.router.navigate(['./users/list'])
           },
 
           error: err => {
-            console.log(err)
+            this.snackBar.open(this.extractErrorMessage(err), 'Close', { duration: 5000 });
+            console.error(err)
           },
         }
       );
     } else {
+      if (!val.password) {
+        this.snackBar.open('Password is required', '', { duration: 2000 });
+        return;
+      }
       this.usersService.create(val).subscribe(
         {
           next: (responseData) => {
-            console.log('responseData', responseData);
             this.router.navigate(['./users/list'])
           },
 
           error: err => {
-            console.log(err)
+            this.snackBar.open(this.extractErrorMessage(err), 'Close', { duration: 5000 });
+            console.error(err)
           },
         }
       );
@@ -110,10 +125,8 @@ export class UserComponent {
   }
 
   clearUserEnteredData() {
-
-    if (this.userId) {
-      console.log(this.initialFormValue);
-      this.form.patchValue(this.initialFormValue);
+    if (this.user) {
+      this.form.patchValue(this.user);
     } else {
       this.form.reset();
     }
@@ -121,6 +134,18 @@ export class UserComponent {
 
   exitRoute() {
     this.router.navigate(['/users/list']);
+  }
+
+  get email() {
+    return this.form.get('email') as FormControl;
+  }
+
+  get userName() {
+    return this.form.get('userName') as FormControl;
+  }
+
+  get password() {
+    return this.form.get('password') as FormControl;
   }
 
 }

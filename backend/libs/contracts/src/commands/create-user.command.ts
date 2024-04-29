@@ -33,11 +33,6 @@ export class CreateUserCommand {
   @MinLength(6)
   password?: string;
 
-  @MaxLength(300)
-  @IsString()
-  @IsOptional()
-  displayName?: string;
-
   @IsOptional()
   @IsEmail()
   email?: string;

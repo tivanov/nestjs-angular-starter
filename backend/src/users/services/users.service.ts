@@ -167,14 +167,7 @@ export class UsersService extends BaseService<User> {
     return await this.objectModel.findByIdAndUpdate(
       id,
       {
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        displayName:
-          userData.displayName ||
-          this.getDisplayName(userData.firstName, userData.lastName),
-        email: userData.email,
-        phone: userData.phone,
-        address: userData.address,
+        $set: userData,
       },
       { new: true },
     );

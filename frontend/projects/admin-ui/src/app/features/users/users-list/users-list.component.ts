@@ -30,6 +30,9 @@ export class UsersListComponent extends BaseListComponent<UserDto> implements On
 
   isPhonePortrait = false;
 
+  defaultColumns = ['userName', 'firstName', 'lastName', 'role', 'actions'];
+  mobuleColumns = ['userName', 'role', 'actions'];
+
   constructor(
     private usersService: UsersService,
     private snackBar: MatSnackBar,
@@ -37,7 +40,7 @@ export class UsersListComponent extends BaseListComponent<UserDto> implements On
     private fb: FormBuilder
   ) {
     super();
-    this.displayedColumns = ['userName', 'role', 'actions'];
+    this.displayedColumns = this.defaultColumns;
 
   }
 
@@ -50,7 +53,7 @@ export class UsersListComponent extends BaseListComponent<UserDto> implements On
       .pipe(map(result => result.breakpoints))
       .subscribe(breakpoints => {
         this.isPhonePortrait = breakpoints[Breakpoints.HandsetPortrait];
-        this.displayedColumns = this.isPhonePortrait ? ['userName', 'role', 'actions'] : ['firstName', 'userName', 'role', 'actions'];
+        this.displayedColumns = this.isPhonePortrait ? this.mobuleColumns : this.displayedColumns;
       });
   }
 

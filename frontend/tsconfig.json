@@ -11,7 +11,12 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "paths": {
-      
+      "@app/contracts": [
+        "../backend/libs/contracts/src"
+      ],
+      "@app/contracts/*": [
+        "../backend/libs/contracts/src/*"
+      ],
     },
     "esModuleInterop": true,
     "sourceMap": true,

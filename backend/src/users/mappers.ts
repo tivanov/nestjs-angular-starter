@@ -44,7 +44,7 @@ export class UserMappers extends BaseMapper {
       lastName: user.lastName,
       userName: user.userName,
       role: user.role,
-      displayName: user.displayName,
+      displayName: UserMappers.userToDisplayName(user),
       email: user.email,
       address: user.address,
       phone: user.phone,
@@ -63,5 +63,27 @@ export class UserMappers extends BaseMapper {
       theme: settings.theme,
       language: settings.language,
     };
+  }
+
+  public static userToDisplayName(source: User): string {
+    if (!source) {
+      return 'N/A';
+    }
+
+    let name = source.firstName;
+
+    if (source.lastName) {
+      name += ' ' + source.lastName;
+    }
+
+    if (!name) {
+      name = source.userName;
+    }
+
+    if (!name) {
+      name = source.email;
+    }
+
+    return name;
   }
 }

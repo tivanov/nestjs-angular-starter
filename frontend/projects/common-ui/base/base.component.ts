@@ -25,7 +25,7 @@ export class BaseComponent implements OnDestroy {
     this.subscriptions?.forEach(s => s.unsubscribe());
   }
 
-  private extractErrorMessage(error) {
+  protected extractErrorMessage(error) {
     var msg = '';
     if (error.error && error.error.message) {
       msg = error.error.message;
