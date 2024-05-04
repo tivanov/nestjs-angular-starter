@@ -13,11 +13,11 @@ const config: IConfig = {
   auth: {
     jwtSecret: 'YOURJWTSECRETCHANGEIT55',
     encryptJwtSecret: 'YOURJWTENCRIPTINGPASSCHANGEIT55',
-    jwtExpirationTime: 1800000,
+    jwtExpirationTime: '30m',
 
     jwtRefreshSecret: 'YOURJWTSECRETCHANGEIT',
     encryptJwtRefreshSecret: 'YOURJWTENCRIPTINGPASSCHANGEIT',
-    jwtRefreshExpirationTime: 604800000,
+    jwtRefreshExpirationTime: '2h',
     userBlockTime: 86400000,
     loginAttempts: 10,
   },

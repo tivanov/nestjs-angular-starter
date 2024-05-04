@@ -29,13 +29,14 @@ const setupCors = (app: INestApplication, appConfig: IAppConfig) => {
   }
   app.enableCors({
     origin: appConfig.corsOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: [
       'Content-Type',
       'Origin',
       'X-Requested-With',
       'Accept',
       'Authorization',
+      'X-Auth-Refresh-Token',
     ],
     // headers exposed to the client
     exposedHeaders: ['Authorization'],

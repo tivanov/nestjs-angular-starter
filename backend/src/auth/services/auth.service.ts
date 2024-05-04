@@ -1,7 +1,7 @@
 import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthorized-exception';
 import { TokenPayload } from '../model/token-payload';
 import { ConfigService } from '@nestjs/config';
-import { RefreshToken } from '../model/refresh-token';
+import { RefreshToken } from '../model/refresh-token.model';
 import { User } from '../../users/model/user.model';
 import { Injectable, Logger } from '@nestjs/common';
 import { UsersService } from '../../users/services/users.service';
@@ -14,6 +14,7 @@ import { getClientIp } from 'request-ip';
 import { UserMappers } from '../../users/mappers';
 import { IAuthConfig } from '../../../config/model';
 import { ErrorCode, UserDto } from '@app/contracts';
+import * as ms from 'ms';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +38,6 @@ export class AuthService {
   }
 
   public async getLoginSuccessResponse(req: Request) {
-    // I HATE TS RIGHT NOW
     const user = req.user as User;
 
     const userDto = UserMappers.userToDto(user) as UserDto;
@@ -105,7 +105,7 @@ export class AuthService {
 
     const expDate = new Date();
     expDate.setTime(
-      expDate.getTime() + this.authConfig.jwtRefreshExpirationTime,
+      expDate.getTime() + ms(this.authConfig.jwtRefreshExpirationTime),
     );
 
     await this.refreshTokenModel.create({

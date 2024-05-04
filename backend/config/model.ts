@@ -17,11 +17,11 @@ export interface IDbConfig {
 export interface IAuthConfig {
   jwtSecret: string;
   encryptJwtSecret: string;
-  jwtExpirationTime: number;
+  jwtExpirationTime: string;
 
   jwtRefreshSecret: string;
   encryptJwtRefreshSecret: string;
-  jwtRefreshExpirationTime: number;
+  jwtRefreshExpirationTime: string;
   userBlockTime: number;
   loginAttempts: number;
 }
