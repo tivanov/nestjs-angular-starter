@@ -30,7 +30,7 @@
               "projects/admin-ui/src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "projects/admin-ui/src/styles.scss"
             ],
             "scripts": []
@@ -134,12 +134,7 @@
             "styles": [
               "projects/user-ui/src/styles.scss"
             ],
-            "scripts": [],
-            "server": "projects/user-ui/src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "projects/user-ui/server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {

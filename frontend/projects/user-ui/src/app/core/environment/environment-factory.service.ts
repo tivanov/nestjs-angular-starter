@@ -1,4 +1,4 @@
-import { EnvironmentService } from "../../../../../common-ui/src/services/environment.service";
+import { EnvironmentService } from '../../../../../common-ui/services/environment.service';
 import { environment } from '../../../environments/environment';
 
 export const EnvironmentFactoryService = () => {
