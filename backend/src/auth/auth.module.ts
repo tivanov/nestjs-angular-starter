@@ -1,4 +1,4 @@
-import { RefreshToken, RefreshTokenSchema } from './model/refresh-token';
+import { RefreshToken, RefreshTokenSchema } from './model/refresh-token.model';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -10,7 +10,6 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IAuthConfig } from '../../config/model';
-import { Identity, IdentitySchema } from './model/identity';
 import { RolesGuard } from './guards/roles-guard';
 
 @Module({
@@ -31,7 +30,6 @@ import { RolesGuard } from './guards/roles-guard';
     }),
     MongooseModule.forFeatureAsync([
       { name: RefreshToken.name, useFactory: () => RefreshTokenSchema },
-      { name: Identity.name, useFactory: () => IdentitySchema },
     ]),
   ],
   controllers: [AuthController],

@@ -1,15 +1,17 @@
 import { Document, SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
-import { Exclude } from 'class-transformer';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
 import { UserSettings, UserSettingsSchema } from './userSettings.model';
 import { UserRoleEnum } from '@app/contracts';
+import { BaseEntity } from 'src/shared/base/base-entity';
+
+export type UserDocument = User & Document;
 
 @Schema({
   timestamps: true,
 })
-export class User extends Document {
+export class User extends BaseEntity {
   @Prop({ maxlength: 200 })
   firstName?: string;
 
@@ -22,7 +24,6 @@ export class User extends Document {
   })
   userName?: string;
 
-  @Exclude()
   @Prop({
     minlength: 5,
     maxlength: 1024,
@@ -58,13 +59,11 @@ export class User extends Document {
   })
   country?: string;
 
-  @Exclude()
   @Prop({
     default: 0,
   })
   loginAttempts: number;
 
-  @Exclude()
   @Prop({
     default: Date.now,
   })
@@ -101,7 +100,3 @@ UserSchema.pre('save', async function (next) {
 });
 
 UserSchema.plugin(mongoosePaginate);
-
-// UserSchema.index({ email: 1, organisation: 1 }, { unique: true, sparse: true });
-// UserSchema.index({ userName: 1, organisation: 1 }, { unique: true, sparse: true });
-// UserSchema.index({ phone: 1, organisation: 1 }, { unique: true, sparse: true });
