@@ -33,7 +33,6 @@ export abstract class BaseListComponent<T> extends BaseComponent implements OnIn
   }
   ngAfterViewInit(): void {
     if (this.paginator) {
-      console.log('paginator found', this.paginator);
       this.dataSource.paginator = this.paginator;
     }
   }

@@ -41,7 +41,6 @@ export class UsersListComponent extends BaseListComponent<UserDto> implements On
   ) {
     super();
     this.displayedColumns = this.defaultColumns;
-
   }
 
   override ngOnInit(): void {

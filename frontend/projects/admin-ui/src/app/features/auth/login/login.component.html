@@ -1,6 +1,13 @@
-<div class="flex justify-center items-center overflow-hidden m-4 lg:mt-40">
-    <form class="bg-gray-100 p-8 rounded-lg shadow-md flex flex-col w-96" [formGroup]="form">
-        <mat-form-field class="mb-4">
+<div class="flex w-full h-full justify-center items-center overflow-hidden text-white">
+    
+    <form class="bg-card p-8 rounded-lg shadow-md flex flex-col w-96 border" [formGroup]="form">
+        <div class="font-bold text-xl w-full text-center">            
+            Your Project Name 
+        </div>
+        <div class="text-base w-full  text-center">
+            Control Center
+        </div>
+        <mat-form-field class="mt-4">
             <mat-label>Username</mat-label>
             <input matInput formControlName="userName" class="w-full">
         </mat-form-field>
