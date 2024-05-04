@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev:admin": "concurrently \"cd backend && npm run start:debug\" \"cd frontend && npm run start:admin\""
+    "dev:admin": "concurrently \"cd backend && npm run start:debug\" \"cd frontend && npm run start:admin\"",
+    "dev:user": "concurrently \"cd backend && npm run start:debug\" \"cd frontend && npm run start:user\"",
+    "dev": "concurrently \"cd backend && npm run start:debug\" \"cd frontend && npm run start:user\" \"cd frontend && npm run start:admin\""
   },
   "author": "",
   "license": "ISC",
