@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from "rxjs/operators";
 import { AuthService } from '../auth/auth.service';
 import { AuthSignal, logOut, updateAuth } from './auth.signal';
+import { Router } from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (request: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
     if (request.url.includes('auth/refresh')) {
@@ -18,6 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (request: HttpRequest<any>, ne
     }
 
     const authService = inject(AuthService);
+    const router = inject(Router);
 
     return next(request).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
@@ -38,6 +40,7 @@ export const authInterceptor: HttpInterceptorFn = (request: HttpRequest<any>, ne
           catchError(error => {
             if (error instanceof HttpErrorResponse && error.status === 401) {
               logOut();
+              router.navigate(['/auth']);
             }
             return throwError(() => error);
           }),

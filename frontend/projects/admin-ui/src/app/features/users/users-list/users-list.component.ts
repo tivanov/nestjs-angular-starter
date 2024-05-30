@@ -75,13 +75,14 @@ export class UsersListComponent extends BaseListComponent<UserDto> implements On
   public load($event: { pageIndex: any; pageSize?: any; }) {
     const filter = this.filterForm.value;
     filter.page = $event.pageIndex + 1;
-    filter.limit = $event.pageSize || this.itemsPerPage;
+    filter.limit = $event.pageSize || this.paginator?.pageSize || this.pageSizeOptions[0];
 
     this.usersService.get(filter)
       .pipe(
         takeUntil(this.ngUnsubscribe)
-      ).subscribe((users: any) => {
-        this.dataSource.data = users.docs;
+      ).subscribe((paged) => {
+        this.dataSource.data = paged.docs;
+        this.totalItems = paged.totalDocs;
       });
   }
 

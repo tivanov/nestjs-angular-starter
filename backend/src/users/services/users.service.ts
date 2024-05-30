@@ -7,12 +7,14 @@ import { Model, PaginateModel, PaginateResult, Types } from 'mongoose';
 import { UserSettings } from '../model/userSettings.model';
 import { ConfigService } from '@nestjs/config';
 import {
+  CreateUserCommand,
   ErrorCode,
   GetUsersQuery,
   UpdateUserDataCommand,
 } from '@app/contracts';
 import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthorized-exception';
 import * as bcrypt from 'bcrypt';
+import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
 
 @Injectable()
 export class UsersService extends BaseService<UserDocument> {
@@ -45,6 +47,18 @@ export class UsersService extends BaseService<UserDocument> {
     );
   }
 
+  public async expectUserNameNotExists(userName: string) {
+    const user = await this.objectModel.exists({ userName });
+    if (user) {
+      throw new AppBadRequestException(ErrorCode.USER_NAME_EXISTS);
+    }
+  }
+
+  public async create(command: CreateUserCommand): Promise<User> {
+    await this.expectUserNameNotExists(command.userName);
+    return await this.baseCreate(command);
+  }
+
   public async login(userName: string, password: string): Promise<User> {
     const user = await this.validateCredentialsGetUser(userName, password);
     try {
@@ -67,8 +81,6 @@ export class UsersService extends BaseService<UserDocument> {
     if (user.loginAttempts >= this.authConfig.loginAttempts) {
       throw new AppUnauthorizedException(ErrorCode.TOO_MANY_LOGIN_ATTEMPTS);
     }
-
-    // TODO: check if I need more
   }
 
   public async updateBasicData(

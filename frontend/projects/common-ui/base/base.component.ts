@@ -7,6 +7,7 @@ import { Subject, Subscription } from 'rxjs';
 })
 export class BaseComponent implements OnDestroy {
   public fullDateFormat = 'dd.MM.yyyy HH:mm:ss';
+  public inputDateTimeFormat = 'yyyy-MM-ddTHH:mm';
 
   public ngUnsubscribe = new Subject<void>();
   public dataLoaded: boolean;
@@ -29,6 +30,8 @@ export class BaseComponent implements OnDestroy {
     var msg = '';
     if (error.error && error.error.message) {
       msg = error.error.message;
+    } else if (error.error && error.error.code) {
+      msg = error.error.code;
     } else if (error.status && error.status === 404) {
       msg = error.statusText;
     } else if (error.message) {

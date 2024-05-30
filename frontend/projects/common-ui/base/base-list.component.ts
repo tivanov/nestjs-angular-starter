@@ -12,11 +12,8 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 export abstract class BaseListComponent<T> extends BaseComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = [];
-
-  totalItems = 50;
-  itemsPerPage = 50;
-  currentPage = 0;
-  pageSizeOptions = [20, 50, 100, 200];
+  totalItems;
+  pageSizeOptions = [10, 100, 200];
 
   protected filterForm: FormGroup;
 
@@ -32,9 +29,7 @@ export abstract class BaseListComponent<T> extends BaseComponent implements OnIn
     this.formBuilder = inject(FormBuilder);
   }
   ngAfterViewInit(): void {
-    if (this.paginator) {
-      this.dataSource.paginator = this.paginator;
-    }
+    // placeholder, call it if you inherit from this class
   }
 
   ngOnInit(): void {

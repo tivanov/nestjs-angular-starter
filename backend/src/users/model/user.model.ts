@@ -21,6 +21,8 @@ export class User extends BaseEntity {
   @Prop({
     maxlength: 100,
     minlength: 3,
+    unique: true,
+    index: true,
   })
   userName?: string;
 

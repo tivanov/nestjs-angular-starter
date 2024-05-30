@@ -7,11 +7,9 @@ export const hasRole: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   }
 
   const requiredRoles = route.data['roles'];
-  console.log(requiredRoles);
   if (!requiredRoles || requiredRoles.length === 0) {
     return true;
   }
 
-  console.log(AuthSignal().user.role);
   return requiredRoles.find((role: string) => AuthSignal().user.role === role) !== undefined;
 };

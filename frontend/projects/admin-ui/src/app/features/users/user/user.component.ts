@@ -73,14 +73,14 @@ export class UserComponent extends BaseComponent{
   initForm() {
     return this.fb.group({
       id: [{ value: '', disabled: true}],
-      firstName: ['', [Validators.maxLength(200)]],
-      lastName: ['', [Validators.maxLength(200)]],
-      userName: ['', [Validators.required, Validators.minLength(5)]],
-      password: ['', [Validators.minLength(6)]],
-      email: ['', [Validators.email]],
-      phone: ['', [Validators.maxLength(200)]],
-      address: ['', [Validators.maxLength(1000)]],
-      role: ['', Validators.required]
+      firstName: [, [Validators.maxLength(200)]],
+      lastName: [, [Validators.maxLength(200)]],
+      userName: [, [Validators.required, Validators.minLength(5)]],
+      password: [, [Validators.minLength(6)]],
+      email: [, [Validators.email]],
+      phone: [, [Validators.maxLength(200)]],
+      address: [, [Validators.maxLength(1000)]],
+      role: [, Validators.required]
     });
   }
 

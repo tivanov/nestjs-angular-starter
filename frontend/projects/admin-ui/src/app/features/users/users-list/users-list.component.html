@@ -1,8 +1,7 @@
 <div class="flex justify-between p-4">
     <button mat-raised-button color="primary" [routerLink]="'/users/create'"><mat-icon>add</mat-icon>Create</button>
 </div>
-<form class="flex items-center px-4 w-full" [ngClass]="{'is-phone-portrait': isPhonePortrait}" [formGroup]="filterForm"
-    (ngSubmit)="this.load({pageIndex: 0})">
+<form class="flex items-center px-4 w-full" [ngClass]="{'is-phone-portrait': isPhonePortrait}" [formGroup]="filterForm">
     <mat-form-field class="w-full lg:w-1/4">
         <mat-label>UserName</mat-label>
         <input matInput formControlName="userName">
@@ -53,6 +52,8 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator #mainPaginator [pageIndex]="0" [pageSize]="this.itemsPerPage"
-        [pageSizeOptions]="this.pageSizeOptions" (page)="this.load($event)"></mat-paginator>
+    <mat-paginator #mainPaginator 
+        [pageSizeOptions]="this.pageSizeOptions" 
+        [length]="this.totalItems"
+        (page)="this.load($event)"></mat-paginator>
 </div>

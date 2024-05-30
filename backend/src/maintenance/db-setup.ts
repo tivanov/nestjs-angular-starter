@@ -25,7 +25,7 @@ class DbInitializer {
         role,
       };
 
-      await this.usersService.create(cmd);
+      await this.usersService.baseCreate(cmd);
       console.log(`Created user ${userName} with pass: ${password}`);
     }
   }

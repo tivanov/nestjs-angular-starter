@@ -67,13 +67,13 @@ export class BaseService<T extends Document> {
     return entities;
   }
 
-  public async create(command: any, session?: ClientSession): Promise<T> {
+  public async baseCreate(command: any, session?: ClientSession): Promise<T> {
     const newEntity = new this.objectModel(command);
     await newEntity.save({ session });
     return newEntity;
   }
 
-  public async update(id: string, command: any, session?: ClientSession) {
+  public async baseUpdate(id: string, command: any, session?: ClientSession) {
     return this.objectModel.findByIdAndUpdate(
       id,
       {
