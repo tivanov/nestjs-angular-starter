@@ -1,18 +1,21 @@
-<div class="flex justify-between p-4">
+<div class="flex justify-between pb-4">
   <button mat-raised-button color="primary" [routerLink]="'/users/create'">
     <mat-icon>add</mat-icon>Create
   </button>
 </div>
-<form
-  class="flex items-center px-4 w-full"
-  [ngClass]="{ 'is-phone-portrait': isPhonePortrait }"
-  [formGroup]="filterForm"
->
-  <mat-form-field class="w-full lg:w-1/4">
+<form class="flex items-center w-full" [formGroup]="filterForm">
+  <mat-form-field class="w-full md:w-64 md:pr-2">
+    <mat-label>Search</mat-label>
+    <input
+      matInput
+      formControlName="searchQuery"
+      (keyup.enter)="this.load({ pageIndex: 0 })" />
+  </mat-form-field>
+  <mat-form-field class="w-full md:w-64 md:pr-2">
     <mat-label>UserName</mat-label>
     <input matInput formControlName="userName" />
   </mat-form-field>
-  <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
+  <mat-form-field class="w-full md:w-64 md:pr-2">
     <mat-label>Role</mat-label>
     <mat-select formControlName="role">
       <mat-option *ngFor="let role of this.roles" [value]="role">{{
@@ -20,82 +23,70 @@
       }}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field class="w-full md:w-64 md:pr-2">
-    <mat-label>Search</mat-label>
-    <input
-      matInput
-      formControlName="searchQuery"
-      (keyup.enter)="this.load({ pageIndex: 0 })"
-    />
-  </mat-form-field>
+
   <button
     type="button"
     mat-button
     (click)="this.filterForm.reset()"
-    class="ml-auto"
-  >
+    class="ml-auto">
     Clear
   </button>
   <button
     mat-raised-button
     class="mx-2"
     color="primary"
-    (click)="this.load({ pageIndex: 0 })"
-  >
+    (click)="this.load({ pageIndex: 0 })">
     <mat-icon>refresh</mat-icon> Refresh
   </button>
 </form>
-<div class="m-4">
-  <table
-    mat-table
-    class="full-width-table"
-    [dataSource]="this.dataSource"
-    matSort
-    (matSortChange)="this.onSortChange($event)"
-  >
-    <ng-container matColumnDef="userName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>UserName</th>
-      <td mat-cell *matCellDef="let row">{{ row.userName }}</td>
-    </ng-container>
-    <ng-container matColumnDef="firstName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
-      <div *ngIf="isPhonePortrait"></div>
-      <td mat-cell *matCellDef="let row">{{ row.firstName }}</td>
-    </ng-container>
-    <ng-container matColumnDef="lastName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
-      <div *ngIf="isPhonePortrait"></div>
-      <td mat-cell *matCellDef="let row">{{ row.lastName }}</td>
-    </ng-container>
-    <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
-      <td mat-cell *matCellDef="let row">{{ row.role }}</td>
-    </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-      <td mat-cell *matCellDef="let row">
-        <div class="flex justify-end">
-          <button mat-icon-button [routerLink]="'/users/' + row.id">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button (click)="onDelete(row)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </td>
-    </ng-container>
+<table
+  mat-table
+  class="full-width-table"
+  [dataSource]="this.dataSource"
+  matSort
+  (matSortChange)="this.onSortChange($event)">
+  <ng-container matColumnDef="userName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>UserName</th>
+    <td mat-cell *matCellDef="let row">{{ row.userName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="firstName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+    <div *ngIf="isPhonePortrait"></div>
+    <td mat-cell *matCellDef="let row">{{ row.firstName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="lastName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+    <div *ngIf="isPhonePortrait"></div>
+    <td mat-cell *matCellDef="let row">{{ row.lastName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="role">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+    <td mat-cell *matCellDef="let row">{{ row.role }}</td>
+  </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+  <!-- Name Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+    <td mat-cell *matCellDef="let row">
+      <div class="flex justify-end">
+        <button mat-icon-button [routerLink]="'/users/' + row.id">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button (click)="onDelete(row)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </td>
+  </ng-container>
 
-  <mat-paginator
-    #mainPaginator
-    [pageSizeOptions]="this.pageSizeOptions"
-    [length]="this.totalItems"
-    [showFirstLastButtons]="this.showFirstLastButtons"
-    (page)="this.load($event)"
-  ></mat-paginator>
-</div>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator
+  #mainPaginator
+  [pageSizeOptions]="this.pageSizeOptions"
+  [length]="this.totalItems"
+  [showFirstLastButtons]="this.showFirstLastButtons"
+  (page)="this.load($event)"></mat-paginator>

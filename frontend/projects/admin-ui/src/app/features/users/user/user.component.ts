@@ -17,6 +17,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { UsersService } from '../../../../../../common-ui/services/users.service';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoginRecordsListComponent } from '../login-records-list/login-records-list.component';
+import { HasErrorDirective } from '../../../../../../common-ui/directives/has-error.directive';
+import { HasErrorRootDirective } from '../../../../../../common-ui/directives/has-error-root.directive';
 
 @Component({
   selector: 'app-user',
@@ -30,6 +33,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatButtonModule,
     MatSnackBarModule,
+    LoginRecordsListComponent,
+    HasErrorDirective,
+    HasErrorRootDirective,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
@@ -38,6 +44,7 @@ export class UserComponent extends BaseComponent {
   userId: string | null = null;
 
   form: FormGroup;
+  changePasswordForm: FormGroup;
   user: UserDto;
 
   roles = Object.values(UserRoleEnum);
@@ -54,6 +61,7 @@ export class UserComponent extends BaseComponent {
 
   ngOnInit(): void {
     this.form = this.initForm();
+    this.changePasswordForm = this.initPasswordForm();
     this.activatedRoute.paramMap.pipe().subscribe({
       next: (data) => {
         if (data.get('id')) {
@@ -70,12 +78,7 @@ export class UserComponent extends BaseComponent {
       .pipe()
       .subscribe({
         next: (user) => {
-          this.user = user;
-          this.form.patchValue(user);
-          this.form.get('password').clearValidators();
-          this.form.get('password').disable();
-          this.form.get('role').disable();
-          this.form.get('userName').disable();
+          this.onUserLoaded(user);
         },
         error: (err) => {
           this.snackBar.open(this.extractErrorMessage(err), 'Close', {
@@ -84,6 +87,26 @@ export class UserComponent extends BaseComponent {
           console.error(err);
         },
       });
+  }
+
+  onUserLoaded(user: UserDto) {
+    this.user = user;
+    this.form.patchValue(user);
+    this.form.get('password').clearValidators();
+    this.form.get('password').disable();
+    this.form.get('role').disable();
+    this.form.get('userName').disable();
+
+    this.user = user;
+    this.form.patchValue(user);
+    this.form.get('password').clearValidators();
+    this.form.get('password').disable();
+    this.form.get('role').disable();
+    this.form.get('userName').disable();
+
+    if (user.lastLogin) {
+      this.form.get('lastLogin').setValue(new Date(user.lastLogin));
+    }
   }
 
   initForm() {
@@ -97,6 +120,29 @@ export class UserComponent extends BaseComponent {
       phone: [, [Validators.maxLength(200)]],
       address: [, [Validators.maxLength(1000)]],
       role: [, Validators.required],
+      lastLogin: [{ value: null, disabled: true }],
+      country: [{ value: null, disabled: true }],
+    });
+  }
+
+  initPasswordForm() {
+    return this.fb.group({
+      password: [null, [Validators.required, Validators.minLength(6)]],
+    });
+  }
+
+  changePassword() {
+    const command = this.changePasswordForm.getRawValue();
+    this.usersService.changePassword(this.userId, command).subscribe({
+      next: (user) => {
+        this.snackBar.open('Password changed', 'Close', { duration: 2000 });
+        this.onUserLoaded(user);
+      },
+      error: (err) => {
+        this.snackBar.open(this.extractErrorMessage(err), 'Close', {
+          duration: 5000,
+        });
+      },
     });
   }
 
@@ -142,7 +188,7 @@ export class UserComponent extends BaseComponent {
 
   clearUserEnteredData() {
     if (this.user) {
-      this.form.patchValue(this.user);
+      this.onUserLoaded(this.user);
     } else {
       this.form.reset();
     }

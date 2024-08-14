@@ -1,23 +1,31 @@
-<div class="flex w-full h-full justify-center items-center overflow-hidden text-white">
-    
-    <form class="bg-card p-8 rounded-lg shadow-md flex flex-col w-96 border" [formGroup]="form">
-        <div class="font-bold text-xl w-full text-center">            
-            Your Project Name 
-        </div>
-        <div class="text-base w-full  text-center">
-            Control Center
-        </div>
-        <mat-form-field class="mt-4">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="userName" class="w-full">
-        </mat-form-field>
+<div
+  class="flex w-full h-full justify-center items-center overflow-hidden text-white">
+  <form
+    class="bg-neutral-800 p-8 rounded-lg shadow-md flex flex-col w-96 border"
+    [formGroup]="form">
+    <div class="font-bold text-xl w-full text-center">Your Project Name</div>
+    <div class="text-base w-full text-center">Control Center</div>
+    <mat-form-field class="mt-4">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="userName" class="w-full" />
+    </mat-form-field>
 
-        <mat-form-field class="mb-4">
-            <mat-label>Password</mat-label>
-            <input matInput type="password" formControlName="password" class="w-full">
-        </mat-form-field>
+    <mat-form-field class="mb-4">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="password"
+        class="w-full" />
+    </mat-form-field>
 
-        <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="onSubmit()"
-            class="bg-blue-500 text-white">Login</button>
-    </form>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!form.valid"
+      (click)="onSubmit()"
+      class="bg-blue-500 text-white">
+      Login
+    </button>
+  </form>
 </div>

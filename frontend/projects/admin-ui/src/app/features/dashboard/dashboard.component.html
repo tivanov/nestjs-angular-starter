@@ -1,6 +1,5 @@
 <div
-  class="w-full p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-center gap-4"
->
+  class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-center gap-4">
   <mat-card class="p-4 col-span-1 md:col-span-2 lg:col-span-4">
     <div class="flex items-center">
       <h2 class="invisible md:visible text-xl">
@@ -14,6 +13,5 @@
 
   <app-alerts-widget
     *ngIf="AuthSignal().user.role === UserRoleEnum.Admin"
-    class="md:col-span-2"
-  ></app-alerts-widget>
+    class="md:col-span-2"></app-alerts-widget>
 </div>

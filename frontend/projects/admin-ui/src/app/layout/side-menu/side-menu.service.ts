@@ -49,6 +49,18 @@ export class SideMenuService {
         },
       ],
     },
+    {
+      type: MenuItemType.Divider,
+    },
+    {
+      label: 'Tasks',
+      icon: 'gears',
+      type: MenuItemType.Dropdown,
+      children: [
+        { label: 'List', link: '/tasks/list', icon: 'list' },
+        { label: 'Logs', link: '/tasks/logs', icon: 'clipboard-list' },
+      ],
+    },
     // Add more menu items here as needed
   ];
 

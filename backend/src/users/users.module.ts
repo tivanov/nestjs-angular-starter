@@ -9,6 +9,8 @@ import { AuthModule } from '../auth/auth.module';
 import { LoginRecord, LoginRecordSchema } from './model/login-record.model';
 import { HttpModule } from '@nestjs/axios';
 import { IpLocationService } from './services/iplocation.service';
+import { LoginRecordsService } from './services/login-records.service';
+import { LoginRecordsController } from './controllers/login-records.controller';
 
 @Module({
   imports: [
@@ -21,8 +23,8 @@ import { IpLocationService } from './services/iplocation.service';
     ]),
     forwardRef(() => AuthModule),
   ],
-  providers: [UsersService, IpLocationService],
-  controllers: [UsersController],
-  exports: [UsersService],
+  providers: [UsersService, IpLocationService, LoginRecordsService],
+  controllers: [UsersController, LoginRecordsController],
+  exports: [UsersService, LoginRecordsService],
 })
 export class UsersModule {}

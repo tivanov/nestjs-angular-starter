@@ -178,18 +178,14 @@
             "index": "projects/user-ui/src/index.html",
             "browser": "projects/user-ui/src/main.ts",
             "polyfills": [
-              "zone.js",
-              "@angular/localize/init"
+              "zone.js"
             ],
             "tsConfig": "projects/user-ui/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "styles": [
-              "projects/user-ui/src/styles.scss",
-              "node_modules/ngx-toastr/toastr.css"
+              "projects/user-ui/src/styles.scss"
             ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
+            "scripts": [],
             "allowedCommonJsDependencies": [
               "validator",
               "moment"
@@ -198,7 +194,7 @@
           "configurations": {
             "production": {
               "assets": [
-                "projects/user-ui/src/favicon.png",
+                "projects/user-ui/src/favicon.ico",
                 "projects/user-ui/src/assets",
                 "projects/user-ui/src/robots.txt",
                 "projects/user-ui/src/sitemap.xml",
@@ -290,8 +286,7 @@
           "options": {
             "polyfills": [
               "zone.js",
-              "zone.js/testing",
-              "@angular/localize/init"
+              "zone.js/testing"
             ],
             "tsConfig": "projects/user-ui/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",

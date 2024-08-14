@@ -6,6 +6,7 @@ const config: IConfig = {
     enableCors: true,
     corsOrigins: ['http://localhost:5100', 'http://localhost:5200'],
     port: 8200,
+    enableTasks: true,
   },
   db: {
     mongoUri: 'mongodb://localhost/nest-angular-starter',

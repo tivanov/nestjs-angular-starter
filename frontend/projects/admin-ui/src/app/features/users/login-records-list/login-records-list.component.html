@@ -1,0 +1,66 @@
+<form
+  class="flex items-center w-full"
+  [ngClass]="{ 'is-phone-portrait': isPhonePortrait }"
+  [formGroup]="filterForm">
+  <mat-form-field class="w-full lg:w-1/4">
+    <mat-label>User ID</mat-label>
+    <input matInput formControlName="userId" />
+  </mat-form-field>
+
+  <button mat-button (click)="this.filterForm.reset()" class="ml-auto">
+    Clear
+  </button>
+  <button
+    mat-raised-button
+    class="mx-2"
+    color="primary"
+    (click)="this.load({ pageIndex: 0 })">
+    <mat-icon>refresh</mat-icon> Refresh
+  </button>
+</form>
+
+<table mat-table class="full-width-table" [dataSource]="this.dataSource">
+  <ng-container matColumnDef="createdAt">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.createdAt | date: this.fullDateFormat }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="ip">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>IP</th>
+    <td mat-cell *matCellDef="let row">{{ row.ip }}</td>
+  </ng-container>
+  <ng-container matColumnDef="country">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
+    <div *ngIf="isPhonePortrait"></div>
+    <td mat-cell *matCellDef="let row">{{ row.countryName }}</td>
+  </ng-container>
+  <ng-container matColumnDef="client">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.clientName }} ({{ row.clientType }})
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="device">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Device</th>
+    <td mat-cell *matCellDef="let row">
+      {{ row.deviceType }} {{ row.osName }} {{ row.deviceName }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="isBot">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>IsBot</th>
+    <td mat-cell *matCellDef="let row">{{ row.isBot ? 'true' : '' }}</td>
+  </ng-container>
+  <ng-container matColumnDef="user">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+    <td mat-cell *matCellDef="let row">{{ row.user }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<mat-paginator
+  #mainPaginator
+  [pageSizeOptions]="this.pageSizeOptions"
+  [length]="this.totalItems"
+  (page)="this.load($event)"></mat-paginator>

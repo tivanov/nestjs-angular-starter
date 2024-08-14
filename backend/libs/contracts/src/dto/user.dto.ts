@@ -12,6 +12,7 @@ export interface UserDto extends BaseEntityDto {
   address?: string;
   phone?: string;
   country?: string;
+  lastLogin?: string;
   creator?: UserDto | string;
   settings?: UserSettingsDto;
 }

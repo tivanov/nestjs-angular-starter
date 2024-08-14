@@ -1,7 +1,7 @@
 import { Types, Document, SchemaTypes } from 'mongoose';
 import { User } from './user.model';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoosePaginate from 'mongoose-paginate-v2';
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 import { BaseEntity } from 'src/shared/base/base-entity';
 
 export type LoginRecordDocument = LoginRecord & Document;

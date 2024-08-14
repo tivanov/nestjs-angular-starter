@@ -11,6 +11,7 @@ import {
   HttpStatus,
   UseGuards,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guards/jwt.guard';
 import { UserMappers } from '../mappers';
@@ -18,6 +19,7 @@ import {
   CreateUserCommand,
   GetUsersQuery,
   UpdateUserDataCommand,
+  UpdateUserPasswordCommand,
   UserRoleEnum,
 } from '@app/contracts';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -45,6 +47,18 @@ export class UsersController {
   ) {
     return UserMappers.userToDto(
       await this.usersService.updateBasicData(userId, command),
+    );
+  }
+
+  @Patch(':id/password')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRoleEnum.Admin)
+  public async updatePassword(
+    @Param('id') userId: string,
+    @Body() command: UpdateUserPasswordCommand,
+  ) {
+    return UserMappers.userToDto(
+      await this.usersService.updatePassword(userId, command),
     );
   }
 

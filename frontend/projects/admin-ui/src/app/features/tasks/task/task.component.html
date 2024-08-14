@@ -1,0 +1,91 @@
+<form
+  class="bg-neutral-800 flex flex-row w-full flex-wrap p-4 items-center"
+  [formGroup]="form">
+  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+    <mat-label>Type</mat-label>
+    <mat-select formControlName="type">
+      <mat-option *ngFor="let type of this.types" [value]="type">{{
+        type
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-checkbox class="w-full sm:px-2 sm:w-1/2" formControlName="active"
+    >Active</mat-checkbox
+  >
+  <mat-checkbox class="w-full sm:px-2 sm:w-1/2" formControlName="runImmediately"
+    >Run Immediately</mat-checkbox
+  >
+
+  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+    <mat-label>Cron String</mat-label>
+    <input matInput formControlName="cronString" />
+  </mat-form-field>
+  <div class="w-full p-2 flex">
+    <pre>
+*    *    *    *    *    *
+┬    ┬    ┬    ┬    ┬    ┬
+│    │    │    │    │    │
+│    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
+│    │    │    │    └───── month (1 - 12)
+│    │    │    └────────── day of month (1 - 31)
+│    │    └─────────────── hour (0 - 23)
+│    └──────────────────── minute (0 - 59)
+└───────────────────────── second (0 - 59, OPTIONAL)
+        </pre
+    >
+    <div style="margin-left: 20px">
+      <p>Examples:</p>
+      <p>
+        42 * * * * - Execute when the minute is 42 (e.g. 19:42, 20:42, etc.)
+      </p>
+      <p>0/5 * * * * - Execute a cron job every 5 Minutes.</p>
+    </div>
+  </div>
+
+  <mat-form-field class="w-full sm:px-2">
+    <mat-label>Parameters (JSON)</mat-label>
+    <textarea matInput formControlName="params"></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="w-full sm:px-2">
+    <mat-label>Script (JS)</mat-label>
+    <textarea matInput formControlName="script"></textarea>
+    <mat-hint
+      >A `task` variable containing task data and `logger` variable for logging
+      will be available in the context of the script.</mat-hint
+    >
+  </mat-form-field>
+
+  <div class="w-full flex flex-row-reverse">
+    <button
+      mat-raised-button
+      color="primary"
+      class="ml-2 font-bold rounded"
+      [disabled]="!form.valid"
+      (click)="onSubmit()">
+      {{ this.taskId ? 'Save' : 'Create' }}
+    </button>
+
+    <button
+      mat-button
+      color="warn"
+      class="ml-2 font-bold rounded"
+      (click)="clear()">
+      Cancel
+    </button>
+
+    <button
+      mat-button
+      color="warn"
+      class="ml-2 font-bold rounded"
+      (click)="exit()">
+      Exit
+    </button>
+  </div>
+</form>

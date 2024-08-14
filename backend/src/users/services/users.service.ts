@@ -11,6 +11,7 @@ import {
   ErrorCode,
   GetUsersQuery,
   UpdateUserDataCommand,
+  UpdateUserPasswordCommand,
   UserRoleEnum,
 } from '@app/contracts';
 import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthorized-exception';
@@ -18,6 +19,7 @@ import * as bcrypt from 'bcrypt';
 import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
 import { LoginRecordsService } from './login-records.service';
 import { Request } from 'express';
+import { AppNotFoundException } from 'src/shared/exceptions/app-not-found-exception';
 
 @Injectable()
 export class UsersService extends BaseService<UserDocument> {
@@ -26,7 +28,6 @@ export class UsersService extends BaseService<UserDocument> {
 
   constructor(
     @InjectModel(User.name) userModel: PaginateModel<UserDocument>,
-    @InjectModel(UserSettings.name)
     private readonly loginRecords: LoginRecordsService,
     config: ConfigService,
   ) {
@@ -53,6 +54,19 @@ export class UsersService extends BaseService<UserDocument> {
       filter,
       this.getPaginationOptions(query),
     );
+  }
+
+  public async updatePassword(
+    userId: string,
+    command: UpdateUserPasswordCommand,
+  ): Promise<User> {
+    const user = await this.objectModel.findById(userId);
+    if (!user) {
+      throw new AppNotFoundException(ErrorCode.USER_NOT_FOUND);
+    }
+    user.password = command.password;
+    await user.save();
+    return user;
   }
 
   public async expectUserNameNotExists(userName: string) {

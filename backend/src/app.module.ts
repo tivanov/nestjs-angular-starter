@@ -10,6 +10,8 @@ import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { TasksModule } from './tasks/tasks.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -38,11 +40,13 @@ import { NotificationsModule } from './notifications/notifications.module';
         limit: 20,
       },
     ]),
+    ScheduleModule.forRoot(),
     SharedModule,
     AuthModule,
     UsersModule,
     DashboardModule,
     NotificationsModule,
+    TasksModule,
   ],
   controllers: [],
   providers: [

@@ -6,6 +6,9 @@ import {
 } from '@fortawesome/angular-fontawesome';
 import {
   faChartLine,
+  faChevronDown,
+  faClipboardList,
+  faGears,
   faList,
   faPlus,
   faUser,
@@ -21,6 +24,14 @@ import {
 export class AppComponent {
   title = 'admin-ui';
   constructor(library: FaIconLibrary) {
-    library.addIcons(faUser, faChartLine, faList, faPlus);
+    library.addIcons(
+      faUser,
+      faChartLine,
+      faList,
+      faPlus,
+      faChevronDown,
+      faGears,
+      faClipboardList
+    );
   }
 }

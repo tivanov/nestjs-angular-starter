@@ -4,6 +4,7 @@ export interface IAppConfig {
   corsOrigins?: string[];
   port?: number;
   enableSwagger?: boolean;
+  enableTasks?: boolean;
 }
 
 export interface IEnvironmentConfig {

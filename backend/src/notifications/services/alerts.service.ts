@@ -69,4 +69,13 @@ export class AlertsService extends BaseService<AlertDocument> {
       organisation,
     });
   }
+
+  async cleanOldAlerts() {
+    const date = new Date();
+    date.setDate(date.getDate() - 30);
+    await this.objectModel.deleteMany({
+      createdAt: { $lt: date },
+      isRead: true,
+    });
+  }
 }
