@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { BaseService } from 'src/shared/base/base-service';
 import { User, UserDocument } from '../model/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { IAuthConfig } from 'config/model';
-import { Model, PaginateModel, PaginateResult, Types } from 'mongoose';
+import { FilterQuery, PaginateModel, PaginateResult, Types } from 'mongoose';
 import { UserSettings } from '../model/userSettings.model';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -11,19 +11,23 @@ import {
   ErrorCode,
   GetUsersQuery,
   UpdateUserDataCommand,
+  UserRoleEnum,
 } from '@app/contracts';
 import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthorized-exception';
 import * as bcrypt from 'bcrypt';
 import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
+import { LoginRecordsService } from './login-records.service';
+import { Request } from 'express';
 
 @Injectable()
 export class UsersService extends BaseService<UserDocument> {
+  private logger = new Logger(UsersService.name);
   private authConfig: IAuthConfig;
 
   constructor(
     @InjectModel(User.name) userModel: PaginateModel<UserDocument>,
     @InjectModel(UserSettings.name)
-    private readonly settingsModel: Model<UserSettings>,
+    private readonly loginRecords: LoginRecordsService,
     config: ConfigService,
   ) {
     super(userModel);
@@ -39,6 +43,10 @@ export class UsersService extends BaseService<UserDocument> {
 
     if (query.role) {
       filter.role = query.role;
+    }
+
+    if (query.searchQuery) {
+      filter.$text = { $search: query.searchQuery };
     }
 
     return await (this.objectModel as PaginateModel<UserDocument>).paginate(
@@ -59,15 +67,19 @@ export class UsersService extends BaseService<UserDocument> {
     return await this.baseCreate(command);
   }
 
-  public async login(userName: string, password: string): Promise<User> {
+  public async login(
+    userName: string,
+    password: string,
+    request: Request,
+  ): Promise<User> {
     const user = await this.validateCredentialsGetUser(userName, password);
     try {
       await this.verifyIsAllowedToLogin(user);
-      await this.runPostLogin(user, true);
+      await this.runPostLogin(user, true, request);
       delete user.password;
       return user;
     } catch (error) {
-      await this.runPostLogin(user, false);
+      await this.runPostLogin(user, false, request);
       throw error;
     }
   }
@@ -105,6 +117,61 @@ export class UsersService extends BaseService<UserDocument> {
     return existing;
   }
 
+  registerActivity(id: string) {
+    return this.objectModel.findByIdAndUpdate(id, {
+      lastLogin: new Date(),
+    });
+  }
+
+  setCountry(userId: Types.ObjectId, countryCode: string) {
+    return this.objectModel.findByIdAndUpdate(userId, {
+      country: countryCode,
+    });
+  }
+
+  getRegisteredTodayCount() {
+    try {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const filter: FilterQuery<UserDocument> = {
+        createdAt: { $gte: today },
+        role: UserRoleEnum.Regular,
+      };
+
+      return this.objectModel.countDocuments(filter);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
+
+  getInactiveUsersCount() {
+    try {
+      const threshold = new Date();
+      threshold.setTime(threshold.getTime() - 5 * 24 * 60 * 60 * 1000);
+
+      const filter: FilterQuery<UserDocument> = {
+        $or: [
+          { lastLogin: { $exists: false } },
+          { lastLogin: { $lt: threshold } },
+        ],
+        role: UserRoleEnum.Regular,
+      };
+
+      return this.objectModel.countDocuments(filter);
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
+
+  getRegularUsersCount() {
+    const filter: FilterQuery<UserDocument> = {
+      role: UserRoleEnum.Regular,
+    };
+    return this.objectModel.countDocuments(filter);
+  }
+
   private async blockUser(user: UserDocument) {
     const blockUntil = new Date();
     blockUntil.setTime(blockUntil.getTime() + this.authConfig.userBlockTime);
@@ -113,10 +180,29 @@ export class UsersService extends BaseService<UserDocument> {
     await user.save();
   }
 
-  private async runPostLogin(user: User, success: boolean) {
+  private async runPostLogin(user: User, success: boolean, request: Request) {
     if (success) {
       await this.verifyIsAllowedToLogin(user);
       await this.resetLoginAttempts(user._id as Types.ObjectId);
+      this.loginRecords
+        .addLoginEntry(user, request)
+        .then((loginRecord) => {
+          if (loginRecord?.countryCode) {
+            this.setCountry(user._id as Types.ObjectId, loginRecord.countryCode)
+              .then(() => null)
+              .catch((err) => {
+                this.logger.error(
+                  'Error while saving user country',
+                  err.stack,
+                  err,
+                );
+              });
+          }
+        })
+        .catch((err) =>
+          this.logger.error('Error while saving login records', err.stack, err),
+        );
+      await this.registerActivity(user._id.toHexString());
     } else {
       await this.incrementLoginAttempts(user._id as Types.ObjectId);
     }

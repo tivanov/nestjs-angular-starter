@@ -1,0 +1,22 @@
+<button
+  (click)="this.item.expanded = !(this.item.expanded || false)"
+  class="p-4 flex hover:bg-gray-500 w-full">
+  <div class="flex flex-row items-center w-full">
+    <fa-icon [icon]="item.icon" class="mr-2" size="lg"></fa-icon>
+    <span>{{ item.label }}</span>
+    <fa-icon
+      icon="chevron-down"
+      [flip]="this.item.expanded ? 'vertical' : null"
+      class="ml-auto px-2"></fa-icon>
+  </div>
+</button>
+@for (child of this.item.children; track $index) {
+  @if (!child.type || child.type === MenuItemType.Link) {
+    <app-menu-link-item
+      class="ml-4"
+      [item]="child"
+      [ngClass]="{ hidden: !this.item.expanded }"></app-menu-link-item>
+  } @else if (child.type === MenuItemType.Divider) {
+    <mat-divider [ngClass]="{ hidden: !this.item.expanded }"></mat-divider>
+  }
+}

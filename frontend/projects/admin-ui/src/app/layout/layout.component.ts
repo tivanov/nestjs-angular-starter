@@ -1,69 +1,98 @@
-import { ChangeDetectorRef, Component, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
-import { RouterModule } from '@angular/router';
+import { filter, map, takeUntil } from 'rxjs/operators';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { Observable } from 'rxjs';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-import { logOut } from '../../../../common-ui/auth/auth.signal';
-
-interface MenuItem {
-  label: string;
-  link: string;
-  icon: IconDefinition;
-}
+import { AuthSignal, logOut } from '../../../../common-ui/auth/auth.signal';
+import { BaseComponent } from '../../../../common-ui/base/base.component';
+import { SideMenuComponent } from './side-menu/side-menu.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterModule, MatSidenavModule, CommonModule, FontAwesomeModule,
-    MatButtonModule, MatListModule, MatIconModule, MatToolbarModule, MatSelectModule, MatFormFieldModule],
+  imports: [
+    RouterModule,
+    MatSidenavModule,
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
+    SideMenuComponent,
+  ],
   templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss'
+  styleUrl: './layout.component.scss',
 })
-export class LayoutComponent {
-
+export class LayoutComponent extends BaseComponent implements OnInit {
   sidenavMode: 'over' | 'side' = 'side';
+  title = 'Control Center';
 
-  menuItems: MenuItem[] = [
-    { label: 'Users', link: '/users/list', icon: faUser },
-    // Add more menu items here as needed
-  ];
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly router = inject(Router);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly route = inject(ActivatedRoute);
 
-  title = 'Admin-UI';
-
-  @ViewChild('drawer') drawer: any;
-
-  constructor(
-    private cdr: ChangeDetectorRef,
-  ) { }
-
-  private breakpointObserver = inject(BreakpointObserver);
-
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet])
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe([Breakpoints.Handset, Breakpoints.Tablet])
     .pipe(
-      map(result => {
+      takeUntil(this.ngUnsubscribe),
+      map((result) => {
         const mode = result.matches ? 'over' : 'side';
         if (mode !== this.sidenavMode) {
           this.sidenavMode = mode;
           this.cdr.detectChanges();
         }
         return result.matches;
-      }),
+      })
     );
+
+  constructor() {
+    super();
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => {
+          let child: ActivatedRoute | null = this.route.firstChild;
+          while (child) {
+            if (child.firstChild) {
+              child = child.firstChild;
+            } else {
+              break;
+            }
+          }
+          const title = child?.snapshot.data['title'];
+          if (title) {
+            return title;
+          }
+        })
+      )
+      .subscribe((title) => {
+        if (title) {
+          this.title = title;
+        } else {
+          this.title = 'Control Center';
+        }
+      });
+  }
+
+  ngOnInit() {
+    if (!AuthSignal().isAuthenticated) {
+      this.router.navigate(['/login']);
+      return;
+    }
+  }
 
   logout() {
     logOut();
     location.reload();
   }
-
 }

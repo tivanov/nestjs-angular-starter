@@ -4,6 +4,7 @@ import { ReplaySubject } from 'rxjs';
 
 @Directive({
   selector: 'mat-form-field',
+  standalone: true,
 })
 export class HasErrorRootDirective {
   @ContentChild(FormControlDirective)

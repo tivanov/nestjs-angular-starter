@@ -2,6 +2,12 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
+  "cli": {
+    "cache": {
+      "enabled": false
+    },
+    "analytics": false
+  },
   "projects": {
     "admin-ui": {
       "projectType": "application",
@@ -25,23 +31,33 @@
             ],
             "tsConfig": "projects/admin-ui/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/admin-ui/src/favicon.ico",
-              "projects/admin-ui/src/assets"
-            ],
             "styles": [
-              "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "projects/admin-ui/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/apexcharts/dist/apexcharts.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "validator",
+              "moment"
+            ]
           },
           "configurations": {
             "production": {
+              "assets": [
+                "projects/admin-ui/src/favicon.png",
+                "projects/admin-ui/src/assets",
+                {
+                  "glob": "env.js",
+                  "input": "projects/admin-ui/src/environments/production",
+                  "output": "/"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -55,10 +71,37 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "fileReplacements": [
+              "assets": [
+                "projects/admin-ui/src/favicon.png",
+                "projects/admin-ui/src/assets",
                 {
-                  "replace": "projects/admin-ui/src/environments/environment.ts",
-                  "with": "projects/admin-ui/src/environments/environment.development.ts"
+                  "glob": "env.js",
+                  "input": "projects/admin-ui/src/environments/dev",
+                  "output": "/"
+                }
+              ]
+            },
+            "stage": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all",
+              "assets": [
+                "projects/admin-ui/src/favicon.png",
+                "projects/admin-ui/src/assets",
+                {
+                  "glob": "env.js",
+                  "input": "projects/admin-ui/src/environments/stage",
+                  "output": "/"
                 }
               ]
             }
@@ -73,6 +116,9 @@
             },
             "development": {
               "buildTarget": "admin-ui:build:development"
+            },
+            "stage": {
+              "buildTarget": "admin-ui:build:stage"
             }
           },
           "defaultConfiguration": "development"
@@ -97,10 +143,19 @@
               "projects/admin-ui/src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "projects/admin-ui/src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/admin-ui/**/*.ts",
+              "projects/admin-ui/**/*.html"
+            ]
           }
         }
       }
@@ -123,26 +178,41 @@
             "index": "projects/user-ui/src/index.html",
             "browser": "projects/user-ui/src/main.ts",
             "polyfills": [
-              "zone.js"
+              "zone.js",
+              "@angular/localize/init"
             ],
             "tsConfig": "projects/user-ui/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/user-ui/src/favicon.ico",
-              "projects/user-ui/src/assets"
-            ],
             "styles": [
-              "projects/user-ui/src/styles.scss"
+              "projects/user-ui/src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "validator",
+              "moment"
+            ]
           },
           "configurations": {
             "production": {
+              "assets": [
+                "projects/user-ui/src/favicon.png",
+                "projects/user-ui/src/assets",
+                "projects/user-ui/src/robots.txt",
+                "projects/user-ui/src/sitemap.xml",
+                {
+                  "glob": "env.js",
+                  "input": "projects/user-ui/src/environments/production",
+                  "output": "/"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -153,15 +223,46 @@
               "outputHashing": "all"
             },
             "development": {
+              "assets": [
+                "projects/user-ui/src/favicon.png",
+                "projects/user-ui/src/assets",
+                "projects/user-ui/src/robots.txt",
+                "projects/user-ui/src/sitemap.xml",
+                {
+                  "glob": "env.js",
+                  "input": "projects/user-ui/src/environments/dev",
+                  "output": "/"
+                }
+              ],
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "fileReplacements": [
+              "sourceMap": true
+            },
+            "stage": {
+              "assets": [
+                "projects/user-ui/src/favicon.png",
+                "projects/user-ui/src/assets",
+                "projects/user-ui/src/robots.txt",
+                "projects/user-ui/src/sitemap.xml",
                 {
-                  "replace": "projects/user-ui/src/environments/environment.ts",
-                  "with": "projects/user-ui/src/environments/environment.development.ts"
+                  "glob": "env.js",
+                  "input": "projects/user-ui/src/environments/stage",
+                  "output": "/"
                 }
-              ]
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
             }
           },
           "defaultConfiguration": "production"
@@ -189,7 +290,8 @@
           "options": {
             "polyfills": [
               "zone.js",
-              "zone.js/testing"
+              "zone.js/testing",
+              "@angular/localize/init"
             ],
             "tsConfig": "projects/user-ui/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
@@ -201,6 +303,15 @@
               "projects/user-ui/src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/user-ui/**/*.ts",
+              "projects/user-ui/**/*.html"
+            ]
           }
         }
       }

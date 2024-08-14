@@ -19,11 +19,7 @@ export class GetUsersQuery extends ShapeableQuery {
   @IsEnum(UserRoleEnum)
   role: string;
 
-  @IsNotEmpty()
-  @IsNumberString()
-  page?: number;
-
-  @IsNotEmpty()
-  @IsNumberString()
-  limit?: number;
+  @IsOptional()
+  @MaxLength(200)
+  searchQuery?: string;
 }

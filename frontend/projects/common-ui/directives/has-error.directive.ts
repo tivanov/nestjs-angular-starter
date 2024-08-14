@@ -25,6 +25,7 @@ export interface HasErrorContext {
 
 @Directive({
   selector: '[hasError]',
+  standalone: true,
 })
 export class HasErrorDirective implements OnInit, OnDestroy {
   static ngTemplateContextGuard(

@@ -1,5 +1,5 @@
-import { ActivatedRouteSnapshot, CanActivateFn } from "@angular/router";
-import { AuthSignal } from "./auth.signal";
+import { ActivatedRouteSnapshot, CanActivateFn } from '@angular/router';
+import { AuthSignal } from './auth.signal';
 
 export const hasRole: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   if (!AuthSignal().isAuthenticated) {
@@ -11,5 +11,8 @@ export const hasRole: CanActivateFn = (route: ActivatedRouteSnapshot) => {
     return true;
   }
 
-  return requiredRoles.find((role: string) => AuthSignal().user.role === role) !== undefined;
+  return (
+    requiredRoles.find((role: string) => AuthSignal().user.role === role) !==
+    undefined
+  );
 };

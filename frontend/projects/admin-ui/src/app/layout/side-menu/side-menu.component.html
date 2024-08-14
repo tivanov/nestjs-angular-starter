@@ -1,0 +1,15 @@
+<img
+  class="w-32 py-8 mx-auto"
+  alt="Farmroll Logo Trophy"
+  src="/assets/img/farmroll-logo.png" />
+<div class="flex flex-col">
+  @for (item of this.items; track $index) {
+    @if (!item.type || item.type === MenuItemType.Link) {
+      <app-menu-link-item [item]="item"></app-menu-link-item>
+    } @else if (item.type === MenuItemType.Divider) {
+      <mat-divider></mat-divider>
+    } @else if (item.type === MenuItemType.Dropdown) {
+      <app-menu-dropdown-item [item]="item"></app-menu-dropdown-item>
+    }
+  }
+</div>

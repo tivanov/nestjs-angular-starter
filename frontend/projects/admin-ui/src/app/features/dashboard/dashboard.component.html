@@ -1,0 +1,19 @@
+<div
+  class="w-full p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 content-center gap-4"
+>
+  <mat-card class="p-4 col-span-1 md:col-span-2 lg:col-span-4">
+    <div class="flex items-center">
+      <h2 class="invisible md:visible text-xl">
+        Welcome, {{ AuthSignal().user.displayName }}
+      </h2>
+    </div>
+  </mat-card>
+  <app-user-tiles-widget></app-user-tiles-widget>
+  <app-login-records-by-device-widget></app-login-records-by-device-widget>
+  <app-login-records-by-country-widget></app-login-records-by-country-widget>
+
+  <app-alerts-widget
+    *ngIf="AuthSignal().user.role === UserRoleEnum.Admin"
+    class="md:col-span-2"
+  ></app-alerts-widget>
+</div>

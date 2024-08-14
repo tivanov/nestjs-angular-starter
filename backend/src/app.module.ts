@@ -3,10 +3,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as config from '../config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IDbConfig } from 'config/model';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { APP_GUARD } from '@nestjs/core';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -38,8 +41,15 @@ import { UsersModule } from './users/users.module';
     SharedModule,
     AuthModule,
     UsersModule,
+    DashboardModule,
+    NotificationsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

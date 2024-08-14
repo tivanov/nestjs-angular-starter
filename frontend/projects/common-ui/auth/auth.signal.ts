@@ -7,7 +7,7 @@ export interface ISessionState {
   token?: string;
   refreshToken?: string;
   user?: UserDto;
-};
+}
 
 const localStorageKey = 'app_sessionState';
 
@@ -27,16 +27,19 @@ const writableSignal = signal<ISessionState>({ ...initialState });
 export const AuthSignal: Signal<ISessionState> = writableSignal.asReadonly();
 
 export const updateAuth = (newSessionState: ISessionState) => {
-  writableSignal.set(newSessionState);
+  const copyOf = { ...newSessionState };
+  writableSignal.set(copyOf);
   localStorage.setItem(localStorageKey, JSON.stringify(newSessionState));
-}
+};
 
 export const logOut = () => {
   updateAuth(blankState);
-}
+};
 
 export const logIn = (response: ISignInResponse) => {
-  const sessionState: ISessionState  = {
+  const old = writableSignal();
+  const sessionState: ISessionState = {
+    ...old,
     isAuthenticated: true,
     token: response.token,
     refreshToken: response.refreshToken,
@@ -44,4 +47,4 @@ export const logIn = (response: ISignInResponse) => {
   };
 
   updateAuth(sessionState);
-}
+};

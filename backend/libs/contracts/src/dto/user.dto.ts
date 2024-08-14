@@ -1,8 +1,8 @@
 import { UserRoleEnum } from '../enums';
+import { BaseEntityDto } from './base-entity.dto';
 import { UserSettingsDto } from './user-settings.dto';
 
-export class UserDto {
-  id?: string;
+export interface UserDto extends BaseEntityDto {
   firstName?: string;
   lastName?: string;
   userName?: string;

@@ -1,0 +1,11 @@
+<a
+  class="p-4 flex hover:bg-gray-500"
+  [routerLink]="item.link"
+  routerLinkActive
+  #rla="routerLinkActive"
+  [ngClass]="{ active: rla.isActive }">
+  <div class="flex flex-row items-center">
+    <fa-icon size="lg" [icon]="item.icon" class="pr-2"></fa-icon>
+    <span>{{ item.label }}</span>
+  </div>
+</a>

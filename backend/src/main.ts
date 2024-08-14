@@ -112,9 +112,11 @@ if (process.env.NODE_ENV === 'development') {
 if (cluster.isPrimary) {
   Logger.log(`Master server started on ${process.pid}`);
   for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
+    cluster.fork({
+      WORKER_NUMBER: i,
+    });
   }
-  cluster.on('exit', (worker, code, signal) => {
+  cluster.on('exit', (worker) => {
     Logger.log(`Worker ${worker.process.pid} died. Restarting`);
     cluster.fork();
   });

@@ -72,6 +72,11 @@ export class User extends BaseEntity {
   blockExpires: Date;
 
   @Prop({
+    index: true,
+  })
+  lastLogin?: Date;
+
+  @Prop({
     type: SchemaTypes.ObjectId,
     ref: User.name,
   })
@@ -102,3 +107,9 @@ UserSchema.pre('save', async function (next) {
 });
 
 UserSchema.plugin(mongoosePaginate);
+
+UserSchema.index({
+  firstName: 'text',
+  lastName: 'text',
+  userName: 'text',
+});

@@ -17,7 +17,7 @@ const config: IConfig = {
 
     jwtRefreshSecret: 'YOURJWTSECRETCHANGEIT',
     encryptJwtRefreshSecret: 'YOURJWTENCRIPTINGPASSCHANGEIT',
-    jwtRefreshExpirationTime: '2h',
+    jwtRefreshExpirationTime: '7d',
     userBlockTime: 86400000,
     loginAttempts: 10,
   },

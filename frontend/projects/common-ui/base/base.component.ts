@@ -1,29 +1,32 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { UserRoleEnum } from '@app/contracts';
+import { AuthSignal } from './../auth/auth.signal';
+import { Component, LOCALE_ID, OnDestroy, inject } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
 @Component({
-    template: '',
-    standalone: true
+  template: '',
+  standalone: true,
 })
 export class BaseComponent implements OnDestroy {
+  AuthSignal = AuthSignal;
+
+  UserRoleEnum = UserRoleEnum;
+
   public fullDateFormat = 'dd.MM.yyyy HH:mm:ss';
   public inputDateTimeFormat = 'yyyy-MM-ddTHH:mm';
 
   public ngUnsubscribe = new Subject<void>();
-  public dataLoaded: boolean;
-  public componentsLoaded: boolean;
-  public subscriptions: Subscription[];
+  public dataLoaded = false;
+  public componentsLoaded = false;
+  public subscriptions: Subscription[] = [];
+  public locale: string;
 
-  public constructor() {
-    this.dataLoaded = false;
-    this.componentsLoaded = false;
-    this.subscriptions = [];
-  }
+  private defaultLocale = inject(LOCALE_ID);
 
   public ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this.subscriptions?.forEach(s => s.unsubscribe());
+    this.subscriptions?.forEach((s) => s.unsubscribe());
   }
 
   protected extractErrorMessage(error) {
@@ -40,5 +43,22 @@ export class BaseComponent implements OnDestroy {
       msg = 'An unknown error has occured.';
     }
     return msg;
+  }
+
+  get window() {
+    return window as any;
+  }
+
+  private getUsersLocale(): string {
+    if (
+      typeof window === 'undefined' ||
+      typeof window.navigator === 'undefined'
+    ) {
+      return this.defaultLocale;
+    }
+    const wn = window.navigator as any;
+    let lang = wn.languages ? wn.languages[0] : this.defaultLocale;
+    lang = lang || wn.language || wn.browserLanguage || wn.userLanguage;
+    return lang;
   }
 }

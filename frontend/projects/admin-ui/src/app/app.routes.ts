@@ -6,25 +6,34 @@ import { isLoggedIn } from '../../../common-ui/auth/is-logged-in.guard';
 import { hasRole } from '../../../common-ui/auth/has-role.guard';
 
 export const routes: Routes = [
-
-    {
-        path: 'auth',
-        component: LoginComponent,
+  {
+    path: 'auth',
+    component: LoginComponent,
+  },
+  {
+    path: 'dashboard',
+    component: LayoutComponent,
+    data: {
+      roles: [UserRoleEnum.Admin, UserRoleEnum.Manager],
     },
-    {
-        path: 'users',
-        component: LayoutComponent,
-        data: {
-            roles: [UserRoleEnum.Admin]
-        },
-        canActivate: [isLoggedIn, hasRole],
-        canActivateChild: [isLoggedIn, hasRole],
-        loadChildren: () => import('./features/users/users.routes').then(m => m.routes)
+    canActivate: [isLoggedIn, hasRole],
+    canActivateChild: [isLoggedIn, hasRole],
+    loadChildren: () =>
+      import('./features/dashboard/dashboard.routes').then((m) => m.routes),
+  },
+  {
+    path: 'users',
+    component: LayoutComponent,
+    data: {
+      roles: [UserRoleEnum.Admin],
     },
-    {
-        path: '**',
-        redirectTo: 'auth'
-    }
-
-
+    canActivate: [isLoggedIn, hasRole],
+    canActivateChild: [isLoggedIn, hasRole],
+    loadChildren: () =>
+      import('./features/users/users.routes').then((m) => m.routes),
+  },
+  {
+    path: '**',
+    redirectTo: 'auth',
+  },
 ];

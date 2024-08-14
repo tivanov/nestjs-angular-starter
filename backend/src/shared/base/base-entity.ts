@@ -1,7 +1,7 @@
-export class BaseEntity {
-  _id: any;
+import { Types } from 'mongoose';
 
-  id: any;
+export class BaseEntity {
+  _id: Types.ObjectId;
 
   createdAt: Date;
 

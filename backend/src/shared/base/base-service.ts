@@ -73,6 +73,10 @@ export class BaseService<T extends Document> {
     return newEntity;
   }
 
+  baseCreateMany(commands: Partial<T>[]) {
+    return this.objectModel.insertMany(commands, { lean: true });
+  }
+
   public async baseUpdate(id: string, command: any, session?: ClientSession) {
     return this.objectModel.findByIdAndUpdate(
       id,
@@ -87,7 +91,7 @@ export class BaseService<T extends Document> {
     await this.objectModel.insertMany(docs, { session });
   }
 
-  public async delete(id: string, session?: ClientSession): Promise<T> {
+  public async baseDelete(id: string, session?: ClientSession): Promise<T> {
     const entity = await this.expectEntityExists(id);
     await this.objectModel.findByIdAndDelete(id, { session });
     return entity;
@@ -178,6 +182,10 @@ export class BaseService<T extends Document> {
 
   protected getProjectString(project: string | string[]): string {
     if (typeof project === 'string') {
+      const projectStr = project as string;
+      if (projectStr.includes(',')) {
+        return projectStr.split(',').join(' ');
+      }
       return project;
     }
     return project?.join(' ');
@@ -215,8 +223,8 @@ export class BaseService<T extends Document> {
 
   protected getPaginationOptions(query: any, session?: ClientSession) {
     const options: any = {
-      page: query.page,
-      limit: query.limit,
+      page: query.page && parseInt(query.page),
+      limit: query.limit && parseInt(query.limit),
       lean: true,
     };
 

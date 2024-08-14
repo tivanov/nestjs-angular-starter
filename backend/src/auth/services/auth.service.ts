@@ -42,9 +42,15 @@ export class AuthService {
 
     const userDto = UserMappers.userToDto(user) as UserDto;
 
+    const expirationDate = new Date();
+    expirationDate.setTime(
+      expirationDate.getTime() + ms(this.authConfig.jwtRefreshExpirationTime),
+    );
+
     return {
       token: await this.createAccessToken(user),
       refreshToken: await this.createRefreshToken(req, user),
+      expirationDate: expirationDate.toISOString(),
       user: userDto,
     };
   }
@@ -123,7 +129,7 @@ export class AuthService {
   private async getTokenPayload(user: User): Promise<TokenPayload> {
     return {
       username: user.userName,
-      sub: user._id,
+      sub: user._id.toHexString(),
       role: user.role,
     };
   }

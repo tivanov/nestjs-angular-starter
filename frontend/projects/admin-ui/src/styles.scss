@@ -1,13 +1,60 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// $my-primary: mat.m2-define-palette(mat.$m2-pink-palette, 500);
+$my-accent: mat.m2-define-palette(mat.$m2-teal-palette, A200);
+
+$my-primary-palette: (
+  50: #f4e7ed,
+  100: #e7c2d4,
+  200: #da9db8,
+  300: #cd7c9e,
+  400: #c4688a,
+  500: #c45579,
+  600: #b35173,
+  700: #9d4b6a,
+  800: #884562,
+  900: #653951,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+$my-primary: mat.m2-define-palette($my-primary-palette, 300);
+
+$my-theme: mat.m2-define-dark-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+    ),
+    typography: mat.m2-define-typography-config(),
+    density: 0,
+  )
+);
+
+@include mat.all-component-themes($my-theme);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }

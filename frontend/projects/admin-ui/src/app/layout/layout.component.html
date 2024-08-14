@@ -1,34 +1,29 @@
 <mat-sidenav-container class="h-full">
-    <mat-sidenav #drawer [mode]="sidenavMode" [opened]="(isHandset$ | async) === false">
-        <div class="w-48 font-bold text-xl my-4 mx-6">
-            Your Project Name
-        </div>
-        <div class="text-base w-full  text-center">
-            Control Center
-        </div>
-        <mat-nav-list>
-            <a mat-list-item *ngFor="let menuItem of menuItems; let i = index" [routerLink]="menuItem.link"
-                routerLinkActive #rla="routerLinkActive" [routerLinkActiveOptions]="{exact:true}"
-                [ngClass]="{'active': rla.isActive}">
-                <div class="flex flex-row items-center">
-                    <fa-icon [icon]="menuItem.icon" class="h-6 w-6"></fa-icon>
-                    <span>{{ menuItem.label }}</span>
-                </div>
-            </a>
-        </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <mat-toolbar color="primary" class="flex flex-row">
-            <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
-                <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-            </button>
-            <span>Admin-UI</span>
-            <div class="ml-auto text-white">
-                <button mat-icon-button (click)="logout()" title="Logout">
-                    <mat-icon>logout</mat-icon>
-                </button>
-            </div>
-        </mat-toolbar>
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
+  <mat-sidenav
+    #drawer
+    [mode]="sidenavMode"
+    [opened]="(isHandset$ | async) === false">
+    <app-side-menu></app-side-menu>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="flex flex-row">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>{{ this.title }}</span>
+      <div class="flex items-center ml-auto text-white">
+        <span class="mr-2">{{ AuthSignal().user?.displayName }}</span>
+        <button mat-icon-button (click)="logout()" title="Logout">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+    <div class="p-4">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
 </mat-sidenav-container>

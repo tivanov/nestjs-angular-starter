@@ -1,0 +1,21 @@
+.alert-dialog {
+  width: 40vw;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@media screen and (max-width: 600px) {
+  .alert-dialog { 
+    width: 100%; 
+  }
+
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.json-data {
+  overflow: auto;
+}
