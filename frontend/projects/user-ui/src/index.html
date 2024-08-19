@@ -3,10 +3,28 @@
   <head>
     <meta charset="utf-8" />
     <title>UserUi</title>
+    <meta name="description" content="User UI project description." />
+    <meta name="”robots”" content="index, follow" />
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link id="favIcon" rel="icon" type="image/png" href="favicon.png" />
+    <link rel="shortcut icon" href="favicon.png" />
+    <link rel="apple-touch-icon-precomposed" href="favicon.png" />
     <script src="env.js"></script>
+
+    <style>
+      * {
+        scrollbar-color: rgb(128, 128, 128) black;
+        scrollbar-width: thin;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: Roboto, 'Helvetica Neue', sans-serif;
+      }
+    </style>
   </head>
   <body>
     <app-root></app-root>

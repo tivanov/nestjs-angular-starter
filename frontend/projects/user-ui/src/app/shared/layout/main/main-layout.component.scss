@@ -8,12 +8,3 @@ router-outlet ::ng-deep + * {
   flex-grow: 1;
   width: 100%;
 }
-
-.loading-cover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100005;
-}
