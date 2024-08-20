@@ -19,6 +19,7 @@ import { MenuItem, MenuItemType } from '../side-menu.service';
 })
 export class MenuDropdownItemComponent implements OnInit {
   @Input() item: MenuItem;
+  @Input() level: number = 0;
 
   MenuItemType = MenuItemType;
 

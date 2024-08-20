@@ -13,6 +13,7 @@ import { MenuItem } from '../side-menu.service';
 })
 export class MenuLinkItemComponent implements OnInit {
   @Input() item: MenuItem;
+  @Input() level: number;
 
   ngOnInit() {}
 }
