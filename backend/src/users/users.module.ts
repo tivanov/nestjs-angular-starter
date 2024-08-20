@@ -15,7 +15,6 @@ import { LoginRecordsController } from './controllers/login-records.controller';
 @Module({
   imports: [
     HttpModule,
-    CqrsModule,
     MongooseModule.forFeatureAsync([
       { name: User.name, useFactory: () => UserSchema },
       { name: UserSettings.name, useFactory: () => UserSettingsSchema },

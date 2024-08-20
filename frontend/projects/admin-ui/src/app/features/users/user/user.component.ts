@@ -1,5 +1,5 @@
 import { UserRoleEnum, UserDto } from '@app/contracts';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -41,7 +41,7 @@ import { HasErrorRootDirective } from '../../../../../../common-ui/directives/ha
   styleUrl: './user.component.scss',
 })
 export class UserComponent extends BaseComponent {
-  userId: string | null = null;
+  id: string | null = null;
 
   form: FormGroup;
   changePasswordForm: FormGroup;
@@ -49,15 +49,11 @@ export class UserComponent extends BaseComponent {
 
   roles = Object.values(UserRoleEnum);
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private usersService: UsersService,
-    private snackBar: MatSnackBar,
-    private activatedRoute: ActivatedRoute
-  ) {
-    super();
-  }
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private usersService = inject(UsersService);
+  private snackBar = inject(MatSnackBar);
+  private activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.form = this.initForm();
@@ -65,16 +61,16 @@ export class UserComponent extends BaseComponent {
     this.activatedRoute.paramMap.pipe().subscribe({
       next: (data) => {
         if (data.get('id')) {
-          this.userId = data.get('id');
-          this.loadUser();
+          this.id = data.get('id');
+          this.load();
         }
       },
     });
   }
 
-  loadUser() {
+  load() {
     this.usersService
-      .getById(this.userId)
+      .getById(this.id)
       .pipe()
       .subscribe({
         next: (user) => {
@@ -90,13 +86,6 @@ export class UserComponent extends BaseComponent {
   }
 
   onUserLoaded(user: UserDto) {
-    this.user = user;
-    this.form.patchValue(user);
-    this.form.get('password').clearValidators();
-    this.form.get('password').disable();
-    this.form.get('role').disable();
-    this.form.get('userName').disable();
-
     this.user = user;
     this.form.patchValue(user);
     this.form.get('password').clearValidators();
@@ -133,7 +122,7 @@ export class UserComponent extends BaseComponent {
 
   changePassword() {
     const command = this.changePasswordForm.getRawValue();
-    this.usersService.changePassword(this.userId, command).subscribe({
+    this.usersService.changePassword(this.id, command).subscribe({
       next: (user) => {
         this.snackBar.open('Password changed', 'Close', { duration: 2000 });
         this.onUserLoaded(user);
@@ -146,7 +135,7 @@ export class UserComponent extends BaseComponent {
     });
   }
 
-  onSubmit() {
+  save() {
     if (!this.form.valid) {
       return;
     }
@@ -155,10 +144,10 @@ export class UserComponent extends BaseComponent {
 
     if (val.id) {
       this.usersService.updateBasicData(val.id, val).subscribe({
-        next: (responseData) => {
-          this.router.navigate(['./users/list']);
+        next: () => {
+          this.snackBar.open('User updated', 'Close', { duration: 2000 });
+          this.exit();
         },
-
         error: (err) => {
           this.snackBar.open(this.extractErrorMessage(err), 'Close', {
             duration: 5000,
@@ -173,7 +162,8 @@ export class UserComponent extends BaseComponent {
       }
       this.usersService.create(val).subscribe({
         next: (responseData) => {
-          this.router.navigate(['./users/list']);
+          this.snackBar.open('User created', 'Close', { duration: 2000 });
+          this.exit();
         },
 
         error: (err) => {
@@ -186,7 +176,7 @@ export class UserComponent extends BaseComponent {
     }
   }
 
-  clearUserEnteredData() {
+  clear() {
     if (this.user) {
       this.onUserLoaded(this.user);
     } else {
@@ -194,19 +184,7 @@ export class UserComponent extends BaseComponent {
     }
   }
 
-  exitRoute() {
+  exit() {
     this.router.navigate(['/users/list']);
-  }
-
-  get email() {
-    return this.form.get('email') as FormControl;
-  }
-
-  get userName() {
-    return this.form.get('userName') as FormControl;
-  }
-
-  get password() {
-    return this.form.get('password') as FormControl;
   }
 }

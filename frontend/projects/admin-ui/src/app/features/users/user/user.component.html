@@ -17,20 +17,20 @@
 
   <mat-form-field class="w-full sm:px-2 sm:w-1/2">
     <mat-label>UserName</mat-label>
-    <input matInput [formControl]="this.userName" />
+    <input matInput formControlName="userName" />
     <mat-error *hasError="'required'">Enter a username</mat-error>
     <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
   </mat-form-field>
 
   <mat-form-field class="w-full sm:px-2 sm:w-1/2">
     <mat-label>Password</mat-label>
-    <input matInput [formControl]="this.password" />
+    <input matInput formControlName="password" />
     <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
   </mat-form-field>
 
   <mat-form-field class="w-full sm:px-2 sm:w-1/2">
     <mat-label>Email</mat-label>
-    <input matInput [formControl]="this.email" />
+    <input matInput formControlName="email" />
     <mat-error *hasError="'email'">Enter a valid e-mail address</mat-error>
   </mat-form-field>
 
@@ -69,15 +69,15 @@
       color="primary"
       class="ml-2 font-bold rounded"
       [disabled]="!form.valid"
-      (click)="onSubmit()">
-      {{ userId ? 'Save' : 'Create' }}
+      (click)="this.save()">
+      {{ id ? 'Save' : 'Create' }}
     </button>
 
     <button
       mat-button
       color="warn"
       class="ml-2 font-bold rounded"
-      (click)="clearUserEnteredData()">
+      (click)="this.clear()">
       Cancel
     </button>
 
@@ -85,14 +85,14 @@
       mat-button
       color="warn"
       class="ml-2 font-bold rounded"
-      (click)="exitRoute()">
+      (click)="this.exit()">
       Exit
     </button>
   </div>
 </form>
 
 <form
-  *ngIf="this.userId && this.user"
+  *ngIf="this.user"
   class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4"
   [formGroup]="this.changePasswordForm">
   <div class="bg-neutral-900 p-4 w-full mb-2">
@@ -116,10 +116,10 @@
   </div>
 </form>
 
-<div *ngIf="this.userId" class="bg-neutral-900 p-4 mt-4 w-full">
+<div *ngIf="this.user" class="bg-neutral-900 p-4 mt-4 w-full">
   <p class="text-lg font-medium">Login Records</p>
 </div>
 
-<div *ngIf="this.userId" class="bg-neutral-800 p-4">
-  <app-login-records-list [userId]="this.userId"></app-login-records-list>
+<div *ngIf="this.user" class="bg-neutral-800 p-4">
+  <app-login-records-list [userId]="this.id"></app-login-records-list>
 </div>

@@ -3,7 +3,6 @@ import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { CqrsModule } from '@nestjs/cqrs';
 import { AuthModule } from '../auth/auth.module';
 import * as config from '../../config';
 import { IDbConfig } from '../../config/model';
@@ -28,7 +27,6 @@ import { IDbConfig } from '../../config/model';
       },
       inject: [ConfigService],
     }),
-    CqrsModule,
     forwardRef(() => AuthModule),
     forwardRef(() => UsersModule),
   ],

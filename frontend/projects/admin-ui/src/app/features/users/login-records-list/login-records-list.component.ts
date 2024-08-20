@@ -102,9 +102,17 @@ export class LoginRecordsListComponent
     this.loginRecordsService
       .get(filter)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((paged: PagedListDto<LoginRecordDto>) => {
-        this.dataSource.data = paged.docs;
-        this.totalItems = paged.totalDocs;
+      .subscribe({
+        next: (paged: PagedListDto<LoginRecordDto>) => {
+          this.dataSource.data = paged.docs;
+          this.totalItems = paged.totalDocs;
+        },
+        error: (error: any) => {
+          console.error(error);
+          this.snackBar.open(this.extractErrorMessage(error), '', {
+            duration: 5000,
+          });
+        },
       });
   }
 }

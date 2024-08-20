@@ -95,6 +95,7 @@ export class UsersListComponent
           this.snackBar.open('Record deleted.', '', { duration: 2000 });
         },
         error: (error: any) => {
+          console.error(error);
           this.snackBar.open(this.extractErrorMessage(error), '', {
             duration: 5000,
           });
@@ -130,6 +131,7 @@ export class UsersListComponent
           });
         },
         error: (error: any) => {
+          console.error(error);
           this.snackBar.open(this.extractErrorMessage(error), '', {
             duration: 5000,
           });

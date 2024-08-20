@@ -66,7 +66,7 @@ export class UsersController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRoleEnum.Admin)
   public async delete(@Param('id') userId: string) {
-    return await this.usersService.deleteUser(userId);
+    return UserMappers.userToDto(await this.usersService.deleteUser(userId));
   }
 
   @Get()
