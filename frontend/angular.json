@@ -183,7 +183,8 @@
             "tsConfig": "projects/user-ui/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "styles": [
-              "projects/user-ui/src/styles.scss"
+              "projects/user-ui/src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [

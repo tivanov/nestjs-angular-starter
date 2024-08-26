@@ -1,0 +1,36 @@
+.overlay {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(6px);
+}
+
+.dialog {
+  position: relative;
+  // box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  background-color: transparent;
+  overflow-y: auto;
+  z-index: 10001;
+  opacity: 0;
+}
+
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  z-index: 10002;
+}
+
+.fade {
+  opacity: 1;
+  transition: opacity 0.15s linear;
+}

@@ -34,6 +34,7 @@
     "express": "^4.19.2",
     "font-awesome": "^4.7.0",
     "ng-apexcharts": "^1.11.0",
+    "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.3",
     "zone.js": "~0.14.10"

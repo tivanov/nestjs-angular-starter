@@ -1,6 +1,8 @@
 import { Document, Types, Model, FilterQuery, ClientSession } from 'mongoose';
 import { AppBadRequestException } from '../exceptions/app-bad-request-exception';
 import { ErrorCode, ShapeableQuery } from '@app/contracts';
+import { Logger } from '@nestjs/common';
+import { ApiResponseException } from '../exceptions/app-api-response-exception';
 
 export class BaseService<T extends Document> {
   protected objectModel: Model<T>;
@@ -255,5 +257,24 @@ export class BaseService<T extends Document> {
     }
 
     return options;
+  }
+
+  protected logError(logger: Logger, error, additionalData: any = null) {
+    if (!logger) {
+      console.error(error);
+      return;
+    }
+
+    if (error instanceof ApiResponseException) {
+      logger.error(error.message, error.stack, error.response);
+    } else if (error instanceof Error) {
+      logger.error(error.message, error.stack);
+    } else {
+      logger.error(error);
+    }
+
+    if (additionalData) {
+      logger.error(additionalData);
+    }
   }
 }

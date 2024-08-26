@@ -18,6 +18,7 @@ import {
 } from '../../../../../../common-ui/auth/auth.signal';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { AuthService } from '../../../../../../common-ui/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) {
     super();
   }
@@ -72,7 +74,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
       this.form.reset();
       this.redirect();
     } catch (error) {
-      this.errorMessage = error.message;
+      this.errorMessage = this.extractErrorMessage(error);
+      this.snackBar.open(this.errorMessage, 'close', { duration: 6000 });
     }
   }
 

@@ -1,6 +1,6 @@
 <form
   class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4"
-  [formGroup]="form">
+  [formGroup]="this.form">
   <div class="bg-neutral-900 p-4 w-full mb-2">
     <p class="text-lg font-medium">Info</p>
   </div>
@@ -47,7 +47,7 @@
   <mat-form-field class="w-full sm:px-2 sm:w-1/2">
     <mat-label>Role</mat-label>
     <mat-select formControlName="role">
-      <mat-option *ngFor="let role of roles" [value]="role">
+      <mat-option *ngFor="let role of this.roles" [value]="role">
         {{ role }}
       </mat-option>
     </mat-select>
@@ -70,14 +70,14 @@
       class="ml-2 font-bold rounded"
       [disabled]="!form.valid"
       (click)="this.save()">
-      {{ id ? 'Save' : 'Create' }}
+      {{ this.entity ? 'Save' : 'Create' }}
     </button>
 
     <button
       mat-button
       color="warn"
       class="ml-2 font-bold rounded"
-      (click)="this.clear()">
+      (click)="this.reset()">
       Cancel
     </button>
 
@@ -92,7 +92,7 @@
 </form>
 
 <form
-  *ngIf="this.user"
+  *ngIf="this.entity"
   class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4"
   [formGroup]="this.changePasswordForm">
   <div class="bg-neutral-900 p-4 w-full mb-2">
@@ -116,10 +116,10 @@
   </div>
 </form>
 
-<div *ngIf="this.user" class="bg-neutral-900 p-4 mt-4 w-full">
+<div *ngIf="this.entity" class="bg-neutral-900 p-4 mt-4 w-full">
   <p class="text-lg font-medium">Login Records</p>
 </div>
 
-<div *ngIf="this.user" class="bg-neutral-800 p-4">
-  <app-login-records-list [userId]="this.id"></app-login-records-list>
+<div *ngIf="this.entity" class="bg-neutral-800 p-4">
+  <app-login-records-list [userId]="this.entity.id"></app-login-records-list>
 </div>

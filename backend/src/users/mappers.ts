@@ -1,6 +1,7 @@
 import { PaginateResult, Types } from 'mongoose';
 import { BaseMapper } from '../shared/base/base-mapper';
 import {
+  IdNameDto,
   LoginRecordDto,
   PagedListDto,
   UserDto,
@@ -148,5 +149,20 @@ export class UserMappers extends BaseMapper {
     }
 
     return name;
+  }
+
+  public static userToIdName(
+    source?: User | Types.ObjectId,
+  ): IdNameDto | string {
+    if (!this.isValidDocument(source)) {
+      return BaseMapper.objectIdToString(source);
+    }
+
+    const doc = source as User;
+
+    return {
+      id: doc._id.toHexString(),
+      name: UserMappers.userToDisplayName(doc) || 'N/A',
+    };
   }
 }

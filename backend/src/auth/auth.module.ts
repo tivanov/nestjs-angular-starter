@@ -11,6 +11,8 @@ import { AuthController } from './auth.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IAuthConfig } from '../../config/model';
 import { RolesGuard } from './guards/roles-guard';
+import { Identity, IdentitySchema } from './model/identity.model';
+import { IdentitiesService } from './services/identities.service';
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { RolesGuard } from './guards/roles-guard';
     }),
     MongooseModule.forFeatureAsync([
       { name: RefreshToken.name, useFactory: () => RefreshTokenSchema },
+      { name: Identity.name, useFactory: () => IdentitySchema },
     ]),
   ],
   controllers: [AuthController],
@@ -38,6 +41,7 @@ import { RolesGuard } from './guards/roles-guard';
     LocalUsernamePasswordStrategy,
     JwtStrategy,
     RolesGuard,
+    IdentitiesService,
   ],
   exports: [AuthService],
 })

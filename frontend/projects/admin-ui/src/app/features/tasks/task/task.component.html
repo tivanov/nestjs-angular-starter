@@ -69,14 +69,14 @@
       class="ml-2 font-bold rounded"
       [disabled]="!form.valid"
       (click)="onSubmit()">
-      {{ this.taskId ? 'Save' : 'Create' }}
+      {{ this.entity ? 'Save' : 'Create' }}
     </button>
 
     <button
       mat-button
       color="warn"
       class="ml-2 font-bold rounded"
-      (click)="clear()">
+      (click)="reset()">
       Cancel
     </button>
 

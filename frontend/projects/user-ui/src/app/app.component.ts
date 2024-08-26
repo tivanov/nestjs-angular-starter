@@ -7,7 +7,7 @@ import {
   FaIconLibrary,
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -17,11 +17,9 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './app.component.scss',
 })
 export class AppComponent extends BaseComponent {
-  title = 'user-ui';
-
   constructor(library: FaIconLibrary) {
     super();
-    library.addIcons(faSpinner);
+    library.addIcons(faSpinner, faTimes);
     setTimeout(() => {
       this.dataLoaded = true;
     }, 700);
