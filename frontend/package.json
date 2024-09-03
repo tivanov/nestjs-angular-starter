@@ -3,10 +3,16 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start:admin": "ng serve admin-ui --port 5100",
-    "start:user": "ng serve user-ui --port 5200",
+    "start:admin": "ng serve admin-ui --port 5100 --configuration development",
+    "start:user": "ng serve user-ui --port 5200 --host 0.0.0.0 --disable-host-check",
     "build:admin": "ng build admin-ui",
     "build:user": "ng build user-ui",
+    "build-prod:admin": "ng build admin-ui --configuration production",
+    "build-prod:user": "ng build user-ui --configuration production",
+    "build-prod": "npm run build-prod:admin && npm run build-prod:user",
+    "build-stage:admin": "ng build admin-ui --configuration stage",
+    "build-stage:user": "ng build user-ui --configuration stage",
+    "build-stage": "npm run build-stage:admin && npm run build-stage:user",
     "test": "ng test",
     "serve:ssr:user-ui": "node dist/user-ui/server/server.mjs"
   },
