@@ -47,8 +47,9 @@ export class UserMappers extends BaseMapper {
 
     return {
       id: user._id.toHexString(),
-      createdAt: user.createdAt.toISOString(),
-      updatedAt: user.updatedAt.toISOString(),
+      avatar: user.avatar,
+      createdAt: user.createdAt?.toISOString(),
+      updatedAt: user.updatedAt?.toISOString(),
       lastLogin: user.lastLogin?.toISOString(),
       firstName: user.firstName,
       lastName: user.lastName,
@@ -112,8 +113,8 @@ export class UserMappers extends BaseMapper {
 
     return {
       id: user._id.toHexString(),
-      createdAt: user.createdAt.toISOString(),
-      updatedAt: user.updatedAt.toISOString(),
+      createdAt: user.createdAt?.toISOString(),
+      updatedAt: user.updatedAt?.toISOString(),
       ip: user.ip,
       countryCode: user.countryCode,
       countryName: user.countryName,

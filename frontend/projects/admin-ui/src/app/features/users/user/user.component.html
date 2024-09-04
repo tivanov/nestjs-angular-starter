@@ -1,5 +1,5 @@
 <form
-  class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4"
+  class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4 items-center"
   [formGroup]="this.form">
   <div class="bg-neutral-900 p-4 w-full mb-2">
     <p class="text-lg font-medium">Info</p>
@@ -63,7 +63,7 @@
     <input matInput type="datetime" formControlName="lastLogin" />
   </mat-form-field>
 
-  <div class="w-full flex flex-row-reverse p-2">
+  <div class="w-full flex flex-row-reverse p-4">
     <button
       mat-raised-button
       color="primary"
@@ -91,9 +91,71 @@
   </div>
 </form>
 
+<div
+  *ngIf="this.entity"
+  class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4 items-center">
+  <div class="bg-neutral-900 p-4 w-full mb-2">
+    <p class="text-lg font-medium">Avatar</p>
+  </div>
+
+  <div class="w-full flex flex-wrap items-center p-4">
+    <img
+      class="rounded-full w-28 mr-4"
+      [src]="
+        this.entity?.avatar
+          ? this.env.apiUrl + this.entity?.avatar
+          : 'assets/images/no-avatar.png'
+      "
+      alt="AVATAR" />
+    <div class="p-4 flex-grow">{{ this.entity?.avatar || 'NO AVATAR' }}</div>
+    <input
+      type="file"
+      class="hidden"
+      accept="image/*"
+      (change)="onFileSelected($event)"
+      #fileUpload />
+    <div class="pr-4 min-w-60">
+      {{ this.avatarFile?.name || 'No file uploaded yet.' }}
+    </div>
+
+    <button
+      mat-mini-fab
+      color="primary"
+      class="upload-btn"
+      (click)="fileUpload.click()">
+      <mat-icon>attach_file</mat-icon>
+    </button>
+  </div>
+  <div class="p-4">
+    <mat-progress-bar
+      class="progress-bar"
+      mode="determinate"
+      [value]="this.uploadProgress"
+      *ngIf="this.uploadProgress">
+    </mat-progress-bar>
+
+    <mat-icon
+      class="cancel-upload"
+      (click)="cancelUpload()"
+      *ngIf="this.uploadProgress"
+      >delete_forever</mat-icon
+    >
+  </div>
+  <div class="w-full flex flex-row-reverse p-4">
+    <button
+      mat-raised-button
+      color="primary"
+      class="ml-2 font-bold rounded"
+      [disabled]="!this.avatarFile"
+      (click)="this.uploadAvatar()">
+      Upload
+    </button>
+  </div>
+</div>
+
 <form
   *ngIf="this.entity"
-  class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4"
+  class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4 items-center"
   [formGroup]="this.changePasswordForm">
   <div class="bg-neutral-900 p-4 w-full mb-2">
     <p class="text-lg font-medium">Change Password</p>
@@ -104,7 +166,7 @@
     <input matInput formControlName="password" />
   </mat-form-field>
 
-  <div class="w-full flex flex-row-reverse p-2">
+  <div class="w-full flex flex-row-reverse p-4">
     <button
       mat-raised-button
       color="primary"

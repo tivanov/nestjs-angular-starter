@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as config from '../config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { IDbConfig } from 'config/model';
+import { IAppConfig, IDbConfig } from 'config/model';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
@@ -12,6 +12,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { TasksModule } from './tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -40,6 +41,18 @@ import { ScheduleModule } from '@nestjs/schedule';
         limit: 20,
       },
     ]),
+    ServeStaticModule.forRootAsync({
+      useFactory: (configService: ConfigService) => {
+        const appConfig = configService.get<IAppConfig>('app');
+        return [
+          {
+            rootPath: appConfig.uploadsDir,
+            serveRoot: '/v1/uploads',
+          },
+        ];
+      },
+      inject: [ConfigService],
+    }),
     ScheduleModule.forRoot(),
     SharedModule,
     AuthModule,

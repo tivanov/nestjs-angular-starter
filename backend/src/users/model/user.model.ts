@@ -12,6 +12,11 @@ export type UserDocument = User & Document;
   timestamps: true,
 })
 export class User extends BaseEntity {
+  @Prop({
+    maxlength: 1000,
+  })
+  avatar?: string;
+
   @Prop({ maxlength: 200 })
   firstName?: string;
 

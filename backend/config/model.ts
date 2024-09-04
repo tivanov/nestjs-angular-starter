@@ -5,6 +5,7 @@ export interface IAppConfig {
   port?: number;
   enableSwagger?: boolean;
   enableTasks?: boolean;
+  uploadsDir: string;
 }
 
 export interface IEnvironmentConfig {

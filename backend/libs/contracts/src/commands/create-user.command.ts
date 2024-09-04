@@ -12,6 +12,10 @@ import { CreateUserSettingsCommand } from './create-user-settings.command';
 import { UserRoleEnum } from '../enums';
 
 export class CreateUserCommand {
+  @IsOptional()
+  @MaxLength(1000)
+  avatar?: string;
+
   @MaxLength(200)
   @IsString()
   @IsOptional()

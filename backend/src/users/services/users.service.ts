@@ -186,6 +186,10 @@ export class UsersService extends BaseService<UserDocument> {
     return this.objectModel.countDocuments(filter);
   }
 
+  updateAvatar(id: string, frontendPath: string) {
+    return this.baseUpdate(id, { avatar: frontendPath });
+  }
+
   private async blockUser(user: UserDocument) {
     const blockUntil = new Date();
     blockUntil.setTime(blockUntil.getTime() + this.authConfig.userBlockTime);

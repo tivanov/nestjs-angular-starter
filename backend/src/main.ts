@@ -9,6 +9,7 @@ import {
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
+import * as fs from 'fs/promises';
 
 const logger = new Logger('HTTP');
 
@@ -71,6 +72,16 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const appConfig = configService.get<IAppConfig>('app');
+
+  if (process.env.WORKER_NUMBER === '0') {
+    if (appConfig.uploadsDir) {
+      try {
+        await fs.mkdir(appConfig.uploadsDir, { recursive: true });
+      } catch (err) {
+        Logger.error(err);
+      }
+    }
+  }
 
   // raise the limit of the request body
   (app as any).useBodyParser('json', { limit: '10mb' });

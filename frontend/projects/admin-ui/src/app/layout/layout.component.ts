@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 import { AuthSignal, logOut } from '../../../../common-ui/auth/auth.signal';
 import { BaseComponent } from '../../../../common-ui/base/base.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
+import { EnvironmentService } from '../../../../common-ui/services/environment.service';
 
 @Component({
   selector: 'app-layout',
@@ -40,6 +41,7 @@ export class LayoutComponent extends BaseComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly route = inject(ActivatedRoute);
+  public env = inject(EnvironmentService);
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe([Breakpoints.Handset, Breakpoints.Tablet])

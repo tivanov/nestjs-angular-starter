@@ -7,6 +7,10 @@ import {
 } from 'class-validator';
 
 export class UpdateUserDataCommand {
+  @IsOptional()
+  @MaxLength(1000)
+  avatar?: string;
+
   @MaxLength(200)
   @IsString()
   @IsOptional()

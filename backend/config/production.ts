@@ -1,3 +1,4 @@
+import { join } from 'path';
 import { IConfig } from './model';
 
 const config: IConfig = {
@@ -6,6 +7,7 @@ const config: IConfig = {
     enableCors: true,
     corsOrigins: ['http://localhost:5100', 'http://localhost:5200'],
     port: 8200,
+    uploadsDir: join(process.cwd(), '/uploads'),
   },
   db: {
     mongoUri: 'mongodb://localhost/nest-angular-starter-prod',

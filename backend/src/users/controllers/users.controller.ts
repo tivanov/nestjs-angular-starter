@@ -12,11 +12,17 @@ import {
   UseGuards,
   Delete,
   Patch,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guards/jwt.guard';
 import { UserMappers } from '../mappers';
 import {
   CreateUserCommand,
+  ErrorCode,
   GetUsersQuery,
   UpdateUserDataCommand,
   UpdateUserPasswordCommand,
@@ -24,10 +30,23 @@ import {
 } from '@app/contracts';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles-guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
+import { join } from 'path';
+import * as fs from 'fs/promises';
+import { IAppConfig } from 'config/model';
+import { ConfigService } from '@nestjs/config';
+import * as sharp from 'sharp';
 
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  private readonly appConfig: IAppConfig;
+  constructor(
+    config: ConfigService,
+    private usersService: UsersService,
+  ) {
+    this.appConfig = config.get('app');
+  }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -83,5 +102,38 @@ export class UsersController {
   @Roles(UserRoleEnum.Admin)
   public async getOne(@Param('id') id: string) {
     return UserMappers.userToDto(await this.usersService.getById(id));
+  }
+
+  @Put(':id/avatar')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRoleEnum.Admin)
+  @UseInterceptors(FileInterceptor('avatar'))
+  async uploadFile(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1000 * 1024 * 2 }),
+          new FileTypeValidator({ fileType: 'image/*' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+    @Param('id') id: string,
+  ) {
+    const user = await this.usersService.expectEntityExists(
+      id,
+      ErrorCode.USER_NOT_FOUND,
+    );
+
+    const savePath = join(this.appConfig.uploadsDir, 'avatars');
+    const fileFullPath = join(savePath, `${user._id}.webp`);
+    const frontendPath = join('/uploads/avatars', `${user._id}.webp`);
+    await fs.mkdir(savePath, { recursive: true });
+    const compressedImageBuffer = await sharp(file.buffer)
+      .webp({ quality: 75 })
+      .toBuffer();
+    await fs.writeFile(fileFullPath, compressedImageBuffer);
+
+    await this.usersService.updateAvatar(id, frontendPath);
   }
 }

@@ -3,6 +3,7 @@ import { BaseEntityDto } from './base-entity.dto';
 import { UserSettingsDto } from './user-settings.dto';
 
 export interface UserDto extends BaseEntityDto {
+  avatar?: string;
   firstName?: string;
   lastName?: string;
   userName?: string;

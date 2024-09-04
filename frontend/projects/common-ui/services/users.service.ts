@@ -6,7 +6,7 @@ import {
   UpdateUserDataCommand,
   UpdateUserPasswordCommand,
 } from '@app/contracts';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EnvironmentService } from './environment.service';
 import { Observable } from 'rxjs';
@@ -58,6 +58,20 @@ export class UsersService {
     return this.http.patch<UserDto>(
       `${this.env.apiUrl}/users/${userId}/password`,
       command
+    );
+  }
+
+  public uploadAvatar(userId: string, file: File): Observable<HttpEvent<any>> {
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    return this.http.put(
+      `${this.env.apiUrl}/users/${userId}/avatar`,
+      formData,
+      {
+        reportProgress: true,
+        observe: 'events',
+      }
     );
   }
 }

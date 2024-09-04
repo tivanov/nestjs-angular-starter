@@ -19,6 +19,11 @@ import { LoginRecordsListComponent } from '../login-records-list/login-records-l
 import { HasErrorDirective } from '../../../../../../common-ui/directives/has-error.directive';
 import { HasErrorRootDirective } from '../../../../../../common-ui/directives/has-error-root.directive';
 import { BaseEditComponent } from '../../../../../../common-ui/base/base-edit.component';
+import { finalize, Subscription } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { HttpEventType } from '@angular/common/http';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { EnvironmentService } from '../../../../../../common-ui/services/environment.service';
 
 @Component({
   selector: 'app-user',
@@ -35,6 +40,8 @@ import { BaseEditComponent } from '../../../../../../common-ui/base/base-edit.co
     LoginRecordsListComponent,
     HasErrorDirective,
     HasErrorRootDirective,
+    MatIconModule,
+    MatProgressBarModule,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
@@ -44,9 +51,12 @@ export class UserComponent extends BaseEditComponent<UserDto> {
 
   roles = Object.values(UserRoleEnum);
 
-  private fb = inject(FormBuilder);
+  avatarFile: File;
+  uploadProgress: number;
+  uploadSub: Subscription;
+
   private usersService = inject(UsersService);
-  private activatedRoute = inject(ActivatedRoute);
+  public env = inject(EnvironmentService);
 
   override ngOnInit(): void {
     super.ngOnInit();
@@ -79,7 +89,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
   }
 
   buildForm() {
-    this.form = this.fb.group({
+    this.form = this.formBuilder.group({
       id: [{ value: '', disabled: true }],
       firstName: [, [Validators.maxLength(200)]],
       lastName: [, [Validators.maxLength(200)]],
@@ -95,7 +105,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
   }
 
   initPasswordForm() {
-    return this.fb.group({
+    return this.formBuilder.group({
       password: [null, [Validators.required, Validators.minLength(6)]],
     });
   }
@@ -166,5 +176,45 @@ export class UserComponent extends BaseEditComponent<UserDto> {
     } else {
       this.form.reset();
     }
+  }
+
+  onFileSelected(event) {
+    this.avatarFile = event.target.files[0];
+  }
+
+  uploadAvatar() {
+    if (!this.avatarFile || !this.entity) {
+      return;
+    }
+
+    this.uploadSub = this.usersService
+      .uploadAvatar(this.entity?.id, this.avatarFile)
+      .pipe(
+        finalize(() => {
+          this.snackBar.open('Avatar uploaded', 'Close', { duration: 2000 });
+          this.load(this.entity.id);
+        })
+      )
+      .subscribe({
+        next: (event) => {
+          if (event.type == HttpEventType.UploadProgress) {
+            this.uploadProgress = Math.round(
+              100 * (event.loaded / event.total)
+            );
+          }
+        },
+        error: (err) => {
+          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
+            duration: 5000,
+          });
+          console.error(err);
+        },
+      });
+  }
+
+  cancelUpload() {
+    this.uploadSub.unsubscribe();
+    this.uploadProgress = null;
+    this.uploadSub = null;
   }
 }
