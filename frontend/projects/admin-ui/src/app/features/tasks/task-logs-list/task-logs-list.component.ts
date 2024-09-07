@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
 import {
@@ -17,8 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { TaskLogsService } from '../../../../../../common-ui/services/task-logs.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-task-logs-list',
@@ -37,6 +37,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatSelectModule,
     MatOptionModule,
     MatDatepickerModule,
+    MatSortModule,
   ],
 })
 export class TaskLogsListComponent
@@ -46,23 +47,16 @@ export class TaskLogsListComponent
   logTypes = Object.values(TaskLogTypeEnum);
   taskTypes = Object.values(TaskTypeEnum);
 
-  constructor(
-    private taskLogsService: TaskLogsService,
-    private snackBar: MatSnackBar
-  ) {
-    super();
-    this.displayedColumns = [
+  private taskLogsService = inject(TaskLogsService);
+
+  override setColumns(): void {
+    this.defaultColumns = [
       'createdAt',
       'taskType',
       'logType',
       'message',
       'actions',
     ];
-  }
-
-  override ngOnInit(): void {
-    super.ngOnInit();
-    this.load({ pageIndex: 0 });
   }
 
   public buildForm(): void {
@@ -78,12 +72,7 @@ export class TaskLogsListComponent
   }
 
   public load($event: { pageIndex: number; pageSize?: number }) {
-    const filter: GetTaskLogsQuery = this.filterForm.getRawValue();
-    filter.sortBy = this.sortBy;
-    filter.sortDirection = this.sortDirection;
-    filter.page = $event.pageIndex + 1;
-    filter.limit =
-      $event.pageSize || this.paginator?.pageSize || this.pageSizeOptions[0];
+    const filter: GetTaskLogsQuery = this.populateShapeableQuery($event);
 
     if (filter.startDate) {
       filter.startDate = new Date(filter.startDate).toISOString();
@@ -98,12 +87,7 @@ export class TaskLogsListComponent
         this.dataSource.data = paged.docs;
         this.totalItems = paged.totalDocs;
       },
-      error: (error) => {
-        console.error(error);
-        this.snackBar.open(this.extractErrorMessage(error), '', {
-          duration: 5000,
-        });
-      },
+      error: this.onFetchError.bind(this),
     });
   }
 }

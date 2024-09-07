@@ -3,7 +3,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
 import { AlertDto, GetAlertsQuery } from '@app/contracts';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,18 +24,12 @@ import { AlertsService } from '../../../../../../common-ui/services/alerts.servi
     MatButtonModule,
   ],
 })
-export class AlertsWidgetComponent
-  extends BaseListComponent<AlertDto>
-  implements OnInit
-{
+export class AlertsWidgetComponent extends BaseListComponent<AlertDto> {
   constructor(
     private readonly alertsService: AlertsService,
-    private readonly snackbar: MatSnackBar,
     private readonly dialog: MatDialog
   ) {
     super();
-    this.pageSizeOptions = [5, 10, 25, 100];
-    this.displayedColumns = ['type', 'message', 'actions'];
   }
 
   public override load($event: { pageIndex: number; pageSize?: number }) {
@@ -54,19 +47,14 @@ export class AlertsWidgetComponent
         this.dataSource.data = paged.docs;
         this.totalItems = paged.totalDocs;
       },
-      error: (error) => {
-        console.error('Error loading alerts', error);
-        this.snackbar.open(this.extractErrorMessage(error), 'Close', {
-          duration: 5000,
-        });
-      },
+      error: this.onFetchError.bind(this),
     });
   }
   public override buildForm(): void {}
 
-  override ngOnInit() {
-    super.ngOnInit();
-    this.load({ pageIndex: 0 });
+  override setColumns() {
+    this.pageSizeOptions = [5, 10, 25, 100];
+    this.defaultColumns = ['type', 'message', 'actions'];
   }
 
   view(alert: AlertDto) {
@@ -84,12 +72,7 @@ export class AlertsWidgetComponent
       next: () => {
         this.load({ pageIndex: 0 });
       },
-      error: (error) => {
-        console.error(error);
-        this.snackbar.open(this.extractErrorMessage(error), 'Dismiss', {
-          duration: 5000,
-        });
-      },
+      error: this.onFetchError.bind(this),
     });
   }
 }

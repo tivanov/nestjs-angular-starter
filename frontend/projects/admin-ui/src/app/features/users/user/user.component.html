@@ -5,46 +5,22 @@
     <p class="text-lg font-medium">Info</p>
   </div>
 
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
-    <mat-label>First Name</mat-label>
-    <input matInput formControlName="firstName" />
-  </mat-form-field>
+  <div class="w-full text-xl font-bold p-4">Login Info</div>
 
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
-    <mat-label>Last Name</mat-label>
-    <input matInput formControlName="lastName" />
-  </mat-form-field>
-
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
     <mat-label>UserName</mat-label>
     <input matInput formControlName="userName" />
     <mat-error *hasError="'required'">Enter a username</mat-error>
     <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
   </mat-form-field>
 
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
     <mat-label>Password</mat-label>
     <input matInput formControlName="password" />
     <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
   </mat-form-field>
 
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email" />
-    <mat-error *hasError="'email'">Enter a valid e-mail address</mat-error>
-  </mat-form-field>
-
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
-    <mat-label>Phone</mat-label>
-    <input matInput formControlName="phone" />
-  </mat-form-field>
-
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
-    <mat-label>Address</mat-label>
-    <input matInput formControlName="address" />
-  </mat-form-field>
-
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
     <mat-label>Role</mat-label>
     <mat-select formControlName="role">
       <mat-option *ngFor="let role of this.roles" [value]="role">
@@ -53,12 +29,40 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+  <div class="w-full text-xl font-bold p-4">Personal Info</div>
+
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+    <mat-label>First Name</mat-label>
+    <input matInput formControlName="firstName" />
+  </mat-form-field>
+
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+    <mat-label>Last Name</mat-label>
+    <input matInput formControlName="lastName" />
+  </mat-form-field>
+
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" />
+    <mat-error *hasError="'email'">Enter a valid e-mail address</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+    <mat-label>Phone</mat-label>
+    <input matInput formControlName="phone" />
+  </mat-form-field>
+
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+    <mat-label>Address</mat-label>
+    <input matInput formControlName="address" />
+  </mat-form-field>
+
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
     <mat-label>Country</mat-label>
     <input matInput formControlName="country" />
   </mat-form-field>
 
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
     <mat-label>Last Login</mat-label>
     <input matInput type="datetime" formControlName="lastLogin" />
   </mat-form-field>
@@ -161,14 +165,17 @@
     <p class="text-lg font-medium">Change Password</p>
   </div>
 
-  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+  <mat-form-field class="w-full md:px-2 md:w-1/2">
     <mat-label>New Password</mat-label>
     <input matInput formControlName="password" />
+    <mat-error *hasError="'required'">Field is required</mat-error>
+    <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
   </mat-form-field>
 
   <div class="w-full flex flex-row-reverse p-4">
     <button
       mat-raised-button
+      type="button"
       color="primary"
       class="ml-2 font-bold rounded"
       [disabled]="this.changePasswordForm.invalid"

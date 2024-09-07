@@ -1,5 +1,9 @@
 <form [formGroup]="this.filterForm" class="flex pb-4 flex-row items-center">
-  <button mat-raised-button color="primary" [routerLink]="'/tasks/create'">
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    [routerLink]="'/tasks/create'">
     <mat-icon>add</mat-icon>Create
   </button>
   <button
@@ -10,7 +14,12 @@
     <mat-icon>refresh</mat-icon> Refresh
   </button>
 </form>
-<table mat-table [dataSource]="this.dataSource" class="w-full">
+<table
+  mat-table
+  [dataSource]="this.dataSource"
+  class="w-full"
+  matSort
+  (matSortChange)="this.onSortChange($event)">
   <ng-container matColumnDef="active">
     <th mat-header-cell *matHeaderCellDef>Active</th>
     <td mat-cell *matCellDef="let element">
@@ -22,14 +31,14 @@
   </ng-container>
 
   <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef>Type</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
     <td mat-cell *matCellDef="let element">
       {{ element.type }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
     <td mat-cell *matCellDef="let element">
       {{ element.name }}
     </td>
@@ -41,9 +50,9 @@
   </ng-container>
 
   <ng-container matColumnDef="lastRun">
-    <th mat-header-cell *matHeaderCellDef>Last Run</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Run</th>
     <td mat-cell *matCellDef="let element">
-      {{ element.lastRun | date: this.fullDateFormat }}
+      {{ element.lastRun | date : this.fullDateFormat }}
     </td>
   </ng-container>
 

@@ -1,6 +1,6 @@
 import { LoginRecordDto, PagedListDto } from '@app/contracts';
 import { RouterModule } from '@angular/router';
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -40,64 +40,35 @@ export class LoginRecordsListComponent
 {
   @Input('userId') userId: string;
 
-  isPhonePortrait = false;
-
-  defaultColumns = [
-    'createdAt',
-    'ip',
-    'country',
-    'client',
-    'device',
-    'isBot',
-    'user',
-  ];
-  mobuleColumns = ['createdAt', 'ip', 'country'];
-
-  constructor(
-    private loginRecordsService: LoginRecordsService,
-    private snackBar: MatSnackBar,
-    private responsive: BreakpointObserver,
-    private fb: FormBuilder
-  ) {
-    super();
-    this.displayedColumns = this.defaultColumns;
-    this.pageSizeOptions = [10, 25, 100];
-  }
+  private loginRecordsService = inject(LoginRecordsService);
 
   override ngOnInit(): void {
     super.ngOnInit();
     this.filterForm.patchValue({ userId: this.userId });
     this.load({ pageIndex: 0 });
-
-    this.responsive
-      .observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape])
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .pipe(map((result) => result.breakpoints))
-      .subscribe((breakpoints) => {
-        this.isPhonePortrait = breakpoints[Breakpoints.HandsetPortrait];
-        this.displayedColumns = this.isPhonePortrait
-          ? this.mobuleColumns
-          : this.displayedColumns;
-      });
   }
 
-  override ngAfterViewInit(): void {
-    super.ngAfterViewInit();
+  public override setColumns(): void {
+    this.defaultColumns = [
+      'createdAt',
+      'ip',
+      'country',
+      'client',
+      'device',
+      'isBot',
+      'user',
+    ];
+    this.mobileColumns = ['createdAt', 'ip', 'country'];
   }
 
   buildForm(): void {
-    this.filterForm = this.fb.group({
+    this.filterForm = this.formBuilder.group({
       userId: [],
     });
   }
 
   public load($event: { pageIndex: any; pageSize?: any }) {
-    const filter = this.filterForm.value;
-    filter.page = $event.pageIndex + 1;
-    filter.limit =
-      $event.pageSize || this.paginator?.pageSize || this.pageSizeOptions[0];
-    filter.sortBy = 'createdAt';
-    filter.sortDirection = 'desc';
+    const filter = this.populateShapeableQuery($event);
 
     this.loginRecordsService
       .get(filter)
@@ -107,12 +78,7 @@ export class LoginRecordsListComponent
           this.dataSource.data = paged.docs;
           this.totalItems = paged.totalDocs;
         },
-        error: (error: any) => {
-          console.error(error);
-          this.snackBar.open(this.extractErrorMessage(error), '', {
-            duration: 5000,
-          });
-        },
+        error: this.onFetchError.bind(this),
       });
   }
 }

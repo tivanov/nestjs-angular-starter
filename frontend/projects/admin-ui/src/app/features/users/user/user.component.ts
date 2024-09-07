@@ -111,7 +111,11 @@ export class UserComponent extends BaseEditComponent<UserDto> {
   }
 
   changePassword() {
-    if (!this.entity) {
+    if (!this.entity || !this.changePasswordForm.valid) {
+      return;
+    }
+
+    if (!confirm('Are you sure you want to change password?')) {
       return;
     }
 

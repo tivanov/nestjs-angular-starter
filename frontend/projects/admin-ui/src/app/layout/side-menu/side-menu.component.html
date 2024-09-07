@@ -2,7 +2,7 @@
   class="w-32 py-8 mx-auto"
   alt="Project Logo"
   src="/assets/brand/logo.png" />
-<div class="flex flex-col p-2">
+<div class="flex flex-col">
   @for (item of this.items; track $index) { @if (!item.type || item.type ===
   MenuItemType.Link) {
   <app-menu-link-item [item]="item"></app-menu-link-item>

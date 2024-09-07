@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
@@ -11,8 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-tasks-list',
@@ -29,18 +29,17 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatSlideToggleModule,
     FormsModule,
     FontAwesomeModule,
+    MatSortModule,
   ],
 })
 export class TasksListComponent
   extends BaseListComponent<TaskDto>
   implements OnInit
 {
-  constructor(
-    private tasksService: TasksService,
-    private snackBar: MatSnackBar
-  ) {
-    super();
-    this.displayedColumns = [
+  private tasksService = inject(TasksService);
+
+  override setColumns(): void {
+    this.defaultColumns = [
       'active',
       'type',
       'name',
@@ -50,11 +49,6 @@ export class TasksListComponent
     ];
   }
 
-  override ngOnInit(): void {
-    super.ngOnInit();
-    this.load({ pageIndex: 0 });
-  }
-
   public buildForm(): void {
     this.filterForm = this.formBuilder.group({
       organisationId: [],
@@ -62,17 +56,13 @@ export class TasksListComponent
   }
 
   public load($event: { pageIndex: number; pageSize?: number }) {
-    const filter: GetTasksQuery = this.filterForm.getRawValue();
+    const filter: GetTasksQuery = this.populateShapeableQuery($event);
 
     this.tasksService.get(filter).subscribe({
       next: (result) => {
         this.dataSource.data = result;
       },
-      error: (error) => {
-        this.snackBar.open(this.extractErrorMessage(error), '', {
-          duration: 5000,
-        });
-      },
+      error: this.onFetchError.bind(this),
     });
   }
 
@@ -90,9 +80,7 @@ export class TasksListComponent
         }
       }
     } catch (error) {
-      this.snackBar.open(this.extractErrorMessage(error), '', {
-        duration: 5000,
-      });
+      this.onFetchError(error);
     }
   }
 
@@ -102,11 +90,7 @@ export class TasksListComponent
         next: () => {
           this.load({ pageIndex: 0 });
         },
-        error: (error: any) => {
-          this.snackBar.open(this.extractErrorMessage(error), '', {
-            duration: 5000,
-          });
-        },
+        error: this.onFetchError.bind(this),
       });
     }
   }

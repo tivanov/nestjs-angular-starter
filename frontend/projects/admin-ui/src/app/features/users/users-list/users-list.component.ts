@@ -1,6 +1,6 @@
 import { GetUsersQuery, UserDto, UserRoleEnum } from '@app/contracts';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -36,51 +36,26 @@ import { MatSortModule } from '@angular/material/sort';
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',
 })
-export class UsersListComponent
-  extends BaseListComponent<UserDto>
-  implements OnInit
-{
+export class UsersListComponent extends BaseListComponent<UserDto> {
   roles = Object.values(UserRoleEnum);
 
-  isPhonePortrait = false;
+  private usersService = inject(UsersService);
+  private router = inject(Router);
 
-  defaultColumns = ['userName', 'firstName', 'lastName', 'role', 'actions'];
-  mobuleColumns = ['userName', 'role', 'actions'];
-
-  constructor(
-    private usersService: UsersService,
-    private snackBar: MatSnackBar,
-    private responsive: BreakpointObserver,
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
-    super();
-    this.displayedColumns = this.defaultColumns;
-  }
-
-  override ngOnInit(): void {
-    super.ngOnInit();
-
-    this.route.queryParams.pipe(take(1)).subscribe((queryParams) => {
-      this.filterForm.patchValue(queryParams);
-      this.load({ pageIndex: (queryParams['page'] - 1) | 0 });
-    });
-
-    this.responsive
-      .observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape])
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .pipe(map((result) => result.breakpoints))
-      .subscribe((breakpoints) => {
-        this.isPhonePortrait = breakpoints[Breakpoints.HandsetPortrait];
-        this.displayedColumns = this.isPhonePortrait
-          ? this.mobuleColumns
-          : this.displayedColumns;
-      });
+  override setColumns(): void {
+    this.defaultColumns = [
+      'userName',
+      'firstName',
+      'lastName',
+      'role',
+      'createdAt',
+      'actions',
+    ];
+    this.mobileColumns = ['userName', 'role', 'actions'];
   }
 
   buildForm(): void {
-    this.filterForm = this.fb.group({
+    this.filterForm = this.formBuilder.group({
       userName: ['', [Validators.maxLength(100), Validators.minLength(3)]],
       role: [],
       searchQuery: [null, Validators.maxLength(200)],
@@ -94,23 +69,13 @@ export class UsersListComponent
           this.load({ pageIndex: 0 });
           this.snackBar.open('Record deleted.', '', { duration: 2000 });
         },
-        error: (error: any) => {
-          console.error(error);
-          this.snackBar.open(this.extractErrorMessage(error), '', {
-            duration: 5000,
-          });
-        },
+        error: this.onFetchError.bind(this),
       });
     }
   }
 
   public load($event: { pageIndex: any; pageSize?: any }) {
-    const filter: GetUsersQuery = this.filterForm.value;
-    filter.sortBy = this.sortBy;
-    filter.sortDirection = this.sortDirection;
-    filter.page = $event.pageIndex + 1;
-    filter.limit =
-      $event.pageSize || this.paginator?.pageSize || this.pageSizeOptions[0];
+    const filter: GetUsersQuery = this.populateShapeableQuery($event);
 
     this.usersService
       .get(filter)
@@ -130,12 +95,7 @@ export class UsersListComponent
             replaceUrl: true,
           });
         },
-        error: (error: any) => {
-          console.error(error);
-          this.snackBar.open(this.extractErrorMessage(error), '', {
-            duration: 5000,
-          });
-        },
+        error: this.onFetchError.bind(this),
       });
   }
 }
