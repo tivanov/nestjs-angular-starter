@@ -3,28 +3,36 @@ import { AuthService } from './services/auth.service';
 
 import { LocalUsernamePasswordAuthGuard } from './guards/local-username-password.guard';
 import { Request as ReqObj } from 'express';
-import { UsersService } from '../users/services/users.service';
+import { AppUnauthorizedException } from 'src/shared/exceptions/app-unauthorized-exception';
+import { ErrorCode, IdentityProviderEnum } from '@app/contracts';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalUsernamePasswordAuthGuard)
   @Post('login')
   async login(@Request() req: ReqObj) {
-    return this.authService.getLoginSuccessResponse(req);
+    return this.authService.getLoginSuccessResponse(
+      req,
+      IdentityProviderEnum.UserName,
+    );
   }
 
   @Post('refresh')
   async refresh(@Request() req: ReqObj) {
     const refreshToken = req.get('X-Auth-Refresh-Token');
-    const dbToken = await this.authService.validateRefreshToken(refreshToken);
-    req.user = await this.usersService.expectEntityExists(
-      dbToken.user.toString(),
+    if (!refreshToken) {
+      throw new AppUnauthorizedException(ErrorCode.REFRESH_TOKEN_MISSING);
+    }
+
+    const validateResponse = await this.authService.validateRefreshToken(
+      req,
+      refreshToken,
     );
-    return this.authService.getRefreshTokenSuccessResponse(req);
+    return this.authService.getRefreshTokenSuccessResponse(
+      validateResponse.user,
+      validateResponse.identity,
+    );
   }
 }

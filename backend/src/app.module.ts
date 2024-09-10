@@ -11,7 +11,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { TasksModule } from './tasks/tasks.module';
-import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
@@ -53,7 +52,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
       },
       inject: [ConfigService],
     }),
-    ScheduleModule.forRoot(),
     SharedModule,
     AuthModule,
     UsersModule,

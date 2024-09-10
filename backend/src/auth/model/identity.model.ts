@@ -45,11 +45,21 @@ export class Identity extends BaseEntity {
   provider: IdentityProviderEnum;
 
   @Prop({
+    required: true,
+    default: 1,
+  })
+  version: number;
+
+  @Prop({
     type: SchemaTypes.ObjectId,
     ref: User.name,
     required: true,
+    index: true,
   })
   user: Types.ObjectId;
 }
 
 export const IdentitySchema = SchemaFactory.createForClass(Identity);
+
+IdentitySchema.index({ uid: 1, provider: 1 }, { unique: true });
+IdentitySchema.index({ uid: 1, provider: 1, version: 1 });

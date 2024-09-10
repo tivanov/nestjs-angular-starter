@@ -16,15 +16,7 @@
       </button>
       <span>{{ this.title }}</span>
       <div class="flex items-center ml-auto text-white">
-        <img
-          class="rounded-full w-8 mr-2"
-          [src]="
-            AuthSignal().user?.avatar
-              ? this.env.apiUrl + AuthSignal().user?.avatar
-              : 'assets/images/no-avatar.png'
-          "
-          alt="AVATAR" />
-        <span class="mr-2">{{ AuthSignal().user?.displayName }}</span>
+        <span class="mr-1">{{ AuthSignal().user?.displayName }}</span>
         <button mat-icon-button (click)="logout()" title="Logout">
           <mat-icon>logout</mat-icon>
         </button>

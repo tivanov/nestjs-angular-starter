@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '../auth/auth.module';
 import * as config from '../../config';
 import { IDbConfig } from '../../config/model';
+import { TasksModule } from 'src/tasks/tasks.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { IDbConfig } from '../../config/model';
     }),
     forwardRef(() => AuthModule),
     forwardRef(() => UsersModule),
+    forwardRef(() => TasksModule),
   ],
 })
 export class MaintenanceModule {}

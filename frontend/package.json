@@ -52,6 +52,8 @@
     "@types/express": "^4.17.21",
     "@types/jasmine": "~5.1.4",
     "@types/node": "^22.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.5.0",
+    "@typescript-eslint/parser": "^8.5.0",
     "autoprefixer": "^10.4.20",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.4",

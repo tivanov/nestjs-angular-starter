@@ -31,7 +31,6 @@ import {
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles-guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
 import { join } from 'path';
 import * as fs from 'fs/promises';
 import { IAppConfig } from 'config/model';

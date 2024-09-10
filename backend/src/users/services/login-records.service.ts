@@ -5,7 +5,7 @@ import { BaseService } from '../../shared/base/base-service';
 import { LoginRecord, LoginRecordDocument } from '../model/login-record.model';
 import { User } from '../model/user.model';
 import * as requestIp from 'request-ip';
-import DeviceDetector from 'device-detector-js';
+import * as DeviceDetector from 'device-detector-js';
 import { GetLoginRecordsQuery, UserRoleEnum } from '@app/contracts';
 import { Request } from 'express';
 import { IpLocationService } from './iplocation.service';
@@ -116,5 +116,13 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
       this.logger.error(error);
     }
     return null;
+  }
+
+  public addInBackground(user: User, request: Request) {
+    this.addLoginEntry(user, request)
+      .then(() => null)
+      .catch((err) =>
+        this.logger.error('Error while saving login records', err.stack, err),
+      );
   }
 }

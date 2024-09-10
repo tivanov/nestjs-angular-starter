@@ -1,8 +1,15 @@
 <img
-  class="w-32 py-8 mx-auto"
-  alt="Project Logo"
-  src="/assets/brand/logo.png" />
-<div class="flex flex-col">
+  class="w-32 p-1 my-4 mx-auto rounded-full border-2 border-gray-200"
+  [src]="this.imageUrl || 'assets/images/no-avatar.png'"
+  alt="AVATAR" />
+
+<div class="w-full text-lg text-center">
+  {{ AuthSignal().user?.displayName }}
+</div>
+<div class="w-full text-sm text-center">
+  {{ AuthSignal().user?.role | titlecase }}
+</div>
+<div class="flex flex-col mt-4">
   @for (item of this.items; track $index) { @if (!item.type || item.type ===
   MenuItemType.Link) {
   <app-menu-link-item [item]="item"></app-menu-link-item>

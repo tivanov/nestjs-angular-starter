@@ -5,3 +5,4 @@ export * from './create-task.command';
 export * from './update-task.command';
 export * from './update-user-password.command';
 export * from './create-identity.command';
+export * from './create-refresh-token.command';

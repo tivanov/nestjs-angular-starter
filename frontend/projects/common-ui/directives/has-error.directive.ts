@@ -43,7 +43,7 @@ export class HasErrorDirective implements OnInit, OnDestroy {
   private errorName$ = new ReplaySubject<string>(1);
   private ctrl$ = this.hasErrorRoot.formControl$;
   private status$ = this.ctrl$.pipe(
-    switchMap((ctrl) => (ctrl.statusChanges || EMPTY).pipe(startWith(null)))
+    switchMap((ctrl) => (ctrl?.statusChanges || EMPTY).pipe(startWith(null)))
   );
 
   private error$ = combineLatest([
@@ -52,8 +52,8 @@ export class HasErrorDirective implements OnInit, OnDestroy {
     this.status$,
   ]).pipe(
     map(([ctrl, errorName]) => ({
-      hasError: ctrl.hasError(errorName),
-      value: ctrl.getError(errorName),
+      hasError: ctrl?.hasError(errorName),
+      value: ctrl?.getError(errorName),
     })),
     distinctUntilChanged(
       (x, y) => x.hasError === y.hasError && x.value === y.value

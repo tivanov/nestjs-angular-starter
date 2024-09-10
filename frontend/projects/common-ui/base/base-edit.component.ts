@@ -47,6 +47,14 @@ export abstract class BaseEditComponent<T>
     this.location.back();
   }
 
+  public onFetchError(error) {
+    this.snackBar.open(this.extractErrorMessage(error), 'Dismiss', {
+      duration: 5000,
+    });
+    console.error(error);
+    this.dataLoaded = true;
+  }
+
   public abstract load(id: string);
   public abstract buildForm(): void;
 }

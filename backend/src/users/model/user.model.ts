@@ -24,18 +24,12 @@ export class User extends BaseEntity {
   lastName?: string;
 
   @Prop({
-    maxlength: 100,
+    maxlength: 500,
     minlength: 3,
     unique: true,
     index: true,
   })
   userName?: string;
-
-  @Prop({
-    minlength: 5,
-    maxlength: 1024,
-  })
-  password: string;
 
   @Prop({
     required: true,
@@ -94,22 +88,6 @@ export class User extends BaseEntity {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-UserSchema.pre('save', async function (next) {
-  try {
-    if (!this.isModified('password')) {
-      return next();
-    }
-    if (!this.password) {
-      return next();
-    }
-    const hashed = await bcrypt.hash(this.password, 10);
-    this.password = hashed;
-    return next();
-  } catch (err) {
-    return next(err);
-  }
-});
 
 UserSchema.plugin(mongoosePaginate);
 

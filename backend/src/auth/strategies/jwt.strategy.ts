@@ -10,6 +10,7 @@ import { User } from '../../users/model/user.model';
 import { Request } from 'express';
 import { IAuthConfig } from '../../../config/model';
 import { ErrorCode } from '@app/contracts';
+import { IdentitiesService } from '../services/identities.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(
@@ -19,6 +20,7 @@ export class JwtStrategy extends PassportStrategy(
   constructor(
     configService: ConfigService,
     private usersService: UsersService,
+    private identitiesService: IdentitiesService,
   ) {
     const authConfig = configService.get<IAuthConfig>('auth');
 
@@ -36,13 +38,16 @@ export class JwtStrategy extends PassportStrategy(
     if (!user) {
       throw new AppUnauthorizedException(ErrorCode.USER_NOT_FOUND);
     }
+    this.usersService.verifyIsAllowedToLogin(user)
 
-    const now = new Date();
-    if (user.blockExpires && user.blockExpires > now) {
-      throw new AppUnauthorizedException(ErrorCode.USER_IS_BLOCKED);
+    const identity = await this.identitiesService.getValid(
+      userId,
+      payload.provider,
+      payload.version,
+    );
+    if (!identity) {
+      throw new AppUnauthorizedException(ErrorCode.IDENTITY_NOT_FOUND);
     }
-
-    delete user.password;
     return user;
   }
 }

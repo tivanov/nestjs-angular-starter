@@ -19,6 +19,7 @@ import {
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { AuthService } from '../../../../../../common-ui/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserRoleEnum } from '@app/contracts';
 
 @Component({
   selector: 'app-login',
@@ -70,12 +71,18 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
     try {
       const loginResponse = await firstValueFrom(this.authService.login(val));
+      if (
+        loginResponse.user.role !== UserRoleEnum.Admin &&
+        loginResponse.user.role !== UserRoleEnum.Manager
+      ) {
+        this.errorMessage = 'Login not allowed.';
+        return;
+      }
       logIn(loginResponse);
       this.form.reset();
       this.redirect();
     } catch (error) {
       this.errorMessage = this.extractErrorMessage(error);
-      this.snackBar.open(this.errorMessage, 'close', { duration: 6000 });
     }
   }
 

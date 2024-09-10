@@ -43,6 +43,6 @@ import { IdentitiesService } from './services/identities.service';
     RolesGuard,
     IdentitiesService,
   ],
-  exports: [AuthService],
+  exports: [AuthService, IdentitiesService],
 })
 export class AuthModule {}

@@ -139,7 +139,7 @@
             "tsConfig": "projects/admin-ui/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/admin-ui/src/favicon.ico",
+              "projects/admin-ui/src/favicon.png",
               "projects/admin-ui/src/assets"
             ],
             "styles": [
@@ -195,7 +195,7 @@
           "configurations": {
             "production": {
               "assets": [
-                "projects/user-ui/src/favicon.ico",
+                "projects/user-ui/src/favicon.png",
                 "projects/user-ui/src/assets",
                 "projects/user-ui/src/robots.txt",
                 "projects/user-ui/src/sitemap.xml",
@@ -292,7 +292,7 @@
             "tsConfig": "projects/user-ui/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/user-ui/src/favicon.ico",
+              "projects/user-ui/src/favicon.png",
               "projects/user-ui/src/assets"
             ],
             "styles": [

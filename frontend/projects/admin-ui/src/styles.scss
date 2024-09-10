@@ -2,20 +2,23 @@
 
 @include mat.core();
 
-// $my-primary: mat.m2-define-palette(mat.$m2-pink-palette, 500);
-$my-accent: mat.m2-define-palette(mat.$m2-teal-palette, A200);
+$my-accent: mat.m2-define-palette(mat.$m2-red-palette, A200);
 
 $my-primary-palette: (
-  50: #f4e7ed,
-  100: #e7c2d4,
-  200: #da9db8,
-  300: #cd7c9e,
-  400: #c4688a,
-  500: #c45579,
-  600: #b35173,
-  700: #9d4b6a,
-  800: #884562,
-  900: #653951,
+  50: #e8eaf6,
+  100: #c5cae9,
+  200: #9fa8da,
+  300: #7986cb,
+  400: #5c6bc0,
+  500: #3f51b5,
+  600: #3949ab,
+  700: #303f9f,
+  800: #283593,
+  900: #1a237e,
+  A100: #8c9eff,
+  A200: #536dfe,
+  A400: #3d5afe,
+  A700: #304ffe,
   contrast: (
     50: rgba(black, 0.87),
     100: rgba(black, 0.87),
@@ -30,7 +33,7 @@ $my-primary-palette: (
   ),
 );
 
-$my-primary: mat.m2-define-palette($my-primary-palette, 300);
+$my-primary: mat.m2-define-palette($my-primary-palette, 500);
 
 $my-theme: mat.m2-define-dark-theme(
   (

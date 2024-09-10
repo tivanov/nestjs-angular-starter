@@ -1,6 +1,7 @@
-import { Signal, signal } from '@angular/core';
+import { inject, Signal, signal } from '@angular/core';
 import { ISignInResponse } from './auth.service';
 import { UserDto } from '@app/contracts';
+import { EnvironmentService } from '../services/environment.service';
 
 export interface ISessionState {
   isAuthenticated: boolean;
@@ -38,6 +39,7 @@ export const logOut = () => {
 
 export const logIn = (response: ISignInResponse) => {
   const old = writableSignal();
+
   const sessionState: ISessionState = {
     ...old,
     isAuthenticated: true,

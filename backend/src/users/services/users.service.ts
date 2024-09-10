@@ -2,14 +2,16 @@ import { Injectable, Logger } from '@nestjs/common';
 import { BaseService } from 'src/shared/base/base-service';
 import { User, UserDocument } from '../model/user.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { IAuthConfig } from 'config/model';
+import { IAppConfig, IAuthConfig } from 'config/model';
 import { FilterQuery, PaginateModel, PaginateResult, Types } from 'mongoose';
-import { UserSettings } from '../model/userSettings.model';
 import { ConfigService } from '@nestjs/config';
 import {
+  Constants,
+  CreateIdentityCommand,
   CreateUserCommand,
   ErrorCode,
   GetUsersQuery,
+  IdentityProviderEnum,
   UpdateUserDataCommand,
   UpdateUserPasswordCommand,
   UserRoleEnum,
@@ -20,19 +22,25 @@ import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-ex
 import { LoginRecordsService } from './login-records.service';
 import { Request } from 'express';
 import { AppNotFoundException } from 'src/shared/exceptions/app-not-found-exception';
+import { IdentitiesService } from 'src/auth/services/identities.service';
+import { join } from 'path';
+import * as fs from 'fs/promises';
 
 @Injectable()
 export class UsersService extends BaseService<UserDocument> {
   private logger = new Logger(UsersService.name);
   private authConfig: IAuthConfig;
+  private appConfig: IAppConfig;
 
   constructor(
     @InjectModel(User.name) userModel: PaginateModel<UserDocument>,
     private readonly loginRecords: LoginRecordsService,
+    private readonly identities: IdentitiesService,
     config: ConfigService,
   ) {
     super(userModel);
     this.authConfig = config.get<IAuthConfig>('auth');
+    this.appConfig = config.get<IAppConfig>('app');
   }
 
   async get(query: GetUsersQuery): Promise<PaginateResult<User>> {
@@ -64,8 +72,22 @@ export class UsersService extends BaseService<UserDocument> {
     if (!user) {
       throw new AppNotFoundException(ErrorCode.USER_NOT_FOUND);
     }
-    user.password = command.password;
-    await user.save();
+    const identity = await this.identities.getValid(
+      userId,
+      IdentityProviderEnum.UserName,
+    );
+    if (!identity) {
+      throw new AppBadRequestException(ErrorCode.IDENTITY_NOT_FOUND);
+    }
+
+    const password = await bcrypt.hash(command.password, 10);
+
+    await this.identities.updateSecret(
+      identity._id.toHexString(),
+      password,
+      command.logOutEverywhere,
+    );
+
     return user;
   }
 
@@ -78,7 +100,21 @@ export class UsersService extends BaseService<UserDocument> {
 
   public async create(command: CreateUserCommand): Promise<User> {
     await this.expectUserNameNotExists(command.userName);
-    return await this.baseCreate(command);
+
+    const password = await bcrypt.hash(command.password, 10);
+    delete command.password;
+
+    const user = await this.baseCreate(command);
+    const identityCmd: CreateIdentityCommand = {
+      uid: user.userName,
+      provider: IdentityProviderEnum.UserName,
+      secret: password,
+      expirationDate: Constants.EndOfTime,
+      version: 1,
+      user: user._id.toHexString(),
+    };
+    await this.identities.baseCreate(identityCmd);
+    return user;
   }
 
   public async login(
@@ -88,9 +124,7 @@ export class UsersService extends BaseService<UserDocument> {
   ): Promise<User> {
     const user = await this.validateCredentialsGetUser(userName, password);
     try {
-      await this.verifyIsAllowedToLogin(user);
       await this.runPostLogin(user, true, request);
-      delete user.password;
       return user;
     } catch (error) {
       await this.runPostLogin(user, false, request);
@@ -98,7 +132,7 @@ export class UsersService extends BaseService<UserDocument> {
     }
   }
 
-  public async verifyIsAllowedToLogin(user: User) {
+  public verifyIsAllowedToLogin(user: User) {
     const now = new Date();
     if (user.blockExpires && user.blockExpires > now) {
       throw new AppUnauthorizedException(ErrorCode.USER_IS_BLOCKED);
@@ -128,6 +162,14 @@ export class UsersService extends BaseService<UserDocument> {
       ErrorCode.USER_NOT_FOUND,
     );
     await this.objectModel.findOneAndDelete({ _id: userId });
+
+    try {
+      const savePath = join(this.appConfig.uploadsDir, 'avatars');
+      const fileFullPath = join(savePath, `${existing._id}.webp`);
+      await fs.unlink(fileFullPath);
+    } catch (error) {
+      this.logError(this.logger, error);
+    }
     return existing;
   }
 
@@ -200,26 +242,9 @@ export class UsersService extends BaseService<UserDocument> {
 
   private async runPostLogin(user: User, success: boolean, request: Request) {
     if (success) {
-      await this.verifyIsAllowedToLogin(user);
+      this.verifyIsAllowedToLogin(user);
       await this.resetLoginAttempts(user._id as Types.ObjectId);
-      this.loginRecords
-        .addLoginEntry(user, request)
-        .then((loginRecord) => {
-          if (loginRecord?.countryCode) {
-            this.setCountry(user._id as Types.ObjectId, loginRecord.countryCode)
-              .then(() => null)
-              .catch((err) => {
-                this.logger.error(
-                  'Error while saving user country',
-                  err.stack,
-                  err,
-                );
-              });
-          }
-        })
-        .catch((err) =>
-          this.logger.error('Error while saving login records', err.stack, err),
-        );
+      this.loginRecords.addInBackground(user, request);
       await this.registerActivity(user._id.toHexString());
     } else {
       await this.incrementLoginAttempts(user._id as Types.ObjectId);
@@ -227,9 +252,13 @@ export class UsersService extends BaseService<UserDocument> {
   }
 
   private async incrementLoginAttempts(userId: Types.ObjectId) {
-    const user = await this.objectModel.findById(userId);
-    user.loginAttempts += 1;
-    await user.save();
+    const user = await this.objectModel.findByIdAndUpdate(
+      userId,
+      {
+        $inc: { loginAttempts: 1 },
+      },
+      { new: true, lean: true },
+    );
 
     if (user.loginAttempts >= this.authConfig.loginAttempts) {
       await this.blockUser(user);
@@ -256,11 +285,16 @@ export class UsersService extends BaseService<UserDocument> {
 
     const user = users.pop();
 
-    if (!user.password) {
+    const identity = await this.identities.getValid(
+      user._id.toHexString(),
+      IdentityProviderEnum.UserName,
+    );
+
+    if (!identity?.secret) {
       throw new AppUnauthorizedException(ErrorCode.INVALID_USERNAME_PASSWORD);
     }
 
-    if (!(await bcrypt.compare(password, user.password))) {
+    if (!(await bcrypt.compare(password, identity.secret))) {
       throw new AppUnauthorizedException(ErrorCode.INVALID_USERNAME_PASSWORD);
     }
 

@@ -8,9 +8,11 @@ import { TaskLog, TaskLogSchema } from './model/task-log.model';
 import { TaskLogsController } from './controllers/task-logs.controller';
 import { TaskLogsService } from './services/task-logs.service';
 import { NotificationsModule } from 'src/notifications/notifications.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     forwardRef(() => UsersModule),
     forwardRef(() => NotificationsModule),
     MongooseModule.forFeatureAsync([

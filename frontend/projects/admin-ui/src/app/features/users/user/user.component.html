@@ -70,7 +70,7 @@
   <div class="w-full flex flex-row-reverse p-4">
     <button
       mat-raised-button
-      color="primary"
+      color="accent"
       class="ml-2 font-bold rounded"
       [disabled]="!form.valid"
       (click)="this.save()">
@@ -105,11 +105,7 @@
   <div class="w-full flex flex-wrap items-center p-4">
     <img
       class="rounded-full w-28 mr-4"
-      [src]="
-        this.entity?.avatar
-          ? this.env.apiUrl + this.entity?.avatar
-          : 'assets/images/no-avatar.png'
-      "
+      [src]="this.avatarUrl || 'assets/images/no-avatar.png'"
       alt="AVATAR" />
     <div class="p-4 flex-grow">{{ this.entity?.avatar || 'NO AVATAR' }}</div>
     <input
@@ -171,6 +167,12 @@
     <mat-error *hasError="'required'">Field is required</mat-error>
     <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
   </mat-form-field>
+
+  <mat-checkbox
+    class="w-full md:px-2 md:w-1/2"
+    formControlName="logOutEverywhere"
+    >Log Out From All Devices</mat-checkbox
+  >
 
   <div class="w-full flex flex-row-reverse p-4">
     <button

@@ -13,8 +13,15 @@ import { Request } from 'express';
 import { getClientIp } from 'request-ip';
 import { UserMappers } from '../../users/mappers';
 import { IAuthConfig } from '../../../config/model';
-import { ErrorCode, UserDto } from '@app/contracts';
+import {
+  CreateRefreshTokenCommand,
+  ErrorCode,
+  IdentityProviderEnum,
+  UserDto,
+} from '@app/contracts';
 import * as ms from 'ms';
+import { IdentitiesService } from './identities.service';
+import { Identity } from '../model/identity.model';
 
 @Injectable()
 export class AuthService {
@@ -26,84 +33,124 @@ export class AuthService {
     private readonly refreshTokenModel: Model<RefreshToken>,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly identities: IdentitiesService,
     config: ConfigService,
   ) {
     this.authConfig = config.get<IAuthConfig>('auth');
   }
 
-  public async getRefreshTokenSuccessResponse(req: Request) {
+  public async getRefreshTokenSuccessResponse(user: User, identity: Identity) {
     return {
-      token: await this.createAccessToken(req.user as User),
+      token: await this.createAccessToken(user, identity),
     };
   }
 
-  public async getLoginSuccessResponse(req: Request) {
+  public async getLoginSuccessResponse(
+    req: Request,
+    provider: IdentityProviderEnum,
+  ) {
     const user = req.user as User;
-
-    const userDto = UserMappers.userToDto(user) as UserDto;
-
-    const expirationDate = new Date();
-    expirationDate.setTime(
-      expirationDate.getTime() + ms(this.authConfig.jwtRefreshExpirationTime),
+    const identity = await this.identities.getValid(
+      user._id.toHexString(),
+      provider,
     );
 
+    // should never happen
+    if (!identity) {
+      throw new AppUnauthorizedException(ErrorCode.IDENTITY_NOT_FOUND);
+    }
+
+    const refreshToken = await this.createRefreshToken(req, user, identity);
+
     return {
-      token: await this.createAccessToken(user),
-      refreshToken: await this.createRefreshToken(req, user),
-      expirationDate: expirationDate.toISOString(),
-      user: userDto,
+      token: await this.createAccessToken(user, identity),
+      refreshToken: refreshToken.token,
+      expirationDate: refreshToken.expires?.toISOString(),
+      user: UserMappers.userToDto(user) as UserDto,
     };
   }
 
-  public async validateRefreshToken(token: string): Promise<RefreshToken> {
-    let user: User = null;
+  public async validateRefreshToken(
+    req: Request,
+    token: string,
+  ): Promise<{ refreshToken: RefreshToken; user: User; identity: Identity }> {
+    if (!token) {
+      throw new AppUnauthorizedException(ErrorCode.REFRESH_TOKEN_MISSING);
+    }
+
+    let payload: TokenPayload = null;
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      payload = await this.jwtService.verifyAsync(token, {
         secret: this.authConfig.jwtRefreshSecret,
       });
-      user = await this.usersService.expectEntityExists(
-        payload.sub as string,
-        ErrorCode.REFRESH_TOKEN_INVALID,
-      );
     } catch (error) {
-      this.logger.error(error);
       if (error instanceof TokenExpiredError) {
         throw new AppUnauthorizedException(ErrorCode.REFRESH_TOKEN_EXPIRED);
       } else {
+        this.logger.error(error);
         throw new AppUnauthorizedException(ErrorCode.REFRESH_TOKEN_INVALID);
       }
     }
 
-    await this.usersService.verifyIsAllowedToLogin(user);
+    const tokenDoc = await this.refreshTokenModel
+      .findOne({
+        token,
+        isRevoked: false,
+        browser: this.getBrowserInfo(req),
+        expires: {
+          $gte: new Date(),
+        },
+      })
+      .lean();
 
-    const tokenObjects = await this.refreshTokenModel.find({
-      user: user._id,
-      isRevoked: false,
-      expires: {
-        $gte: new Date(),
-      },
-    });
-
-    if ((tokenObjects?.length ?? 0) === 0) {
+    if (!tokenDoc) {
       throw new AppUnauthorizedException(ErrorCode.REFRESH_TOKEN_INVALID);
     }
 
-    for (const tokenObj of tokenObjects) {
-      if (await bcrypt.compare(token, tokenObj.token)) {
-        return tokenObj;
-      }
+    const identity = await this.identities.expectEntityExists(
+      tokenDoc.identity?.toHexString(),
+      ErrorCode.IDENTITY_NOT_FOUND,
+    );
+
+    // should never happen
+    if (identity.user.toHexString() !== payload.sub) {
+      throw new AppUnauthorizedException(ErrorCode.REFRESH_TOKEN_INVALID);
     }
 
-    throw new AppUnauthorizedException(ErrorCode.REFRESH_TOKEN_INVALID);
+    if (identity.provider !== payload.provider) {
+      throw new AppUnauthorizedException(ErrorCode.REFRESH_TOKEN_INVALID);
+    }
+
+    if (identity.version !== payload.version) {
+      throw new AppUnauthorizedException(ErrorCode.REFRESH_TOKEN_INVALID);
+    }
+
+    const user = await this.usersService.expectEntityExists(
+      payload.sub as string,
+      ErrorCode.USER_NOT_FOUND,
+    );
+
+    this.usersService.verifyIsAllowedToLogin(user);
+
+    return { refreshToken: tokenDoc, user, identity };
   }
 
-  private async createAccessToken(user: User): Promise<string> {
+  private async createAccessToken(
+    user: User,
+    identity: Identity,
+  ): Promise<string> {
     // secret and exp time are set when JWT module is loaded in auth module
-    return await this.jwtService.signAsync(await this.getTokenPayload(user));
+    return await this.jwtService.signAsync(
+      await this.getTokenPayload(user, identity),
+    );
   }
 
-  private async createRefreshToken(req: Request, user: User): Promise<string> {
-    const tokenPayload = await this.getTokenPayload(user);
+  private async createRefreshToken(
+    req: Request,
+    user: User,
+    identity: Identity,
+  ): Promise<RefreshToken> {
+    const tokenPayload = await this.getTokenPayload(user, identity);
     const token = await this.jwtService.signAsync(tokenPayload, {
       secret: this.authConfig.jwtRefreshSecret,
       expiresIn: this.authConfig.jwtRefreshExpirationTime,
@@ -114,23 +161,29 @@ export class AuthService {
       expDate.getTime() + ms(this.authConfig.jwtRefreshExpirationTime),
     );
 
-    await this.refreshTokenModel.create({
-      user: (req.user as User)._id,
+    const command: CreateRefreshTokenCommand = {
       token,
       ip: this.getIp(req),
       browser: this.getBrowserInfo(req),
       country: this.getCountry(req),
       expires: expDate,
-    });
+      user: (req.user as User)._id.toHexString(),
+      identity: identity._id.toHexString(),
+    };
 
-    return token;
+    return await this.refreshTokenModel.create(command);
   }
 
-  private async getTokenPayload(user: User): Promise<TokenPayload> {
+  private async getTokenPayload(
+    user: User,
+    identity: Identity,
+  ): Promise<TokenPayload> {
     return {
       username: user.userName,
       sub: user._id.toHexString(),
       role: user.role,
+      provider: identity.provider,
+      version: identity.version,
     };
   }
 

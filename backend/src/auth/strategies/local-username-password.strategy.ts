@@ -24,8 +24,6 @@ export class LocalUsernamePasswordStrategy extends PassportStrategy(
     username: string,
     password: string,
   ): Promise<User> {
-    const user = await this.userService.login(username, password, request);
-    delete user.password;
-    return user;
+    return await this.userService.login(username, password, request);
   }
 }

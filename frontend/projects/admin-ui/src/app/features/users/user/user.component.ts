@@ -24,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpEventType } from '@angular/common/http';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EnvironmentService } from '../../../../../../common-ui/services/environment.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-user',
@@ -42,6 +43,7 @@ import { EnvironmentService } from '../../../../../../common-ui/services/environ
     HasErrorRootDirective,
     MatIconModule,
     MatProgressBarModule,
+    MatCheckboxModule,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
@@ -51,6 +53,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
 
   roles = Object.values(UserRoleEnum);
 
+  avatarUrl: string;
   avatarFile: File;
   uploadProgress: number;
   uploadSub: Subscription;
@@ -66,12 +69,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
   load(id: string) {
     this.usersService.getById(id).subscribe({
       next: this.onUserLoaded.bind(this),
-      error: (err) => {
-        this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-          duration: 5000,
-        });
-        console.error(err);
-      },
+      error: this.onFetchError.bind(this),
     });
   }
 
@@ -82,6 +80,16 @@ export class UserComponent extends BaseEditComponent<UserDto> {
     this.form.get('password').disable();
     this.form.get('role').disable();
     this.form.get('userName').disable();
+
+    if (this.entity.avatar) {
+      if (!this.entity.avatar.startsWith('http')) {
+        this.avatarUrl = `${this.env.apiUrl}${this.entity.avatar}`;
+      } else {
+        this.avatarUrl = this.entity.avatar;
+      }
+    } else {
+      this.avatarUrl = 'assets/images/no-avatar.png';
+    }
 
     if (user.lastLogin) {
       this.form.get('lastLogin').setValue(new Date(user.lastLogin));
@@ -107,6 +115,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
   initPasswordForm() {
     return this.formBuilder.group({
       password: [null, [Validators.required, Validators.minLength(6)]],
+      logOutEverywhere: [false],
     });
   }
 
@@ -125,11 +134,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
         this.snackBar.open('Password changed', 'Close', { duration: 2000 });
         this.onUserLoaded(user);
       },
-      error: (err) => {
-        this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-          duration: 5000,
-        });
-      },
+      error: this.onFetchError.bind(this),
     });
   }
 
@@ -146,12 +151,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
           this.snackBar.open('User updated', 'Close', { duration: 2000 });
           this.exit();
         },
-        error: (err) => {
-          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-            duration: 5000,
-          });
-          console.error(err);
-        },
+        error: this.onFetchError.bind(this),
       });
     } else {
       if (!val.password) {
@@ -163,13 +163,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
           this.snackBar.open('User created', 'Close', { duration: 2000 });
           this.exit();
         },
-
-        error: (err) => {
-          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-            duration: 5000,
-          });
-          console.error(err);
-        },
+        error: this.onFetchError.bind(this),
       });
     }
   }
@@ -207,12 +201,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
             );
           }
         },
-        error: (err) => {
-          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-            duration: 5000,
-          });
-          console.error(err);
-        },
+        error: this.onFetchError.bind(this),
       });
   }
 
