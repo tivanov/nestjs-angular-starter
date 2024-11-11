@@ -1,0 +1,31 @@
+{
+  "workbench.colorCustomizations": {
+    // "activityBar.activeBackground": "#008ec2",
+    // "activityBar.activeBorder": "#00bbff",
+    // "activityBar.background": "#005e80",
+    // "activityBar.foreground": "#ffffff",
+    // "activityBar.activeFocusBorder": "#212121",
+    // "activityBar.inactiveForeground": "#f0f0f099",
+    // "activityBarBadge.background": "#212121",
+    // "activityBarBadge.foreground": "#e7e7e7",
+    // "statusBar.background": "#03A9F4",
+    // "statusBar.foreground": "#e7e7e7",
+    // "statusBar.debuggingBackground": "#009dd5",
+    // "statusBar.debuggingForeground": "#ffffff",
+    // "statusBarItem.hoverBackground": "#d32f2f",
+    // "titleBar.activeBackground": "#007099",
+    // "titleBar.activeForeground": "#ffffff",
+    // "titleBar.inactiveBackground": "#005878",
+    // "titleBar.inactiveForeground": "#bebebe",
+    // "statusBarItem.remoteBackground": "#7c2f34",
+    // "statusBarItem.remoteForeground": "#e7e7e7",
+    // "commandCenter.border": "#e7e7e799"
+  },
+  "editor.tabSize": 2,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true
+  }
+}
