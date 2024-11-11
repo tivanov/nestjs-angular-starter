@@ -68,7 +68,9 @@ export class TaskComponent extends BaseEditComponent<TaskDto> {
       params: [],
       script: [],
       runImmediately: [false],
-      cronString: [null, Validators.required],
+      runOnce: [false],
+      timeout: [],
+      cronString: [],
     });
   }
 
@@ -87,13 +89,7 @@ export class TaskComponent extends BaseEditComponent<TaskDto> {
           });
           this.router.navigate(['./tasks/list']);
         },
-
-        error: (err) => {
-          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-            duration: 5000,
-          });
-          console.error(err);
-        },
+        error: this.onFetchError.bind(this),
       });
     } else {
       this.tasks.create(val).subscribe({
@@ -104,13 +100,18 @@ export class TaskComponent extends BaseEditComponent<TaskDto> {
           this.router.navigate(['./tasks/list']);
         },
 
-        error: (err) => {
-          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-            duration: 5000,
-          });
-          console.error(err);
-        },
+        error: this.onFetchError.bind(this),
       });
     }
+  }
+
+  onTypeChange(type: string) {
+    if (this.entity) {
+      return;
+    }
+
+    this.form.patchValue({
+      name: this.toTitleCase(type.replace('-', ' ')),
+    });
   }
 }

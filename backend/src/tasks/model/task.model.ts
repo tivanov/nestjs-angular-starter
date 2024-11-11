@@ -16,6 +16,12 @@ export class Task extends BaseEntity {
   active: boolean;
 
   @Prop()
+  runOnce?: boolean;
+
+  @Prop()
+  timeout?: number;
+
+  @Prop()
   runImmediately: boolean;
 
   @Prop({
@@ -46,7 +52,6 @@ export class Task extends BaseEntity {
 
   @Prop({
     maxlength: 100,
-    required: true,
   })
   cronString: string;
 }

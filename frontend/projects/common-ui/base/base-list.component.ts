@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  Input,
   OnInit,
   ViewChild,
   inject,
@@ -11,8 +12,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map, take, takeUntil } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { delay, map, take, takeUntil } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatDialog } from '@angular/material/dialog';
+import { PagedListDto } from '@app/contracts';
 
 @Component({
   template: '',
@@ -33,18 +37,31 @@ export abstract class BaseListComponent<T>
   protected filterForm: FormGroup;
 
   dataSource = new MatTableDataSource<T>();
+  selection = new SelectionModel<T>(true, []);
 
   formBuilder: FormBuilder = inject(FormBuilder);
   snackBar = inject(MatSnackBar);
   responsive = inject(BreakpointObserver);
   route = inject(ActivatedRoute);
+  router = inject(Router);
+  dialog = inject(MatDialog);
 
   sortBy: string;
   sortDirection: string;
 
+  @Input() disableFilterToQuery = false;
+
   @ViewChild('mainPaginator') paginator: MatPaginator;
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    // This is called at least once, both when there are query params and when there are not
+    this.route.queryParams.pipe(take(1), delay(0)).subscribe((queryParams) => {
+      const filter = this.filterForm?.getRawValue() || {};
+      const query = this.disableFilterToQuery ? {} : queryParams;
+      this.filterForm?.patchValue({ ...filter, ...query });
+      this.load({ pageIndex: (queryParams['page'] - 1) | 0 });
+    });
+  }
 
   ngOnInit(): void {
     this.setColumns();
@@ -60,11 +77,6 @@ export abstract class BaseListComponent<T>
             ? this.mobileColumns
             : this.defaultColumns;
       });
-
-    this.route.queryParams.pipe(take(1)).subscribe((queryParams) => {
-      this.filterForm?.patchValue(queryParams);
-      this.load({ pageIndex: (queryParams['page'] - 1) | 0 });
-    });
   }
 
   onSortChange(event: any) {
@@ -101,12 +113,42 @@ export abstract class BaseListComponent<T>
     return filter;
   }
 
+  public setQueryParams(filter: any) {
+    if (this.disableFilterToQuery) {
+      return;
+    }
+    this.router.navigate([], {
+      queryParams: filter,
+      relativeTo: this.route,
+      replaceUrl: true,
+    });
+  }
+
   public onFetchError(error) {
     this.snackBar.open(this.extractErrorMessage(error), 'Dismiss', {
       duration: 5000,
     });
     console.error(error);
     this.dataLoaded = true;
+  }
+
+  public onDataReceived(paged: PagedListDto<T>) {
+    this.dataSource.data = paged.docs;
+    this.totalItems = paged.totalDocs;
+    this.dataLoaded = true;
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numRows !== 0 && numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.selection.selected.length
+      ? this.selection.clear()
+      : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
   public abstract load($event: { pageIndex: number; pageSize?: number });

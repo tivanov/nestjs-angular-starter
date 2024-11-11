@@ -14,7 +14,7 @@ export class TaskLogsController {
 
   @Get()
   async findAll(@Query() query: GetTaskLogsQuery) {
-    return TasksMappers.taskLogsToDtoPaginated(
+    return TasksMappers.taskLogsToDtoPaged(
       await this.taskLogsService.get(query),
     );
   }

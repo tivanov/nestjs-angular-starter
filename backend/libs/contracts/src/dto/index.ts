@@ -7,3 +7,4 @@ export * from './login-record.dto';
 export * from './task.dto';
 export * from './task-log.dto';
 export * from './id-name.dto';
+export * from './identity.dto';

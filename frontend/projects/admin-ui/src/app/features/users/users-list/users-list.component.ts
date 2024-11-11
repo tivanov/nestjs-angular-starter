@@ -1,16 +1,14 @@
 import { GetUsersQuery, UserDto, UserRoleEnum } from '@app/contracts';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Component, inject, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { map, of as observableOf, take, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersService } from '../../../../../../common-ui/services/users.service';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
@@ -40,7 +38,6 @@ export class UsersListComponent extends BaseListComponent<UserDto> {
   roles = Object.values(UserRoleEnum);
 
   private usersService = inject(UsersService);
-  private router = inject(Router);
 
   override setColumns(): void {
     this.defaultColumns = [

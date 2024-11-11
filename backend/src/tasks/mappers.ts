@@ -5,6 +5,18 @@ import { Task } from './model/task.model';
 import { TaskLog } from './model/task-log.model';
 
 export class TasksMappers extends BaseMapper {
+  public static tasksToDtoPaged(
+    source: PaginateResult<Task>,
+  ): PagedListDto<TaskDto> {
+    return {
+      docs: TasksMappers.tasksToDto(source.docs) as TaskDto[],
+      totalDocs: source.totalDocs,
+      limit: source.limit,
+      page: source.page,
+      totalPages: source.totalPages,
+    };
+  }
+
   public static tasksToDto(
     source: Task[] | Types.ObjectId[],
   ): TaskDto[] | string[] {
@@ -24,19 +36,21 @@ export class TasksMappers extends BaseMapper {
       return BaseMapper.objectIdToString(source);
     }
 
-    const quest = source as Task;
+    const task = source as Task;
 
     return {
-      id: quest._id.toHexString(),
-      createdAt: quest.createdAt.toISOString(),
-      updatedAt: quest.updatedAt.toISOString(),
-      lastRun: quest.lastRun?.toISOString(),
-      active: quest.active,
-      type: quest.type,
-      name: quest.name,
-      params: quest.params,
-      script: quest.script,
-      cronString: quest.cronString,
+      id: task._id.toHexString(),
+      createdAt: task.createdAt.toISOString(),
+      updatedAt: task.updatedAt.toISOString(),
+      lastRun: task.lastRun?.toISOString(),
+      runOnce: task.runOnce,
+      timeout: task.timeout,
+      active: task.active,
+      type: task.type,
+      name: task.name,
+      params: task.params,
+      script: task.script,
+      cronString: task.cronString,
     };
   }
 
@@ -47,16 +61,15 @@ export class TasksMappers extends BaseMapper {
       return BaseMapper.objectIdToString(source);
     }
 
-    const quest = source as TaskLog;
+    const taskLog = source as TaskLog;
 
     return {
-      id: quest._id.toHexString(),
-      createdAt: quest.createdAt.toISOString(),
-      updatedAt: quest.updatedAt.toISOString(),
-      taskType: quest.taskType,
-      logType: quest.logType,
-      message: quest.message,
-      jsonData: quest.jsonData,
+      id: taskLog._id.toHexString(),
+      createdAt: taskLog.createdAt?.toISOString(),
+      taskType: taskLog.taskType,
+      logType: taskLog.logType,
+      message: taskLog.message,
+      jsonData: taskLog.jsonData,
     };
   }
 
@@ -74,7 +87,7 @@ export class TasksMappers extends BaseMapper {
     return res;
   }
 
-  public static taskLogsToDtoPaginated(
+  public static taskLogsToDtoPaged(
     source: PaginateResult<TaskLog>,
   ): PagedListDto<TaskLogDto> {
     return {

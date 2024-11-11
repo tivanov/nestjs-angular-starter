@@ -1,9 +1,11 @@
 <form
-  class="bg-neutral-800 flex flex-row w-full flex-wrap p-4 items-center"
+  class="bg-card flex flex-row w-full flex-wrap p-4 items-center"
   [formGroup]="form">
   <mat-form-field class="w-full sm:px-2 sm:w-1/2">
     <mat-label>Type</mat-label>
-    <mat-select formControlName="type">
+    <mat-select
+      formControlName="type"
+      (valueChange)="this.onTypeChange($event)">
       <mat-option *ngFor="let type of this.types" [value]="type">{{
         type
       }}</mat-option>
@@ -22,10 +24,22 @@
     >Run Immediately</mat-checkbox
   >
 
+  <mat-checkbox class="w-full sm:px-2 sm:w-1/2" formControlName="runOnce"
+    >Run Once</mat-checkbox
+  >
+
+  <mat-form-field class="w-full sm:px-2 sm:w-1/2">
+    <mat-label>Timeout (miliseconds)</mat-label>
+    <input matInput formControlName="timeout" />
+    <mat-hint>Required for run once tasks</mat-hint>
+  </mat-form-field>
+
   <mat-form-field class="w-full sm:px-2 sm:w-1/2">
     <mat-label>Cron String</mat-label>
     <input matInput formControlName="cronString" />
+    <mat-hint>Required for recurring tasks</mat-hint>
   </mat-form-field>
+
   <div class="w-full p-2 flex">
     <pre>
 *    *    *    *    *    *
@@ -39,12 +53,18 @@
 └───────────────────────── second (0 - 59, OPTIONAL)
         </pre
     >
-    <div style="margin-left: 20px">
+    <div class="ml-4 font-mono">
       <p>Examples:</p>
       <p>
         42 * * * * - Execute when the minute is 42 (e.g. 19:42, 20:42, etc.)
       </p>
-      <p>0/5 * * * * - Execute a cron job every 5 Minutes.</p>
+      <p>* * * * * * - Every second</p>
+      <p>0 */5 * * * * - Execute a cron job every 5 Minutes.</p>
+      <p>0 */10 * * * * - Every 10 minutes</p>
+      <p>0 */30 * * * * - Every 30 minutes</p>
+      <p>0 0-23/1 * * * - Every hour</p>
+      <p>0 01 * * * - Every day at 1 AM</p>
+      <p>0 15 * * * - Every day at 3 PM</p>
     </div>
   </div>
 
@@ -65,7 +85,7 @@
   <div class="w-full flex flex-row-reverse">
     <button
       mat-raised-button
-      color="accent"
+      color="primary"
       class="ml-2 font-bold rounded"
       [disabled]="!form.valid"
       (click)="onSubmit()">
@@ -76,7 +96,7 @@
       mat-button
       color="warn"
       class="ml-2 font-bold rounded"
-      (click)="reset()">
+      (click)="this.reset()">
       Cancel
     </button>
 

@@ -43,6 +43,9 @@ export class TasksListComponent
       'active',
       'type',
       'name',
+      'runOnce',
+      'timeout',
+      'runImmediately',
       'cronString',
       'lastRun',
       'actions',
@@ -55,13 +58,17 @@ export class TasksListComponent
     });
   }
 
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this.sortBy = 'active';
+    this.sortDirection = 'desc';
+  }
+
   public load($event: { pageIndex: number; pageSize?: number }) {
     const filter: GetTasksQuery = this.populateShapeableQuery($event);
 
     this.tasksService.get(filter).subscribe({
-      next: (result) => {
-        this.dataSource.data = result;
-      },
+      next: this.onDataReceived.bind(this),
       error: this.onFetchError.bind(this),
     });
   }

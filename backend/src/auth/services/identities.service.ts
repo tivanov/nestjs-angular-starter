@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from '../../shared/base/base-service';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, PaginateModel } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Identity, IdentityDocument } from '../model/identity.model';
+import { GetIdentitiesQuery, IdentityProviderEnum } from '@app/contracts';
 
 @Injectable()
 export class IdentitiesService extends BaseService<IdentityDocument> {
@@ -10,7 +11,28 @@ export class IdentitiesService extends BaseService<IdentityDocument> {
     super(model);
   }
 
-  getByUid(uid: string, provider: string) {
+  async get(query: GetIdentitiesQuery) {
+    const filter: FilterQuery<IdentityDocument> = {};
+
+    if (query.uid) {
+      filter.uid = query.uid;
+    }
+
+    if (query.userId) {
+      filter.user = query.userId;
+    }
+
+    if (query.provider) {
+      filter.provider = query.provider;
+    }
+
+    return await (this.objectModel as PaginateModel<IdentityDocument>).paginate(
+      filter,
+      this.getPaginationOptions(query),
+    );
+  }
+
+  getByUid(uid: string, provider: IdentityProviderEnum) {
     return this.objectModel
       .findOne({
         uid,
@@ -19,7 +41,7 @@ export class IdentitiesService extends BaseService<IdentityDocument> {
       .lean();
   }
 
-  getByUserId(userId: string, provider: string) {
+  getByUserId(userId: string, provider: IdentityProviderEnum) {
     return this.objectModel
       .findOne({
         user: userId,
@@ -28,7 +50,7 @@ export class IdentitiesService extends BaseService<IdentityDocument> {
       .lean();
   }
 
-  getByUserIds(userIds: string[], provider: string) {
+  getByUserIds(userIds: string[], provider: IdentityProviderEnum) {
     return this.objectModel
       .find({
         user: { $in: userIds },
@@ -39,7 +61,7 @@ export class IdentitiesService extends BaseService<IdentityDocument> {
 
   getValid(
     userId: string,
-    provider: string,
+    provider: IdentityProviderEnum,
     version?: number,
   ): Promise<Identity> {
     const query: FilterQuery<IdentityDocument> = {

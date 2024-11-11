@@ -31,15 +31,19 @@ export class BaseService<T extends Document> {
     id: string,
     errorCode: string = null,
     session?: ClientSession,
+    populate?: string,
   ): Promise<T> {
     if (!id || id === undefined) {
       this.throwBadRequest(errorCode);
     }
 
-    const entity: T = await this.objectModel
-      .findById(id)
-      .session(session)
-      .lean();
+    let query = this.objectModel.findById(id).session(session);
+
+    if (populate) {
+      query = query.populate(populate);
+    }
+
+    const entity: T = (await query.lean()) as T;
 
     if (!entity) {
       this.throwBadRequest(errorCode);
@@ -67,6 +71,20 @@ export class BaseService<T extends Document> {
     }
 
     return entities;
+  }
+
+  public async expectNameUnique(name: string, exceptId?: string) {
+    let entities = await this.objectModel.find({ name }).lean();
+
+    if (exceptId) {
+      entities = entities?.filter(
+        (entity) => entity._id.toString() !== exceptId,
+      );
+    }
+
+    if (entities?.length) {
+      throw new AppBadRequestException(ErrorCode.NAME_EXISTS);
+    }
   }
 
   public async baseCreate(command: any, session?: ClientSession): Promise<T> {
@@ -132,7 +150,7 @@ export class BaseService<T extends Document> {
       query.populate(populate);
     }
 
-    return await query.lean();
+    return (await query.lean()) as T;
   }
 
   public async getByIds(
@@ -168,7 +186,7 @@ export class BaseService<T extends Document> {
       query.populate(populate);
     }
 
-    return await query.lean();
+    return (await query.lean()) as T[];
   }
 
   public throwBadRequest(errorCode: string = null) {

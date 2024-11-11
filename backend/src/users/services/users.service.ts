@@ -107,6 +107,7 @@ export class UsersService extends BaseService<UserDocument> {
     const user = await this.baseCreate(command);
     const identityCmd: CreateIdentityCommand = {
       uid: user.userName,
+      userName: user.userName,
       provider: IdentityProviderEnum.UserName,
       secret: password,
       expirationDate: Constants.EndOfTime,

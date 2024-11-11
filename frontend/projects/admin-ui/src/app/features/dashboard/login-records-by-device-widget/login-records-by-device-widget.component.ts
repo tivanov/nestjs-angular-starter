@@ -31,17 +31,7 @@ export class LoginRecordsByDeviceWidgetComponent
   extends BaseComponent
   implements OnInit
 {
-  data: any[];
-  public chartOptions: Partial<ChartOptions> = {
-    chart: {
-      id: 'devices-chart',
-      type: 'donut',
-      foreColor: 'white',
-    },
-    title: {
-      text: 'Logins This Week',
-    },
-  };
+  public chartOptions: Partial<ChartOptions> = null;
 
   @ViewChild('chart') chart: ChartComponent;
 
@@ -55,11 +45,22 @@ export class LoginRecordsByDeviceWidgetComponent
   load() {
     this.dashboardService.getLoginRecordsByDevice().subscribe({
       next: (data) => {
-        this.data = data;
-        this.chartOptions.series = this.data.map((item) => item.count);
-        this.chartOptions.labels = this.data.map(
-          (item) => item._id || 'Unknown'
-        );
+        this.chartOptions = {
+          chart: {
+            id: 'devices-chart',
+            type: 'donut',
+            foreColor: 'white',
+          },
+          title: {
+            text: 'Logins This Week',
+          },
+          series: data.map((item) => item.count),
+          labels: data.map((item) => item._id || 'Unknown'),
+        };
+
+        if (this.chart) {
+          this.chart.updateOptions(this.chartOptions);
+        }
       },
       error: (e) => {
         console.error(e);

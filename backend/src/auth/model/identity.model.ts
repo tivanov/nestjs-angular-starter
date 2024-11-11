@@ -18,6 +18,11 @@ export class Identity extends BaseEntity {
   uid: string;
 
   @Prop({
+    maxlength: 200,
+  })
+  userName?: string;
+
+  @Prop({
     maxlength: 1000,
   })
   token: string;

@@ -1,6 +1,9 @@
 import { IsNotEmpty, MaxLength, IsOptional } from 'class-validator';
 
 export class UpdateTaskCommand {
+  @IsOptional()
+  active?: boolean;
+
   @IsNotEmpty()
   @MaxLength(100)
   name: string;
@@ -13,9 +16,15 @@ export class UpdateTaskCommand {
   @MaxLength(10000)
   script?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @MaxLength(100)
-  cronString: string;
+  cronString?: string;
+
+  @IsOptional()
+  runOnce?: boolean;
+
+  @IsOptional()
+  timeout?: number;
 
   @IsOptional()
   runImmediately?: boolean;

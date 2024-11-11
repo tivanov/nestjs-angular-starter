@@ -30,17 +30,7 @@ export class LoginRecordsByCountryWidgetComponent
   extends BaseComponent
   implements OnInit
 {
-  data: any[];
-  public chartOptions: Partial<ChartOptions> = {
-    chart: {
-      id: 'countries-chart',
-      type: 'donut',
-      foreColor: 'white',
-    },
-    title: {
-      text: 'Logins This Week',
-    },
-  };
+  public chartOptions: Partial<ChartOptions> = null;
 
   @ViewChild('chart') chart: ChartComponent;
 
@@ -55,11 +45,21 @@ export class LoginRecordsByCountryWidgetComponent
     this.dataLoaded = false;
     this.dashboardService.getLoginRecordsByCountry().subscribe({
       next: (data) => {
-        this.data = data;
-        this.chartOptions.series = this.data.map((item) => item.count);
-        this.chartOptions.labels = this.data.map((item) =>
-          (item._id || 'Unknown').substring(0, 20)
-        );
+        this.chartOptions = {
+          chart: {
+            id: 'countries-chart',
+            type: 'donut',
+            foreColor: 'white',
+          },
+          title: {
+            text: 'Logins This Week',
+          },
+          series: data.map((item) => item.count),
+          labels: data.map((item) => item._id?.substring(0, 20) || 'Unknown'),
+        };
+        if (this.chart) {
+          this.chart.updateOptions(this.chartOptions);
+        }
         this.dataLoaded = true;
       },
       error: (error) => {

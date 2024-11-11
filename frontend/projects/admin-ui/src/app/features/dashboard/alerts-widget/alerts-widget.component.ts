@@ -1,12 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
 import { AlertDto, GetAlertsQuery } from '@app/contracts';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { AlertsService } from '../../../../../../common-ui/services/alerts.service';
@@ -25,10 +24,7 @@ import { AlertsService } from '../../../../../../common-ui/services/alerts.servi
   ],
 })
 export class AlertsWidgetComponent extends BaseListComponent<AlertDto> {
-  constructor(
-    private readonly alertsService: AlertsService,
-    private readonly dialog: MatDialog
-  ) {
+  constructor(private readonly alertsService: AlertsService) {
     super();
   }
 

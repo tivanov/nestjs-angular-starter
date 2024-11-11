@@ -3,7 +3,7 @@ import { TaskTypeEnum } from '../enums';
 
 export class CreateTaskCommand {
   @IsOptional()
-  active: boolean;
+  active?: boolean;
 
   @IsNotEmpty()
   type: TaskTypeEnum;
@@ -20,9 +20,15 @@ export class CreateTaskCommand {
   @MaxLength(10000)
   script?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @MaxLength(100)
-  cronString: string;
+  cronString?: string;
+
+  @IsOptional()
+  runOnce?: boolean;
+
+  @IsOptional()
+  timeout?: number;
 
   @IsOptional()
   runImmediately?: boolean;

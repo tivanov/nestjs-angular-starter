@@ -7,12 +7,13 @@ import { UsersModule } from './../users/users.module';
 import { Module, forwardRef } from '@nestjs/common';
 import { AuthService } from './services/auth.service';
 import { PassportModule } from '@nestjs/passport';
-import { AuthController } from './auth.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IAuthConfig } from '../../config/model';
 import { RolesGuard } from './guards/roles-guard';
 import { Identity, IdentitySchema } from './model/identity.model';
 import { IdentitiesService } from './services/identities.service';
+import { AuthController } from './controllers/auth.controller';
+import { IdentitiesController } from './controllers/identities.controller';
 
 @Module({
   imports: [
@@ -35,7 +36,7 @@ import { IdentitiesService } from './services/identities.service';
       { name: Identity.name, useFactory: () => IdentitySchema },
     ]),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, IdentitiesController],
   providers: [
     AuthService,
     LocalUsernamePasswordStrategy,

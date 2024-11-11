@@ -8,5 +8,6 @@ export class CreateIdentityCommand {
   provider: IdentityProviderEnum;
   uid: string;
   version: number;
+  userName?: string;
   user: string;
 }

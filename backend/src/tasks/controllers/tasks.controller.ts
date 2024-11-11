@@ -34,7 +34,7 @@ export class TasksController {
 
   @Get()
   async findAll(@Query() query: GetTasksQuery) {
-    return TasksMappers.tasksToDto(await this.tasksService.get(query));
+    return TasksMappers.tasksToDtoPaged(await this.tasksService.get(query));
   }
 
   @Get(':id')

@@ -3,14 +3,19 @@ import { Injectable, Logger } from '@nestjs/common';
 import { BaseService } from '../../shared/base/base-service';
 import { Task, TaskDocument } from '../model/task.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, PaginateModel, PaginateResult } from 'mongoose';
 import { IAppConfig } from '../../../config/model';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 import { ModuleRef } from '@nestjs/core';
 import { ImplementationRepository } from '../implementations/repository';
 import { TasksDefinition } from '../definitions';
-import { CreateTaskCommand, ErrorCode, GetTasksQuery } from '@app/contracts';
+import {
+  CreateTaskCommand,
+  ErrorCode,
+  GetTasksQuery,
+  UpdateTaskCommand,
+} from '@app/contracts';
 import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
 
 @Injectable()
@@ -40,7 +45,7 @@ export class TasksService extends BaseService<TaskDocument> {
     this.logger.debug('Starting active tasks...');
     setInterval(() => {
       this.get({ activeOnly: true }).then((tasks) => {
-        for (const task of tasks) {
+        for (const task of tasks.docs) {
           if (this.run(task)) {
             this.logger.debug(`Scheduling task ${task.name}`);
           }
@@ -50,35 +55,85 @@ export class TasksService extends BaseService<TaskDocument> {
   }
 
   public async create(command: CreateTaskCommand): Promise<Task> {
-    const task = await super.baseCreate(command);
-    if (task.active) {
-      this.run(task);
+    if (command.runOnce && !command.timeout) {
+      throw new AppBadRequestException(ErrorCode.TIMEOUT_REQUIRED);
     }
+
+    if (!command.runOnce && !command.cronString) {
+      throw new AppBadRequestException(ErrorCode.CRON_STRING_REQUIRED);
+    }
+
+    const task = await super.baseCreate(command);
+    // if (task.active) {
+    //   this.run(task);
+    // }
     return task;
   }
 
-  public get(query: GetTasksQuery): Promise<Task[]> {
+  public async update(id: string, command: UpdateTaskCommand) {
+    if (command.runOnce && !command.timeout) {
+      throw new AppBadRequestException(ErrorCode.TIMEOUT_REQUIRED);
+    }
+
+    if (!command.runOnce && !command.cronString) {
+      throw new AppBadRequestException(ErrorCode.CRON_STRING_REQUIRED);
+    }
+
+    return super.baseUpdate(id, command);
+  }
+
+  public async get(query: GetTasksQuery): Promise<PaginateResult<Task>> {
     const filter: FilterQuery<TaskDocument> = {};
 
     if (query.activeOnly) {
       filter.active = true;
     }
 
-    let dbQuery = this.objectModel.find(filter);
-    dbQuery = this.setPopulate(dbQuery, query);
-    dbQuery = this.setProject(dbQuery, query);
-
-    return dbQuery.lean();
+    return await (this.objectModel as PaginateModel<TaskDocument>).paginate(
+      filter,
+      this.getPaginationOptions(query),
+    );
   }
 
   public run(task: Task) {
-    if (this.schedulerRegistry.doesExist('cron', task.name)) {
-      return false;
-    }
+    if (!task.runOnce) {
+      if (this.schedulerRegistry.doesExist('cron', task.name)) {
+        const existingJob = this.schedulerRegistry.getCronJob(task.name);
+        if (existingJob.cronTime.source === task.cronString) {
+          return false;
+        }
+        this.schedulerRegistry.deleteCronJob(task.name);
+        this.logger.debug(`Rescheduling task ${task.name}`);
+      }
 
-    const job = new CronJob(
-      task.cronString,
-      async () => {
+      const job = new CronJob(
+        task.cronString,
+        async () => {
+          try {
+            await ImplementationRepository.get(task.type)(task, this.moduleRef);
+          } catch (error) {
+            this.logger.error(
+              `Error running task ${task.name} of type ${task.type}`,
+              error,
+            );
+          }
+        },
+        null,
+        null,
+        null,
+        null,
+        task.runImmediately,
+      );
+
+      this.schedulerRegistry.addCronJob(task.name, job);
+      job.start();
+      return true;
+    } else {
+      if (this.schedulerRegistry.doesExist('timeout', task.name)) {
+        return false;
+      }
+
+      const callback = async () => {
         try {
           await ImplementationRepository.get(task.type)(task, this.moduleRef);
         } catch (error) {
@@ -86,18 +141,22 @@ export class TasksService extends BaseService<TaskDocument> {
             `Error running task ${task.name} of type ${task.type}`,
             error,
           );
+        } finally {
+          try {
+            this.deactivate(task._id.toHexString());
+          } catch (error: Error | any) {
+            this.logger.error(
+              `Error deactivating task ${task.name} of type ${task.type}`,
+              error,
+            );
+          }
         }
-      },
-      null,
-      null,
-      null,
-      null,
-      task.runImmediately,
-    );
+      };
 
-    this.schedulerRegistry.addCronJob(task.name, job);
-    job.start();
-    return true;
+      const timeout = setTimeout(callback, task.timeout);
+
+      this.schedulerRegistry.addTimeout(task.name, timeout);
+    }
   }
 
   public async createDefault() {
@@ -134,5 +193,9 @@ export class TasksService extends BaseService<TaskDocument> {
       },
       { new: true, lean: true },
     );
+  }
+
+  public async deactivate(id: string) {
+    return this.objectModel.findByIdAndUpdate(id, { active: false });
   }
 }
