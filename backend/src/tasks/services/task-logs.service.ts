@@ -65,7 +65,11 @@ export class TaskLogsService extends BaseService<TaskLogDocument> {
     try {
       if (errorObject) {
         jsonData = JSON.stringify(
-          JSON.stringify(errorObject, Object.getOwnPropertyNames(errorObject)),
+          errorObject,
+          function replacer(key, value) {
+            return value;
+          },
+          // Object.getOwnPropertyNames(errorObject),
         );
 
         jsonData =
@@ -88,5 +92,14 @@ export class TaskLogsService extends BaseService<TaskLogDocument> {
       this.logger.error('Error while logging', error);
       this.logger.error('Log data', log);
     }
+  }
+
+  async clean() {
+    const olderThan = new Date();
+    olderThan.setTime(olderThan.getTime() - 1000 * 60 * 60 * 24 * 30);
+
+    return await this.objectModel.deleteMany({
+      createdAt: { $lte: olderThan },
+    });
   }
 }

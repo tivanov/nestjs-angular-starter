@@ -6,8 +6,8 @@ import { Identity, IdentityDocument } from '../model/identity.model';
 import { GetIdentitiesQuery, IdentityProviderEnum } from '@app/contracts';
 
 @Injectable()
-export class IdentitiesService extends BaseService<IdentityDocument> {
-  constructor(@InjectModel(Identity.name) model: Model<IdentityDocument>) {
+export class IdentitiesService extends BaseService<Identity> {
+  constructor(@InjectModel(Identity.name) model: Model<Identity>) {
     super(model);
   }
 

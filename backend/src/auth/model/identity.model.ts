@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { SchemaTypes, Document, Types } from 'mongoose';
+import { SchemaTypes, Document, Types, HydratedDocument } from 'mongoose';
 import { User } from '../../users/model/user.model';
 import { BaseEntity } from '../../shared/base/base-entity';
 import { IdentityProviderEnum } from '@app/contracts';
 
-export type IdentityDocument = Identity & Document;
+export type IdentityDocument = HydratedDocument<Identity>;
 
 @Schema({
   timestamps: true,

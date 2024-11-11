@@ -4,7 +4,7 @@ import { ErrorCode, ShapeableQuery } from '@app/contracts';
 import { Logger } from '@nestjs/common';
 import { ApiResponseException } from '../exceptions/app-api-response-exception';
 
-export class BaseService<T extends Document> {
+export class BaseService<T> {
   protected objectModel: Model<T>;
 
   constructor(objectModel: Model<T>) {

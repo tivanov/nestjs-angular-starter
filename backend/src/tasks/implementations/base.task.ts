@@ -24,6 +24,9 @@ export class BaseTaskImplementation {
     try {
       const tasks = moduleRef.get(TasksService, { strict: false });
       await tasks.updateLastRun(inputTask._id.toHexString());
+      if (inputTask.runOnce) {
+        await tasks.deactivate(inputTask._id.toHexString());
+      }
     } catch (error) {
       BaseTaskImplementation.baseLogger.error(error);
     }

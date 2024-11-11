@@ -19,11 +19,11 @@ import {
 import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
 
 @Injectable()
-export class TasksService extends BaseService<TaskDocument> {
+export class TasksService extends BaseService<Task> {
   private logger = new Logger(TasksService.name);
 
   constructor(
-    @InjectModel(Task.name) model: Model<TaskDocument>,
+    @InjectModel(Task.name) model: Model<Task>,
     configService: ConfigService,
     private schedulerRegistry: SchedulerRegistry,
     private moduleRef: ModuleRef,

@@ -23,17 +23,17 @@ import { LoginRecordsService } from './login-records.service';
 import { Request } from 'express';
 import { AppNotFoundException } from 'src/shared/exceptions/app-not-found-exception';
 import { IdentitiesService } from 'src/auth/services/identities.service';
-import { join } from 'path';
+import path from 'path';
 import * as fs from 'fs/promises';
 
 @Injectable()
-export class UsersService extends BaseService<UserDocument> {
+export class UsersService extends BaseService<User> {
   private logger = new Logger(UsersService.name);
   private authConfig: IAuthConfig;
   private appConfig: IAppConfig;
 
   constructor(
-    @InjectModel(User.name) userModel: PaginateModel<UserDocument>,
+    @InjectModel(User.name) userModel: PaginateModel<User>,
     private readonly loginRecords: LoginRecordsService,
     private readonly identities: IdentitiesService,
     config: ConfigService,
@@ -165,8 +165,8 @@ export class UsersService extends BaseService<UserDocument> {
     await this.objectModel.findOneAndDelete({ _id: userId });
 
     try {
-      const savePath = join(this.appConfig.uploadsDir, 'avatars');
-      const fileFullPath = join(savePath, `${existing._id}.webp`);
+      const savePath = path.join(this.appConfig.uploadsDir, 'avatars');
+      const fileFullPath = path.join(savePath, `${existing._id}.webp`);
       await fs.unlink(fileFullPath);
     } catch (error) {
       this.logError(this.logger, error);
@@ -229,16 +229,24 @@ export class UsersService extends BaseService<UserDocument> {
     return this.objectModel.countDocuments(filter);
   }
 
-  updateAvatar(id: string, frontendPath: string) {
+  updateAvatar(id: string, frontendPath: string): Promise<User> {
     return this.baseUpdate(id, { avatar: frontendPath });
   }
 
-  private async blockUser(user: UserDocument) {
+  private async blockUser(user: User) {
     const blockUntil = new Date();
     blockUntil.setTime(blockUntil.getTime() + this.authConfig.userBlockTime);
-    user.blockExpires = blockUntil;
-    user.loginAttempts = 0;
-    await user.save();
+    return await this.objectModel.findByIdAndUpdate(
+      user._id,
+      {
+        blockExpires: blockUntil,
+        loginAttempts: 0,
+      },
+      {
+        new: true,
+        lean: true,
+      },
+    );
   }
 
   private async runPostLogin(user: User, success: boolean, request: Request) {

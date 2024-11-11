@@ -3,11 +3,12 @@ import { SchemaTypes, Document, Types } from 'mongoose';
 import { User } from '../../users/model/user.model';
 import * as bcrypt from 'bcrypt';
 import { Identity } from './identity.model';
+import { BaseEntity } from 'src/shared/base/base-entity';
 
 @Schema({
   timestamps: true,
 })
-export class RefreshToken extends Document {
+export class RefreshToken extends BaseEntity {
   @Prop({
     required: true,
     index: true,

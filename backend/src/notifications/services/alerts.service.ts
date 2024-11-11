@@ -6,13 +6,13 @@ import { AlertTypeEnum, GetAlertsQuery } from '@app/contracts';
 import { Alert, AlertDocument } from '../model/alert.model';
 
 @Injectable()
-export class AlertsService extends BaseService<AlertDocument> {
-  constructor(@InjectModel(Alert.name) model: PaginateModel<AlertDocument>) {
+export class AlertsService extends BaseService<Alert> {
+  constructor(@InjectModel(Alert.name) model: PaginateModel<Alert>) {
     super(model);
   }
 
-  async get(query: GetAlertsQuery): Promise<PaginateResult<AlertDocument>> {
-    const filter: FilterQuery<AlertDocument> = {};
+  async get(query: GetAlertsQuery): Promise<PaginateResult<Alert>> {
+    const filter: FilterQuery<Alert> = {};
 
     if (query.isRead) {
       filter.isRead = query.isRead;
@@ -29,7 +29,7 @@ export class AlertsService extends BaseService<AlertDocument> {
       ];
     }
 
-    return await (this.objectModel as PaginateModel<AlertDocument>).paginate(
+    return await (this.objectModel as PaginateModel<Alert>).paginate(
       filter,
       this.getPaginationOptions(query),
     );
