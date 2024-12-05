@@ -41,7 +41,11 @@ export class BaseComponent implements OnDestroy {
   protected extractErrorMessage(error) {
     var msg = '';
     if (error.error && error.error.message) {
-      msg = error.error.message;
+      if (Array.isArray(error.error.message)) {
+        msg = error.error.message.join(', ');
+      } else {
+        msg = error.error.message;
+      }
     } else if (error.error && error.error.code) {
       msg = error.error.code;
     } else if (error.status && error.status === 404) {
