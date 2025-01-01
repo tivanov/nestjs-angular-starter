@@ -40,7 +40,7 @@ export class TaskLogComponent extends BaseComponent implements OnInit {
     this.taskLogs.getById(this.id).subscribe({
       next: (entry) => {
         this.entry = entry;
-        this.additionalData = JSON.parse(entry.jsonData);
+        this.additionalData = JSON.parse(entry.jsonData || null);
       },
       error: (error) => {
         console.error(error);

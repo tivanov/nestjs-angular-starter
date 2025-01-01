@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { PagedListDto } from '@app/contracts';
-import { EnvironmentService } from './environment.service';
+import { HttpParams } from '@angular/common/http';
+import { BaseService } from '../base/base.service';
 
 @Injectable({ providedIn: 'root' })
-export class DashboardService {
-  constructor(private http: HttpClient, private env: EnvironmentService) {}
-
+export class DashboardService extends BaseService {
   public getUsersTiles() {
     let params = new HttpParams();
     return this.http.get<any>(`${this.env.apiUrl}/dashboard/users-tiles`, {

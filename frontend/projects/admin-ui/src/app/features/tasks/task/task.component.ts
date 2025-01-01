@@ -1,5 +1,5 @@
 import { TaskDto, TaskTypeEnum } from '@app/contracts';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -18,7 +18,7 @@ import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TasksService } from '../../../../../../common-ui/services/tasks.service';
-import { BaseEditComponent } from '../../../../../../common-ui/base/base-edit.component';
+import { StringUtils } from '../../../../../../common-ui/utils/string-utils';
 
 @Component({
   selector: 'app-task',
@@ -39,28 +39,56 @@ import { BaseEditComponent } from '../../../../../../common-ui/base/base-edit.co
   ],
   templateUrl: './task.component.html',
 })
-export class TaskComponent extends BaseEditComponent<TaskDto> {
+export class TaskComponent extends BaseComponent implements OnInit {
+  taskId: string | null = null;
+
+  form: FormGroup;
+  task: TaskDto;
+
   types = Object.values(TaskTypeEnum);
 
-  private readonly tasks = inject(TasksService);
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private tasksService: TasksService,
+    private snackBar: MatSnackBar,
+    private activatedRoute: ActivatedRoute
+  ) {
+    super();
+  }
 
-  load(id: string) {
-    this.tasks.getOne(id).subscribe({
-      next: (task) => {
-        this.entity = task;
-        this.form.patchValue(task);
-      },
-      error: (err) => {
-        this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-          duration: 5000,
-        });
-        console.error(err);
+  ngOnInit(): void {
+    this.form = this.initForm();
+    this.activatedRoute.paramMap.pipe().subscribe({
+      next: (data) => {
+        if (data.get('id')) {
+          this.taskId = data.get('id');
+          this.load();
+        }
       },
     });
   }
 
-  buildForm() {
-    this.form = this.formBuilder.group({
+  load() {
+    this.tasksService
+      .getOne(this.taskId)
+      .pipe()
+      .subscribe({
+        next: (task) => {
+          this.task = task;
+          this.form.patchValue(task);
+        },
+        error: (err) => {
+          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
+            duration: 5000,
+          });
+          console.error(err);
+        },
+      });
+  }
+
+  initForm() {
+    return this.fb.group({
       id: [{ value: '', disabled: true }],
       active: [false],
       type: [null, Validators.required],
@@ -82,17 +110,23 @@ export class TaskComponent extends BaseEditComponent<TaskDto> {
     const val = this.form.getRawValue();
 
     if (val.id) {
-      this.tasks.update(val.id, val).subscribe({
+      this.tasksService.update(val.id, val).subscribe({
         next: () => {
           this.snackBar.open('Task updated', 'Close', {
             duration: 3000,
           });
           this.router.navigate(['./tasks/list']);
         },
-        error: this.onFetchError.bind(this),
+
+        error: (err) => {
+          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
+            duration: 5000,
+          });
+          console.error(err);
+        },
       });
     } else {
-      this.tasks.create(val).subscribe({
+      this.tasksService.create(val).subscribe({
         next: () => {
           this.snackBar.open('Task created', 'Close', {
             duration: 3000,
@@ -100,18 +134,35 @@ export class TaskComponent extends BaseEditComponent<TaskDto> {
           this.router.navigate(['./tasks/list']);
         },
 
-        error: this.onFetchError.bind(this),
+        error: (err) => {
+          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
+            duration: 5000,
+          });
+          console.error(err);
+        },
       });
     }
   }
 
+  clear() {
+    if (this.task) {
+      this.form.patchValue(this.task);
+    } else {
+      this.form.reset();
+    }
+  }
+
+  exit() {
+    this.router.navigate(['/tasks/list']);
+  }
+
   onTypeChange(type: string) {
-    if (this.entity) {
+    if (this.task) {
       return;
     }
 
     this.form.patchValue({
-      name: this.toTitleCase(type.replace('-', ' ')),
+      name: StringUtils.toTitleCase(type.replace('-', ' ')),
     });
   }
 }

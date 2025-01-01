@@ -1,3 +1,6 @@
+<div *ngIf="!this.dataLoaded" class="overlay">
+  <app-spinner class="absolute"></app-spinner>
+</div>
 <div class="flex justify-between pb-4">
   <button mat-raised-button color="accent" [routerLink]="'/users/create'">
     <mat-icon>add</mat-icon>Create

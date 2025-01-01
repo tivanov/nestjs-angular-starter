@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { TasksService } from '../services/tasks.service';
 import { JwtGuard } from '../../auth/guards/jwt.guard';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import {
   CreateTaskCommand,
@@ -25,7 +26,10 @@ import { RolesGuard } from 'src/auth/guards/roles-guard';
 @Roles(UserRoleEnum.Admin)
 @UseGuards(JwtGuard, RolesGuard)
 export class TasksController {
-  constructor(private readonly tasksService: TasksService) {}
+  constructor(
+    private readonly tasksService: TasksService,
+    private readonly schedulerRegistry: SchedulerRegistry,
+  ) {}
 
   @Post()
   async create(@Body() command: CreateTaskCommand) {
@@ -44,9 +48,7 @@ export class TasksController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() command: UpdateTaskCommand) {
-    return TasksMappers.taskToDto(
-      await this.tasksService.baseUpdate(id, command),
-    );
+    return TasksMappers.taskToDto(await this.tasksService.update(id, command));
   }
 
   @Delete(':id')

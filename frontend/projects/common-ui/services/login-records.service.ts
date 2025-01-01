@@ -7,24 +7,16 @@ import {
   PagedListDto,
 } from '@app/contracts';
 import { EnvironmentService } from './environment.service';
+import { BaseService } from '../base/base.service';
 
 @Injectable({ providedIn: 'root' })
-export class LoginRecordsService {
-  constructor(private http: HttpClient, private env: EnvironmentService) {}
-
+export class LoginRecordsService extends BaseService {
   public get(
     query: GetLoginRecordsQuery
   ): Observable<PagedListDto<LoginRecordDto>> {
-    const params = {};
-    const queryKeys = Object.keys(query);
-    queryKeys.forEach((key) => {
-      if (query[key]) {
-        params[key] = query[key];
-      }
-    });
     return this.http.get<PagedListDto<LoginRecordDto>>(
       `${this.env.apiUrl}/login-records`,
-      { params }
+      { params: this.queryToParams(query) }
     );
   }
 }

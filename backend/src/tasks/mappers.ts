@@ -43,6 +43,7 @@ export class TasksMappers extends BaseMapper {
       createdAt: task.createdAt.toISOString(),
       updatedAt: task.updatedAt.toISOString(),
       lastRun: task.lastRun?.toISOString(),
+      runImmediately: task.runImmediately,
       runOnce: task.runOnce,
       timeout: task.timeout,
       active: task.active,

@@ -44,7 +44,7 @@ export class UsersService extends BaseService<User> {
   }
 
   async get(query: GetUsersQuery): Promise<PaginateResult<User>> {
-    const filter: { [key: string]: any } = {};
+    const filter: FilterQuery<User> = {};
 
     if (query.userName) {
       filter.userName = query.userName;

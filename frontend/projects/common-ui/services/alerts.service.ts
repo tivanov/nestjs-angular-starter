@@ -3,21 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AlertDto, GetAlertsQuery, PagedListDto } from '@app/contracts';
 import { EnvironmentService } from './environment.service';
+import { BaseService } from '../base/base.service';
 
 @Injectable({ providedIn: 'root' })
-export class AlertsService {
-  constructor(private http: HttpClient, private env: EnvironmentService) {}
-
+export class AlertsService extends BaseService {
   public get(query: GetAlertsQuery): Observable<PagedListDto<AlertDto>> {
-    const params = {};
-    const queryKeys = Object.keys(query);
-    queryKeys.forEach((key) => {
-      if (query[key]) {
-        params[key] = query[key];
-      }
-    });
     return this.http.get<PagedListDto<AlertDto>>(`${this.env.apiUrl}/alerts`, {
-      params,
+      params: this.queryToParams(query),
     });
   }
 

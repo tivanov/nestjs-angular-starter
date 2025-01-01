@@ -9,6 +9,7 @@ import { TaskLogsController } from './controllers/task-logs.controller';
 import { TaskLogsService } from './services/task-logs.service';
 import { NotificationsModule } from 'src/notifications/notifications.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { TasksRuntimeService } from './services/tasks-runtime.service';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     ]),
   ],
   controllers: [TasksController, TaskLogsController],
-  providers: [TasksService, TaskLogsService],
+  providers: [TasksService, TaskLogsService, TasksRuntimeService],
+  exports: [TasksService],
 })
 export class TasksModule {}

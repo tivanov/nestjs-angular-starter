@@ -1,5 +1,5 @@
 <form [formGroup]="this.filterForm" class="flex pb-4 flex-row items-center">
-  <mat-form-field>
+  <mat-form-field class="w-full lg:w-2/6">
     <mat-label>Date range</mat-label>
     <mat-date-range-input [rangePicker]="picker">
       <input
@@ -27,16 +27,12 @@
       }}</mat-option>
     </mat-select>
   </mat-form-field>
-  <button
-    type="button"
-    mat-button
-    (click)="this.filterForm.reset()"
-    class="ml-auto">
+  <button mat-button (click)="this.filterForm.reset()" class="ml-auto">
     Clear
   </button>
   <button
     mat-raised-button
-    color="accent"
+    color="primary"
     (click)="load({ pageIndex: 0 })"
     class="ml-2">
     <mat-icon>refresh</mat-icon> Refresh
@@ -49,21 +45,21 @@
   matSort
   (matSortChange)="this.onSortChange($event)">
   <ng-container matColumnDef="createdAt">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+    <th mat-header-cell *matHeaderCellDef>Date</th>
     <td mat-cell *matCellDef="let element">
       {{ element.createdAt | date : this.fullDateFormat }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="taskType">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Task</th>
+    <th mat-header-cell *matHeaderCellDef>Task</th>
     <td mat-cell *matCellDef="let element">
       {{ element.taskType }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="logType">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Log</th>
+    <th mat-header-cell *matHeaderCellDef>Log</th>
     <td mat-cell *matCellDef="let element">
       {{ element.logType }}
     </td>

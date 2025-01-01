@@ -1,7 +1,23 @@
-<form [formGroup]="this.filterForm" class="flex pb-4 flex-row items-center">
+<div class="w-full mb-4">
   <button mat-raised-button color="primary" [routerLink]="'/tasks/create'">
     <mat-icon>add</mat-icon>Create
   </button>
+</div>
+
+<form [formGroup]="this.filterForm" class="flex flex-row items-center">
+  <mat-form-field class="w-full lg:w-1/6">
+    <mat-label>ID</mat-label>
+    <input matInput formControlName="id" />
+  </mat-form-field>
+  <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
+    <mat-label>Task</mat-label>
+    <mat-select formControlName="type">
+      <mat-option *ngFor="let task of this.Types" [value]="task">{{
+        task
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-checkbox formControlName="activeOnly">Active</mat-checkbox>
   <button
     mat-raised-button
     color="primary"

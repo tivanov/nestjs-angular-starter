@@ -14,6 +14,7 @@ import { UsersService } from '../../../../../../common-ui/services/users.service
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
+import { SpinnerComponent } from '../../../core/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-users-list',
@@ -30,6 +31,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatPaginatorModule,
     MatSelectModule,
     MatSortModule,
+    SpinnerComponent,
   ],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',
@@ -61,8 +63,10 @@ export class UsersListComponent extends BaseListComponent<UserDto> {
 
   onDelete(user: UserDto): void {
     if (confirm('Are you sure to delete this record?')) {
+      this.dataLoaded = false;
       this.usersService.delete(user.id).subscribe({
         next: () => {
+          this.dataLoaded = true;
           this.load({ pageIndex: 0 });
           this.snackBar.open('Record deleted.', '', { duration: 2000 });
         },
@@ -72,6 +76,7 @@ export class UsersListComponent extends BaseListComponent<UserDto> {
   }
 
   public load($event: { pageIndex: any; pageSize?: any }) {
+    this.dataLoaded = false;
     const filter: GetUsersQuery = this.populateShapeableQuery($event);
 
     this.usersService
@@ -81,16 +86,8 @@ export class UsersListComponent extends BaseListComponent<UserDto> {
         next: (paged) => {
           this.dataSource.data = paged.docs;
           this.totalItems = paged.totalDocs;
-
-          this.router.navigate([], {
-            queryParams: filter,
-            relativeTo: this.route,
-            // NOTE: By using the replaceUrl option, we don't increase the Browser's
-            // history depth with every filtering keystroke. This way, the List-View
-            // remains a single item in the Browser's history, which allows the back
-            // button to function much more naturally for the user.
-            replaceUrl: true,
-          });
+          this.setQueryParams(filter);
+          this.dataLoaded = true;
         },
         error: this.onFetchError.bind(this),
       });

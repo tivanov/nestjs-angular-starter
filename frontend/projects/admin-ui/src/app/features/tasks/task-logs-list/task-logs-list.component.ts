@@ -18,7 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { TaskLogsService } from '../../../../../../common-ui/services/task-logs.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSortModule } from '@angular/material/sort';
+import { MatSortHeader } from '@angular/material/sort';
 
 @Component({
   selector: 'app-task-logs-list',
@@ -37,16 +37,12 @@ import { MatSortModule } from '@angular/material/sort';
     MatSelectModule,
     MatOptionModule,
     MatDatepickerModule,
-    MatSortModule,
+    MatSortHeader,
   ],
 })
-export class TaskLogsListComponent
-  extends BaseListComponent<TaskLogDto>
-  implements OnInit
-{
+export class TaskLogsListComponent extends BaseListComponent<TaskLogDto> {
   logTypes = Object.values(TaskLogTypeEnum);
   taskTypes = Object.values(TaskTypeEnum);
-
   private taskLogsService = inject(TaskLogsService);
 
   override setColumns(): void {
@@ -61,6 +57,7 @@ export class TaskLogsListComponent
 
   public buildForm(): void {
     const endDate = new Date();
+    endDate.setUTCHours(23, 59, 59, 999);
     const startDate = new Date();
     startDate.setTime(startDate.getTime() - 7 * 24 * 60 * 60 * 1000);
     this.filterForm = this.formBuilder.group({

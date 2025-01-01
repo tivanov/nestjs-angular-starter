@@ -10,15 +10,15 @@ import {
 } from '@app/contracts';
 
 @Injectable()
-export class TaskLogsService extends BaseService<TaskLogDocument> {
+export class TaskLogsService extends BaseService<TaskLog> {
   private logger = new Logger(TaskLogsService.name);
 
-  constructor(@InjectModel(TaskLog.name) model: Model<TaskLogDocument>) {
+  constructor(@InjectModel(TaskLog.name) model: Model<TaskLog>) {
     super(model);
   }
 
   async get(query: GetTaskLogsQuery): Promise<PaginateResult<TaskLog>> {
-    const filter: FilterQuery<TaskLogDocument> = {};
+    const filter: FilterQuery<TaskLog> = {};
 
     if (query.taskType) {
       filter.taskType = query.taskType;
@@ -36,7 +36,7 @@ export class TaskLogsService extends BaseService<TaskLogDocument> {
       filter.createdAt = { ...filter.createdAt, $lte: new Date(query.endDate) };
     }
 
-    return await (this.objectModel as PaginateModel<TaskLogDocument>).paginate(
+    return await (this.objectModel as PaginateModel<TaskLog>).paginate(
       filter,
       this.getPaginationOptions(query),
     );

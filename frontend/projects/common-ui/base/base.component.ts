@@ -2,7 +2,12 @@ import { Component, LOCALE_ID, OnDestroy, inject } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { AuthSignal } from '../auth/auth.signal';
-import { Constants, UserRoleEnum, IdentityProviderEnum } from '@app/contracts';
+import {
+  Constants,
+  UserRoleEnum,
+  IdentityProviderEnum,
+  TaskTypeEnum,
+} from '@app/contracts';
 import { formatDate } from '@angular/common';
 
 @Component({
@@ -14,6 +19,7 @@ export class BaseComponent implements OnDestroy {
   UserRoleEnum = UserRoleEnum;
   IdentityProviderEnum = IdentityProviderEnum;
   Constants = Constants;
+  TaskTypeEnum = TaskTypeEnum;
 
   public readonly fullDateFormat = 'dd.MM.yyyy HH:mm:ss';
   public readonly inputDateTimeFormat = 'yyyy-MM-ddTHH:mm';
@@ -41,7 +47,11 @@ export class BaseComponent implements OnDestroy {
   protected extractErrorMessage(error) {
     var msg = '';
     if (error.error && error.error.message) {
-      msg = error.error.message;
+      if (Array.isArray(error.error.message)) {
+        msg = error.error.message.join(', ');
+      } else {
+        msg = error.error.message;
+      }
     } else if (error.error && error.error.code) {
       msg = error.error.code;
     } else if (error.status && error.status === 404) {
@@ -64,13 +74,18 @@ export class BaseComponent implements OnDestroy {
   }
 
   get isSafari() {
-    return (
+    const ua = this.window.navigator.userAgent;
+    const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i);
+    const webkit = !!ua.match(/WebKit/i);
+    const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+    const desktopSafari =
       /constructor/i.test(this.window.HTMLElement) ||
       (function (p) {
         return p.toString() === '[object SafariRemoteNotification]';
         // @ts-ignore
-      })(!this.window['safari'] || safari.pushNotification)
-    );
+      })(!this.window['safari'] || safari.pushNotification);
+
+    return iOSSafari || desktopSafari;
   }
 
   private getUsersLocale(): string {
@@ -86,10 +101,6 @@ export class BaseComponent implements OnDestroy {
     return lang;
   }
 
-  protected round(num: number, fractionDigits: number = 2): number {
-    return Number(num.toFixed(fractionDigits));
-  }
-
   protected toDateInputFormat(date?: Date | string): string {
     let local = new Date();
     if (date) {
@@ -101,17 +112,5 @@ export class BaseComponent implements OnDestroy {
 
   protected copyToClipboard(value: string) {
     this.navigator.clipboard.writeText(value || '');
-  }
-
-  protected toTitleCase(str: string) {
-    return (
-      str
-        ?.toLowerCase()
-        .split(' ')
-        .map((word: any) => {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        })
-        .join(' ') || ''
-    );
   }
 }

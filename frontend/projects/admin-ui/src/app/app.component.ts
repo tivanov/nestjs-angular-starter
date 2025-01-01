@@ -11,6 +11,7 @@ import {
   faGears,
   faList,
   faPlus,
+  faSpinner,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -31,7 +32,8 @@ export class AppComponent {
       faPlus,
       faChevronDown,
       faGears,
-      faClipboardList
+      faClipboardList,
+      faSpinner
     );
   }
 }

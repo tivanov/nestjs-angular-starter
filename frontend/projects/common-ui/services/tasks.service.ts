@@ -1,37 +1,22 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EnvironmentService } from './environment.service';
 import {
   CreateTaskCommand,
   GetTasksQuery,
+  PagedListDto,
   TaskDto,
   UpdateTaskCommand,
 } from '@app/contracts';
+import { BaseService } from '../base/base.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TasksService {
-  constructor(
-    private http: HttpClient,
-    private env: EnvironmentService
-  ) {}
-
-  get(query: GetTasksQuery): Observable<TaskDto[]> {
-    const params = {};
-
-    for (const name in query) {
-      if (
-        query[name] !== undefined &&
-        query[name] !== null &&
-        query[name] !== ''
-      ) {
-        params[name] = query[name];
-      }
-    }
-
-    return this.http.get<TaskDto[]>(`${this.env.apiUrl}/tasks`, { params });
+export class TasksService extends BaseService {
+  get(query: GetTasksQuery): Observable<PagedListDto<TaskDto>> {
+    return this.http.get<PagedListDto<TaskDto>>(`${this.env.apiUrl}/tasks`, {
+      params: this.queryToParams(query),
+    });
   }
 
   getOne(id: string): Observable<TaskDto> {

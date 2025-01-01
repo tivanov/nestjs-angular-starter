@@ -6,26 +6,16 @@ import {
   UpdateUserDataCommand,
   UpdateUserPasswordCommand,
 } from '@app/contracts';
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EnvironmentService } from './environment.service';
 import { Observable } from 'rxjs';
+import { BaseService } from '../base/base.service';
 
 @Injectable({ providedIn: 'root' })
-export class UsersService {
-  constructor(private http: HttpClient, private env: EnvironmentService) {}
-
+export class UsersService extends BaseService {
   public get(query: GetUsersQuery): Observable<PagedListDto<UserDto>> {
-    const params = {};
-    const queryKeys = Object.keys(query);
-    queryKeys.forEach((key) => {
-      if (query[key]) {
-        params[key] = query[key];
-      }
-    });
-
     return this.http.get<PagedListDto<UserDto>>(`${this.env.apiUrl}/users`, {
-      params: params as any,
+      params: this.queryToParams(query),
     });
   }
 

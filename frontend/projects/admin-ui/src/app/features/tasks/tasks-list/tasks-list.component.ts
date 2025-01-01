@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
@@ -13,6 +13,10 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-tasks-list',
@@ -30,12 +34,20 @@ import { MatSortModule } from '@angular/material/sort';
     FormsModule,
     FontAwesomeModule,
     MatSortModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatSelectModule,
   ],
 })
 export class TasksListComponent
   extends BaseListComponent<TaskDto>
   implements OnInit
 {
+  public readonly Types = Object.values(this.TaskTypeEnum);
+
+  taskId = input<string>();
+
   private tasksService = inject(TasksService);
 
   override setColumns(): void {
@@ -54,7 +66,9 @@ export class TasksListComponent
 
   public buildForm(): void {
     this.filterForm = this.formBuilder.group({
-      organisationId: [],
+      id: [],
+      activeOnly: [],
+      type: [],
     });
   }
 
@@ -62,6 +76,11 @@ export class TasksListComponent
     super.ngOnInit();
     this.sortBy = 'active';
     this.sortDirection = 'desc';
+
+    if (this.taskId()) {
+      console.log('Task ID:', this.taskId());
+      this.filterForm.patchValue({ id: this.taskId() });
+    }
   }
 
   public load($event: { pageIndex: number; pageSize?: number }) {

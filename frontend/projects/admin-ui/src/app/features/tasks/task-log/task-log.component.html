@@ -1,16 +1,15 @@
 <div *ngIf="this.entry" class="p-4 flex flex-col bg-card">
   <app-text
     label="Date"
-    value="{{ this.entry.createdAt | date : this.fullDateFormat }}"></app-text>
+    value="{{ this.entry.createdAt | date: this.fullDateFormat }}"></app-text>
   <app-text label="Task" value="{{ this.entry.taskType }}"></app-text>
   <app-text label="Type" value="{{ this.entry.logType }}"></app-text>
   <app-text label="Message" value="{{ this.entry.message }}"></app-text>
   @if (this.additionalData) {
-  <div class="font-bold text-lg">Additional Data:</div>
-  <pre>
+    <div class="font-bold text-lg">Additional Data:</div>
+    <pre>
     {{ this.additionalData | json }}
-    </pre
-  >
+    </pre>
   }
   <div class="flex justify-end">
     <button
