@@ -10,6 +10,7 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import * as fs from 'fs/promises';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 const logger = new Logger('HTTP');
 
@@ -68,8 +69,8 @@ const setupLogging = (app: INestApplication) => {
 };
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.set('query parser', 'extended');
   const configService = app.get(ConfigService);
   const appConfig = configService.get<IAppConfig>('app');
 
