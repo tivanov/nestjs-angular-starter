@@ -19,26 +19,25 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-  selector: 'app-tasks-list',
-  templateUrl: './tasks-list.component.html',
-  standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatButtonModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatSlideToggleModule,
-    FormsModule,
-    FontAwesomeModule,
-    MatSortModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatSelectModule,
-  ],
+    selector: 'app-tasks-list',
+    templateUrl: './tasks-list.component.html',
+    imports: [
+        RouterModule,
+        CommonModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatButtonModule,
+        MatIconModule,
+        MatPaginatorModule,
+        MatSlideToggleModule,
+        FormsModule,
+        FontAwesomeModule,
+        MatSortModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatSelectModule,
+    ]
 })
 export class TasksListComponent
   extends BaseListComponent<TaskDto>

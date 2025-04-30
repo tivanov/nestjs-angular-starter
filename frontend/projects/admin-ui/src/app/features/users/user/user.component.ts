@@ -27,26 +27,25 @@ import { EnvironmentService } from '../../../../../../common-ui/services/environ
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-user',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSnackBarModule,
-    LoginRecordsListComponent,
-    HasErrorDirective,
-    HasErrorRootDirective,
-    MatIconModule,
-    MatProgressBarModule,
-    MatCheckboxModule,
-  ],
-  templateUrl: './user.component.html',
-  styleUrl: './user.component.scss',
+    selector: 'app-user',
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSnackBarModule,
+        LoginRecordsListComponent,
+        HasErrorDirective,
+        HasErrorRootDirective,
+        MatIconModule,
+        MatProgressBarModule,
+        MatCheckboxModule,
+    ],
+    templateUrl: './user.component.html',
+    styleUrl: './user.component.scss'
 })
 export class UserComponent extends BaseEditComponent<UserDto> {
   changePasswordForm: FormGroup;

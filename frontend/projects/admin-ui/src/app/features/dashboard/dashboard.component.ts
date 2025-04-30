@@ -8,18 +8,17 @@ import { MatCard } from '@angular/material/card';
 import { AlertsWidgetComponent } from './alerts-widget/alerts-widget.component';
 
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
-  imports: [
-    CommonModule,
-    UserTilesWidgetComponent,
-    LoginRecordsByDeviceWidgetComponent,
-    LoginRecordsByCountryWidgetComponent,
-    MatCard,
-    AlertsWidgetComponent,
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+    selector: 'app-dashboard',
+    imports: [
+        CommonModule,
+        UserTilesWidgetComponent,
+        LoginRecordsByDeviceWidgetComponent,
+        LoginRecordsByCountryWidgetComponent,
+        MatCard,
+        AlertsWidgetComponent,
+    ],
+    templateUrl: './dashboard.component.html',
+    styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent extends BaseComponent implements AfterViewInit {
   ngAfterViewInit() {}

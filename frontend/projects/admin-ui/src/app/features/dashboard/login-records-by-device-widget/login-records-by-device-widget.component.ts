@@ -21,11 +21,10 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-login-records-by-device-widget',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, NgApexchartsModule],
-  templateUrl: './login-records-by-device-widget.component.html',
-  styleUrl: './login-records-by-device-widget.component.scss',
+    selector: 'app-login-records-by-device-widget',
+    imports: [CommonModule, MatCardModule, NgApexchartsModule],
+    templateUrl: './login-records-by-device-widget.component.html',
+    styleUrl: './login-records-by-device-widget.component.scss'
 })
 export class LoginRecordsByDeviceWidgetComponent
   extends BaseComponent

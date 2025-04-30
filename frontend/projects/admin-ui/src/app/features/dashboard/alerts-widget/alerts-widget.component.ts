@@ -11,17 +11,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { AlertsService } from '../../../../../../common-ui/services/alerts.service';
 
 @Component({
-  selector: 'app-alerts-widget',
-  templateUrl: 'alerts-widget.component.html',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatCardModule,
-    MatPaginatorModule,
-    MatIconModule,
-    MatButtonModule,
-  ],
+    selector: 'app-alerts-widget',
+    templateUrl: 'alerts-widget.component.html',
+    imports: [
+        CommonModule,
+        MatTableModule,
+        MatCardModule,
+        MatPaginatorModule,
+        MatIconModule,
+        MatButtonModule,
+    ]
 })
 export class AlertsWidgetComponent extends BaseListComponent<AlertDto> {
   constructor(private readonly alertsService: AlertsService) {

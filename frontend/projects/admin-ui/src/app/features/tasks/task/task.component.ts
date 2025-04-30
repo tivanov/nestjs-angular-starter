@@ -21,23 +21,22 @@ import { TasksService } from '../../../../../../common-ui/services/tasks.service
 import { StringUtils } from '../../../../../../common-ui/utils/string-utils';
 
 @Component({
-  selector: 'app-task',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSnackBarModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatOptionModule,
-  ],
-  templateUrl: './task.component.html',
+    selector: 'app-task',
+    imports: [
+        CommonModule,
+        MatFormFieldModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSnackBarModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        MatOptionModule,
+    ],
+    templateUrl: './task.component.html'
 })
 export class TaskComponent extends BaseComponent implements OnInit {
   taskId: string | null = null;

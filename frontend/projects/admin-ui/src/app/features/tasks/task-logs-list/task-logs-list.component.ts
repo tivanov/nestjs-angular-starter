@@ -21,24 +21,23 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSortHeader } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-task-logs-list',
-  templateUrl: './task-logs-list.component.html',
-  standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatButtonModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatSlideToggleModule,
-    FormsModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatDatepickerModule,
-    MatSortHeader,
-  ],
+    selector: 'app-task-logs-list',
+    templateUrl: './task-logs-list.component.html',
+    imports: [
+        RouterModule,
+        CommonModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatButtonModule,
+        MatIconModule,
+        MatPaginatorModule,
+        MatSlideToggleModule,
+        FormsModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatDatepickerModule,
+        MatSortHeader,
+    ]
 })
 export class TaskLogsListComponent extends BaseListComponent<TaskLogDto> {
   logTypes = Object.values(TaskLogTypeEnum);

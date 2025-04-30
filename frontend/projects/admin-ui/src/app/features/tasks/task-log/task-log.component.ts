@@ -10,10 +10,9 @@ import { Location } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  standalone: true,
-  imports: [CommonModule, AppTextComponent, MatButtonModule],
-  selector: 'app-task-log',
-  templateUrl: 'task-log.component.html',
+    imports: [CommonModule, AppTextComponent, MatButtonModule],
+    selector: 'app-task-log',
+    templateUrl: 'task-log.component.html'
 })
 export class TaskLogComponent extends BaseComponent implements OnInit {
   id: string;

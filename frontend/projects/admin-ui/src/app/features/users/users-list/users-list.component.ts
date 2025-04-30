@@ -17,24 +17,23 @@ import { MatSortModule } from '@angular/material/sort';
 import { SpinnerComponent } from '../../../core/components/spinner/spinner.component';
 
 @Component({
-  selector: 'app-users-list',
-  standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatSelectModule,
-    MatSortModule,
-    SpinnerComponent,
-  ],
-  templateUrl: './users-list.component.html',
-  styleUrl: './users-list.component.scss',
+    selector: 'app-users-list',
+    imports: [
+        RouterModule,
+        CommonModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatPaginatorModule,
+        MatSelectModule,
+        MatSortModule,
+        SpinnerComponent,
+    ],
+    templateUrl: './users-list.component.html',
+    styleUrl: './users-list.component.scss'
 })
 export class UsersListComponent extends BaseListComponent<UserDto> {
   roles = Object.values(UserRoleEnum);

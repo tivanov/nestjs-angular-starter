@@ -10,11 +10,10 @@ import {
 import { faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, SpinnerComponent, FontAwesomeModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'app-root',
+    imports: [CommonModule, RouterOutlet, SpinnerComponent, FontAwesomeModule],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent extends BaseComponent {
   constructor(library: FaIconLibrary) {

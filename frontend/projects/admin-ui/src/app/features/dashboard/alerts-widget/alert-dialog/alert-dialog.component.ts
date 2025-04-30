@@ -20,19 +20,18 @@ export interface IAlertDialogData {
 }
 
 @Component({
-  selector: 'app-alert-dialog',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-  ],
-  templateUrl: './alert-dialog.component.html',
-  styleUrls: ['./alert-dialog.component.scss'],
+    selector: 'app-alert-dialog',
+    imports: [
+        CommonModule,
+        MatIconModule,
+        MatButtonModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+    ],
+    templateUrl: './alert-dialog.component.html',
+    styleUrls: ['./alert-dialog.component.scss']
 })
 export class AlertDialogComponent extends BaseComponent {
   readonly dialogRef = inject(MatDialogRef<AlertDialogComponent>);

@@ -5,11 +5,10 @@ import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { MatError } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-validation-error',
-  standalone: true,
-  imports: [CommonModule, MatError],
-  templateUrl: './validation-error.component.html',
-  styleUrl: './validation-error.component.scss',
+    selector: 'app-validation-error',
+    imports: [CommonModule, MatError],
+    templateUrl: './validation-error.component.html',
+    styleUrl: './validation-error.component.scss'
 })
 export class ValidationErrorComponent extends BaseComponent implements OnInit {
   @Input() controlName!: string;

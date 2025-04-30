@@ -6,16 +6,15 @@ import { MatDivider, MatDividerModule } from '@angular/material/divider';
 import { MenuItem, MenuItemType } from '../side-menu.service';
 
 @Component({
-  standalone: true,
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    MenuLinkItemComponent,
-    MatDividerModule,
-  ],
-  selector: 'app-menu-dropdown-item',
-  templateUrl: 'menu-dropdown-item.component.html',
-  styleUrls: ['menu-dropdown-item.component.scss'],
+    imports: [
+        CommonModule,
+        FontAwesomeModule,
+        MenuLinkItemComponent,
+        MatDividerModule,
+    ],
+    selector: 'app-menu-dropdown-item',
+    templateUrl: 'menu-dropdown-item.component.html',
+    styleUrls: ['menu-dropdown-item.component.scss']
 })
 export class MenuDropdownItemComponent implements OnInit {
   @Input() item: MenuItem;

@@ -4,10 +4,9 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
-  selector: 'app-spinner',
-  imports: [CommonModule, FontAwesomeModule],
-  templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.scss'],
-  standalone: true,
+    selector: 'app-spinner',
+    imports: [CommonModule, FontAwesomeModule],
+    templateUrl: './spinner.component.html',
+    styleUrls: ['./spinner.component.scss']
 })
 export class SpinnerComponent extends BaseComponent {}

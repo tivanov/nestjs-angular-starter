@@ -12,11 +12,10 @@ import { NumberTileComponent } from '../number-tile/number-tile.component';
 import { Observable, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-user-tiles-widget',
-  standalone: true,
-  imports: [CommonModule, NumberTileComponent, MatCardModule],
-  templateUrl: './user-tiles-widget.component.html',
-  styleUrl: './user-tiles-widget.component.scss',
+    selector: 'app-user-tiles-widget',
+    imports: [CommonModule, NumberTileComponent, MatCardModule],
+    templateUrl: './user-tiles-widget.component.html',
+    styleUrl: './user-tiles-widget.component.scss'
 })
 export class UserTilesWidgetComponent extends BaseComponent implements OnInit {
   $tiles: Observable<any>;

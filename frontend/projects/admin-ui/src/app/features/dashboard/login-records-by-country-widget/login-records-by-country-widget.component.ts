@@ -20,11 +20,10 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-login-records-by-country-widget',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, NgApexchartsModule],
-  templateUrl: './login-records-by-country-widget.component.html',
-  styleUrl: './login-records-by-country-widget.component.scss',
+    selector: 'app-login-records-by-country-widget',
+    imports: [CommonModule, MatCardModule, NgApexchartsModule],
+    templateUrl: './login-records-by-country-widget.component.html',
+    styleUrl: './login-records-by-country-widget.component.scss'
 })
 export class LoginRecordsByCountryWidgetComponent
   extends BaseComponent

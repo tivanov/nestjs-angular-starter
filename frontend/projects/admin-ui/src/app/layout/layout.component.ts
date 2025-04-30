@@ -19,19 +19,18 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
 import { EnvironmentService } from '../../../../common-ui/services/environment.service';
 
 @Component({
-  selector: 'app-layout',
-  standalone: true,
-  imports: [
-    RouterModule,
-    MatSidenavModule,
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatToolbarModule,
-    SideMenuComponent,
-  ],
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
+    selector: 'app-layout',
+    imports: [
+        RouterModule,
+        MatSidenavModule,
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        MatToolbarModule,
+        SideMenuComponent,
+    ],
+    templateUrl: './layout.component.html',
+    styleUrl: './layout.component.scss'
 })
 export class LayoutComponent extends BaseComponent implements OnInit {
   sidenavMode: 'over' | 'side' = 'side';

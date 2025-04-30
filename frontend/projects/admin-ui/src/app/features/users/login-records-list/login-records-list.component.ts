@@ -15,22 +15,21 @@ import { MatSelectModule } from '@angular/material/select';
 import { LoginRecordsService } from '../../../../../../common-ui/services/login-records.service';
 
 @Component({
-  selector: 'app-login-records-list',
-  standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatSelectModule,
-  ],
-  templateUrl: './login-records-list.component.html',
-  styleUrl: './login-records-list.component.scss',
+    selector: 'app-login-records-list',
+    imports: [
+        RouterModule,
+        CommonModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatPaginatorModule,
+        MatSelectModule,
+    ],
+    templateUrl: './login-records-list.component.html',
+    styleUrl: './login-records-list.component.scss'
 })
 export class LoginRecordsListComponent
   extends BaseListComponent<LoginRecordDto>
