@@ -49,9 +49,7 @@ $my-theme: mat.m2-define-dark-theme(
 
 @include mat.all-component-themes($my-theme);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 html,
 body {

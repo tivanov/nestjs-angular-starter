@@ -14,21 +14,20 @@ import { MenuItemType, SideMenuService } from './side-menu.service';
 import { EnvironmentService } from '../../../../../common-ui/services/environment.service';
 
 @Component({
-    selector: 'app-side-menu',
-    templateUrl: 'side-menu.component.html',
-    styleUrls: ['side-menu.component.scss'],
-    imports: [
-        FontAwesomeModule,
-        MatMenuModule,
-        MatButtonModule,
-        CommonModule,
-        RouterModule,
-        MatDividerModule,
-        MatNavList,
-        MatListModule,
-        MenuLinkItemComponent,
-        MenuDropdownItemComponent,
-    ]
+  selector: 'app-side-menu',
+  templateUrl: 'side-menu.component.html',
+  styleUrls: ['side-menu.component.scss'],
+  imports: [
+    FontAwesomeModule,
+    MatMenuModule,
+    MatButtonModule,
+    CommonModule,
+    RouterModule,
+    MatDividerModule,
+    MatListModule,
+    MenuLinkItemComponent,
+    MenuDropdownItemComponent,
+  ],
 })
 export class SideMenuComponent extends BaseComponent implements OnInit {
   MenuItemType = MenuItemType;
