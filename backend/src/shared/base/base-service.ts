@@ -62,7 +62,7 @@ export class BaseService<T> {
     }
     const entities = await this.objectModel
       .find({
-        _id: { $in: idsToCheck },
+        _id: { $in: idsToCheck.map((id) => new Types.ObjectId(id)) },
       } as FilterQuery<T>)
       .session(session);
 
@@ -97,14 +97,18 @@ export class BaseService<T> {
     return this.objectModel.insertMany(commands, { lean: true });
   }
 
-  public async baseUpdate(id: string, command: any, session?: ClientSession) {
+  public baseUpdate(
+    id: string,
+    command: any,
+    session?: ClientSession,
+  ): Promise<T> {
     return this.objectModel.findByIdAndUpdate(
       id,
       {
         $set: command,
       },
       { new: true, session, lean: true },
-    );
+    ) as Promise<T>;
   }
 
   public async bulkCreate(docs: any[], session?: ClientSession) {

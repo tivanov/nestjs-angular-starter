@@ -27,6 +27,7 @@
             "index": "projects/admin-ui/src/index.html",
             "browser": "projects/admin-ui/src/main.ts",
             "polyfills": [
+              "node_modules/reflect-metadata/Reflect.js",
               "zone.js"
             ],
             "tsConfig": "projects/admin-ui/tsconfig.app.json",
@@ -133,6 +134,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": [
+              "node_modules/reflect-metadata/Reflect.js",
               "zone.js",
               "zone.js/testing"
             ],
@@ -178,6 +180,7 @@
             "index": "projects/user-ui/src/index.html",
             "browser": "projects/user-ui/src/main.ts",
             "polyfills": [
+              "node_modules/reflect-metadata/Reflect.js",
               "zone.js"
             ],
             "tsConfig": "projects/user-ui/tsconfig.app.json",
@@ -286,6 +289,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": [
+              "node_modules/reflect-metadata/Reflect.js",
               "zone.js",
               "zone.js/testing"
             ],
