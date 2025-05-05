@@ -25,27 +25,29 @@ import { HttpEventType } from '@angular/common/http';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EnvironmentService } from '../../../../../../common-ui/services/environment.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CardComponent } from '../../../core/components/card/card.component';
 
 @Component({
-    selector: 'app-user',
-    imports: [
-        CommonModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatInputModule,
-        MatButtonModule,
-        MatSnackBarModule,
-        LoginRecordsListComponent,
-        HasErrorDirective,
-        HasErrorRootDirective,
-        MatIconModule,
-        MatProgressBarModule,
-        MatCheckboxModule,
-    ],
-    templateUrl: './user.component.html',
-    styleUrl: './user.component.scss'
+  selector: 'app-user',
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    LoginRecordsListComponent,
+    HasErrorDirective,
+    HasErrorRootDirective,
+    MatIconModule,
+    MatProgressBarModule,
+    MatCheckboxModule,
+    CardComponent,
+  ],
+  templateUrl: './user.component.html',
+  styleUrl: './user.component.scss',
 })
 export class UserComponent extends BaseEditComponent<UserDto> {
   changePasswordForm: FormGroup;

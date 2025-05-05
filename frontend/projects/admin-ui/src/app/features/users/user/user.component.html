@@ -1,108 +1,98 @@
-<form
-  class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4 items-center"
-  [formGroup]="this.form">
-  <div class="bg-neutral-900 p-4 w-full mb-2">
-    <p class="text-lg font-medium">Info</p>
-  </div>
+<app-card title="User Info">
+  <form class="flex flex-row w-full flex-wrap mb-4" [formGroup]="this.form">
+    <div class="w-full text-xl font-bold p-4">Login Info</div>
 
-  <div class="w-full text-xl font-bold p-4">Login Info</div>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>UserName</mat-label>
+      <input matInput formControlName="userName" />
+      <mat-error *hasError="'required'">Enter a username</mat-error>
+      <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>UserName</mat-label>
-    <input matInput formControlName="userName" />
-    <mat-error *hasError="'required'">Enter a username</mat-error>
-    <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
-  </mat-form-field>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" />
+      <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>Password</mat-label>
-    <input matInput formControlName="password" />
-    <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
-  </mat-form-field>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-option *ngFor="let role of this.roles" [value]="role">
+          {{ role }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>Role</mat-label>
-    <mat-select formControlName="role">
-      <mat-option *ngFor="let role of this.roles" [value]="role">
-        {{ role }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <div class="w-full text-xl font-bold p-4">Personal Info</div>
 
-  <div class="w-full text-xl font-bold p-4">Personal Info</div>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="firstName" />
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>First Name</mat-label>
-    <input matInput formControlName="firstName" />
-  </mat-form-field>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>Last Name</mat-label>
+      <input matInput formControlName="lastName" />
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>Last Name</mat-label>
-    <input matInput formControlName="lastName" />
-  </mat-form-field>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *hasError="'email'">Enter a valid e-mail address</mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email" />
-    <mat-error *hasError="'email'">Enter a valid e-mail address</mat-error>
-  </mat-form-field>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>Phone</mat-label>
-    <input matInput formControlName="phone" />
-  </mat-form-field>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>Address</mat-label>
+      <input matInput formControlName="address" />
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>Address</mat-label>
-    <input matInput formControlName="address" />
-  </mat-form-field>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>Country</mat-label>
+      <input matInput formControlName="country" />
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>Country</mat-label>
-    <input matInput formControlName="country" />
-  </mat-form-field>
+    <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
+      <mat-label>Last Login</mat-label>
+      <input matInput type="datetime" formControlName="lastLogin" />
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
-    <mat-label>Last Login</mat-label>
-    <input matInput type="datetime" formControlName="lastLogin" />
-  </mat-form-field>
+    <div class="w-full flex flex-row-reverse p-4">
+      <button
+        mat-raised-button
+        color="accent"
+        class="ml-2 font-bold rounded"
+        [disabled]="!form.valid"
+        (click)="this.save()">
+        {{ this.entity ? 'Save' : 'Create' }}
+      </button>
 
-  <div class="w-full flex flex-row-reverse p-4">
-    <button
-      mat-raised-button
-      color="accent"
-      class="ml-2 font-bold rounded"
-      [disabled]="!form.valid"
-      (click)="this.save()">
-      {{ this.entity ? 'Save' : 'Create' }}
-    </button>
+      <button
+        mat-button
+        color="warn"
+        class="ml-2 font-bold rounded"
+        (click)="this.reset()">
+        Cancel
+      </button>
 
-    <button
-      mat-button
-      color="warn"
-      class="ml-2 font-bold rounded"
-      (click)="this.reset()">
-      Cancel
-    </button>
-
-    <button
-      mat-button
-      color="warn"
-      class="ml-2 font-bold rounded"
-      (click)="this.exit()">
-      Exit
-    </button>
-  </div>
-</form>
-
-<div
-  *ngIf="this.entity"
-  class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4 items-center">
-  <div class="bg-neutral-900 p-4 w-full mb-2">
-    <p class="text-lg font-medium">Avatar</p>
-  </div>
-
-  <div class="w-full flex flex-wrap items-center p-4">
+      <button
+        mat-button
+        color="warn"
+        class="ml-2 font-bold rounded"
+        (click)="this.exit()">
+        Exit
+      </button>
+    </div>
+  </form>
+</app-card>
+@if(this.entity){
+<app-card title="Avatar">
+  <div class="w-full flex flex-wrap items-center p-4 items-center">
     <img
       class="rounded-full w-28 mr-4"
       [src]="this.avatarUrl || 'assets/images/no-avatar.png'"
@@ -151,46 +141,40 @@
       Upload
     </button>
   </div>
-</div>
+</app-card>
 
-<form
-  *ngIf="this.entity"
-  class="bg-neutral-800 flex flex-row w-full flex-wrap mb-4 items-center"
-  [formGroup]="this.changePasswordForm">
-  <div class="bg-neutral-900 p-4 w-full mb-2">
-    <p class="text-lg font-medium">Change Password</p>
-  </div>
+<app-card title="Change Password">
+  <form
+    class="flex flex-row w-full flex-wrap mb-4 items-center"
+    [formGroup]="this.changePasswordForm">
+    <mat-form-field class="w-full md:px-2 md:w-1/2">
+      <mat-label>New Password</mat-label>
+      <input matInput formControlName="password" />
+      <mat-error *hasError="'required'">Field is required</mat-error>
+      <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="w-full md:px-2 md:w-1/2">
-    <mat-label>New Password</mat-label>
-    <input matInput formControlName="password" />
-    <mat-error *hasError="'required'">Field is required</mat-error>
-    <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
-  </mat-form-field>
+    <mat-checkbox
+      class="w-full md:px-2 md:w-1/2"
+      formControlName="logOutEverywhere"
+      >Log Out From All Devices</mat-checkbox
+    >
 
-  <mat-checkbox
-    class="w-full md:px-2 md:w-1/2"
-    formControlName="logOutEverywhere"
-    >Log Out From All Devices</mat-checkbox
-  >
-
-  <div class="w-full flex flex-row-reverse p-4">
-    <button
-      mat-raised-button
-      type="button"
-      color="primary"
-      class="ml-2 font-bold rounded"
-      [disabled]="this.changePasswordForm.invalid"
-      (click)="changePassword()">
-      Save
-    </button>
-  </div>
-</form>
-
-<div *ngIf="this.entity" class="bg-neutral-900 p-4 mt-4 w-full">
-  <p class="text-lg font-medium">Login Records</p>
-</div>
-
-<div *ngIf="this.entity" class="bg-neutral-800 p-4">
-  <app-login-records-list [userId]="this.entity.id"></app-login-records-list>
-</div>
+    <div class="w-full flex flex-row-reverse p-4">
+      <button
+        mat-raised-button
+        type="button"
+        color="primary"
+        class="ml-2 font-bold rounded"
+        [disabled]="this.changePasswordForm.invalid"
+        (click)="changePassword()">
+        Save
+      </button>
+    </div>
+  </form>
+</app-card>
+} @if(this.entity){
+<app-card title="Login Records">
+  <app-login-records-list [userId]="this.entity.id" />
+</app-card>
+}
