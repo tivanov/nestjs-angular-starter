@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start:admin": "ng serve admin-ui --port 5100 --configuration development",
-    "start:user": "ng serve user-ui --port 5200 --host 0.0.0.0 --disable-host-check",
+    "start:user": "ng serve user-ui --port 5200 --host 0.0.0.0",
     "build:admin": "ng build admin-ui",
     "build:user": "ng build user-ui",
     "build-prod:admin": "ng build admin-ui --configuration production",
