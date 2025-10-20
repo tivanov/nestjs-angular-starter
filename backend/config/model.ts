@@ -1,3 +1,5 @@
+import { StringValue } from 'ms';
+
 export interface IAppConfig {
   isProduction: boolean;
   enableCors: boolean;
@@ -18,9 +20,9 @@ export interface IDbConfig {
 
 export interface IAuthConfig {
   jwtSecret: string;
-  jwtExpirationTime: string;
+  jwtExpirationTime: number | StringValue;
   jwtRefreshSecret: string;
-  jwtRefreshExpirationTime: string;
+  jwtRefreshExpirationTime: number | StringValue;
   userBlockTime: number;
   loginAttempts: number;
   encryptionKey?: string;

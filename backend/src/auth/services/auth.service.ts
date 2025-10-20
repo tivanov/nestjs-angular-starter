@@ -5,7 +5,6 @@ import { RefreshToken } from '../model/refresh-token.model';
 import { User } from '../../users/model/user.model';
 import { Injectable, Logger } from '@nestjs/common';
 import { UsersService } from '../../users/services/users.service';
-import * as bcrypt from 'bcrypt';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -19,7 +18,7 @@ import {
   IdentityProviderEnum,
   UserDto,
 } from '@app/contracts';
-import * as ms from 'ms';
+import ms, { StringValue } from 'ms';
 import { IdentitiesService } from './identities.service';
 import { Identity } from '../model/identity.model';
 
@@ -158,7 +157,8 @@ export class AuthService {
 
     const expDate = new Date();
     expDate.setTime(
-      expDate.getTime() + ms(this.authConfig.jwtRefreshExpirationTime),
+      expDate.getTime() +
+        ms(this.authConfig.jwtRefreshExpirationTime as StringValue),
     );
 
     const command: CreateRefreshTokenCommand = {
