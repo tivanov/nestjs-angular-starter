@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -25,7 +25,6 @@ import { TaskLogsListComponent } from '../task-logs-list/task-logs-list.componen
 @Component({
   selector: 'app-task',
   imports: [
-    CommonModule,
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
@@ -36,8 +35,8 @@ import { TaskLogsListComponent } from '../task-logs-list/task-logs-list.componen
     MatSnackBarModule,
     MatCheckboxModule,
     CardComponent,
-    TaskLogsListComponent,
-  ],
+    TaskLogsListComponent
+],
   templateUrl: './task.component.html',
 })
 export class TaskComponent extends BaseComponent implements OnInit {

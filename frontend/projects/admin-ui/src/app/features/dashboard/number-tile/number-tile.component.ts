@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { ShortNumberPipe } from '../../../../../../common-ui/pipes/short-number.pipe';
 
 @Component({
     selector: 'app-number-tile',
-    imports: [CommonModule, ShortNumberPipe],
+    imports: [ShortNumberPipe],
     templateUrl: './number-tile.component.html',
     styleUrl: './number-tile.component.scss'
 })

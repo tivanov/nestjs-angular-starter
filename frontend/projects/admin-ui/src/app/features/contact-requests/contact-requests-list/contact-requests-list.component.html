@@ -12,20 +12,23 @@
   <mat-form-field class="w-full lg:w-40 lg:pr-2">
     <mat-label>Status</mat-label>
     <mat-select formControlName="status">
-      <mat-option
-        *ngFor="let status of this.contactRequestsStatus"
-        [value]="status">
-        {{ status }}
-      </mat-option>
+      @for (status of this.contactRequestsStatus; track status) {
+        <mat-option
+          [value]="status">
+          {{ status }}
+        </mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
   <mat-form-field class="w-full lg:w-40 lg:pr-2">
     <mat-label>Type</mat-label>
     <mat-select formControlName="type">
-      <mat-option *ngFor="let type of this.contactRequestsType" [value]="type">
-        {{ type }}
-      </mat-option>
+      @for (type of this.contactRequestsType; track type) {
+        <mat-option [value]="type">
+          {{ type }}
+        </mat-option>
+      }
     </mat-select>
   </mat-form-field>
 

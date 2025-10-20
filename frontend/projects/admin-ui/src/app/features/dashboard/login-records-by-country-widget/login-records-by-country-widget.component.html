@@ -1,9 +1,10 @@
 <mat-card class="p-4 md:h-80 lg:h-96">
   <mat-card-title>Countries</mat-card-title>
-  <apx-chart
-    *ngIf="this.chartOptions"
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [labels]="chartOptions.labels"
+  @if (this.chartOptions) {
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [labels]="chartOptions.labels"
     [title]="chartOptions.title"></apx-chart>
+  }
 </mat-card>

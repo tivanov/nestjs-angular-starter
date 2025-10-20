@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,7 +19,6 @@ import { ContactRequestsService } from '../../../../../../common-ui/services/con
   imports: [
     SpinnerComponent,
     MatIconModule,
-    CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
@@ -28,8 +27,8 @@ import { ContactRequestsService } from '../../../../../../common-ui/services/con
     MatIconModule,
     MatCheckboxModule,
     CardComponent,
-    AppTextComponent,
-  ],
+    AppTextComponent
+],
   templateUrl: './contact-request.component.html',
   styleUrl: './contact-request.component.scss',
 })

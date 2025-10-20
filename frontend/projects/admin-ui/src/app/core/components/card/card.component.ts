@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 
 @Component({
   selector: 'app-card',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

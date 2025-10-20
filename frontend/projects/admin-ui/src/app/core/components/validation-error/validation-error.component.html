@@ -1,5 +1,6 @@
-<mat-error
-  *ngIf="shouldDisplayError"
-  class="flex flex-row text-xs text-red-default px-2">
-  {{ errorMessage }}
-</mat-error>
+@if (shouldDisplayError) {
+  <mat-error
+    class="flex flex-row text-xs text-red-default px-2">
+    {{ errorMessage }}
+  </mat-error>
+}

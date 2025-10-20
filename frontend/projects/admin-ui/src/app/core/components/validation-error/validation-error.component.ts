@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormGroupDirective } from '@angular/forms';
 import { MatError } from '@angular/material/form-field';
@@ -6,7 +6,7 @@ import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 
 @Component({
   selector: 'app-validation-error',
-  imports: [CommonModule, MatError],
+  imports: [MatError],
   templateUrl: './validation-error.component.html',
   styleUrl: './validation-error.component.scss',
 })

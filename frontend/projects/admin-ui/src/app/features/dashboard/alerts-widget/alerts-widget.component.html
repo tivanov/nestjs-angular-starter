@@ -6,48 +6,54 @@
       [dataSource]="this.dataSource"
       matSort
       (matSortChange)="this.onSortChange($event)"
-    >
+      >
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
         <td mat-cell *matCellDef="let alert; let i = index">
-          <mat-icon *ngIf="alert.type === 'info'">info</mat-icon>
-          <mat-icon *ngIf="alert.type === 'error'" style="color: red"
-            >warning</mat-icon
-          >
-          <mat-icon *ngIf="alert.type === 'debug'">bug-report</mat-icon>
-        </td>
-      </ng-container>
+          @if (alert.type === 'info') {
+            <mat-icon>info</mat-icon>
+          }
+          @if (alert.type === 'error') {
+            <mat-icon style="color: red"
+              >warning</mat-icon
+              >
+            }
+            @if (alert.type === 'debug') {
+              <mat-icon>bug-report</mat-icon>
+            }
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="message">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Message</th>
-        <td mat-cell *matCellDef="let alert; let i = index">
-          {{ alert.message }}
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="message">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Message</th>
+          <td mat-cell *matCellDef="let alert; let i = index">
+            {{ alert.message }}
+          </td>
+        </ng-container>
 
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-        <td mat-cell *matCellDef="let alert; let i = index">
-          <div class="flex justify-end">
-            <button mat-icon-button (click)="this.view(alert)">
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button mat-icon-button (click)="this.dismiss(alert)">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-        </td>
-      </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+          <td mat-cell *matCellDef="let alert; let i = index">
+            <div class="flex justify-end">
+              <button mat-icon-button (click)="this.view(alert)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button (click)="this.dismiss(alert)">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </div>
-  <mat-paginator
-    #mainPaginator
-    [pageSizeOptions]="this.pageSizeOptions"
-    [length]="this.totalItems"
-    [showFirstLastButtons]="this.showFirstLastButtons"
-    (page)="this.load($event)"
-  ></mat-paginator>
-</mat-card>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator
+      #mainPaginator
+      [pageSizeOptions]="this.pageSizeOptions"
+      [length]="this.totalItems"
+      [showFirstLastButtons]="this.showFirstLastButtons"
+      (page)="this.load($event)"
+    ></mat-paginator>
+  </mat-card>

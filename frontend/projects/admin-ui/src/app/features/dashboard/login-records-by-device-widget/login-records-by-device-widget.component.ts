@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { MatCardModule } from '@angular/material/card';
@@ -22,7 +22,7 @@ export type ChartOptions = {
 
 @Component({
   selector: 'app-login-records-by-device-widget',
-  imports: [CommonModule, MatCardModule, NgApexchartsModule],
+  imports: [MatCardModule, NgApexchartsModule],
   templateUrl: './login-records-by-device-widget.component.html',
   styleUrl: './login-records-by-device-widget.component.scss',
 })

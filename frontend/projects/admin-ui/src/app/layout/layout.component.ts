@@ -1,5 +1,5 @@
 import { Breakpoints } from '@angular/cdk/layout';
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -31,12 +31,11 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
   imports: [
     RouterModule,
     MatSidenavModule,
-    CommonModule,
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    SideMenuComponent,
-  ],
+    SideMenuComponent
+],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

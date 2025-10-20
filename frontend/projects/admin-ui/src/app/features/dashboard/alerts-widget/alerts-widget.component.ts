@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
@@ -14,13 +14,12 @@ import { AlertsService } from '../../../../../../common-ui/services/alerts.servi
     selector: 'app-alerts-widget',
     templateUrl: 'alerts-widget.component.html',
     imports: [
-        CommonModule,
-        MatTableModule,
-        MatCardModule,
-        MatPaginatorModule,
-        MatIconModule,
-        MatButtonModule,
-    ]
+    MatTableModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatButtonModule
+]
 })
 export class AlertsWidgetComponent extends BaseListComponent<AlertDto> {
   constructor(private readonly alertsService: AlertsService) {

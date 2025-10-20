@@ -18,9 +18,11 @@
     <mat-form-field class="w-full md:px-2 md:w-1/2 lg:w-1/3">
       <mat-label>Role</mat-label>
       <mat-select formControlName="role">
-        <mat-option *ngFor="let role of this.roles" [value]="role">
-          {{ role }}
-        </mat-option>
+        @for (role of this.roles; track role) {
+          <mat-option [value]="role">
+            {{ role }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
@@ -91,90 +93,93 @@
   </form>
 </app-card>
 @if(this.entity){
-<app-card titleText="Avatar">
-  <div class="w-full flex flex-wrap p-4 items-center">
-    <img
-      class="rounded-full w-28 mr-4"
-      [src]="this.avatarUrl || 'assets/images/no-avatar.png'"
-      alt="AVATAR" />
-    <div class="p-4 flex-grow">{{ this.entity?.avatar || 'NO AVATAR' }}</div>
-    <input
-      type="file"
-      class="hidden"
-      accept="image/*"
-      (change)="onFileSelected($event)"
-      #fileUpload />
-    <div class="pr-4 min-w-60">
-      {{ this.avatarFile?.name || 'No file uploaded yet.' }}
-    </div>
+  <app-card titleText="Avatar">
+    <div class="w-full flex flex-wrap p-4 items-center">
+      <img
+        class="rounded-full w-28 mr-4"
+        [src]="this.avatarUrl || 'assets/images/no-avatar.png'"
+        alt="AVATAR" />
+      <div class="p-4 flex-grow">{{ this.entity?.avatar || 'NO AVATAR' }}</div>
+      <input
+        type="file"
+        class="hidden"
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        #fileUpload />
+      <div class="pr-4 min-w-60">
+        {{ this.avatarFile?.name || 'No file uploaded yet.' }}
+      </div>
 
-    <button
-      mat-mini-fab
-      color="primary"
-      class="upload-btn"
-      (click)="fileUpload.click()">
-      <mat-icon>attach_file</mat-icon>
-    </button>
-  </div>
-  <div class="p-4">
-    <mat-progress-bar
-      class="progress-bar"
-      mode="determinate"
-      [value]="this.uploadProgress"
-      *ngIf="this.uploadProgress">
-    </mat-progress-bar>
-
-    <mat-icon
-      class="cancel-upload"
-      (click)="cancelUpload()"
-      *ngIf="this.uploadProgress"
-      >delete_forever</mat-icon
-    >
-  </div>
-  <div class="w-full flex flex-row-reverse p-4">
-    <button
-      mat-raised-button
-      color="primary"
-      class="ml-2 font-bold rounded"
-      [disabled]="!this.avatarFile"
-      (click)="this.uploadAvatar()">
-      Upload
-    </button>
-  </div>
-</app-card>
-
-<app-card titleText="Change Password">
-  <form
-    class="flex flex-row w-full flex-wrap mb-4 items-center"
-    [formGroup]="this.changePasswordForm">
-    <mat-form-field class="w-full md:px-2 md:w-1/2">
-      <mat-label>New Password</mat-label>
-      <input matInput formControlName="password" />
-      <mat-error *hasError="'required'">Field is required</mat-error>
-      <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
-    </mat-form-field>
-
-    <mat-checkbox
-      class="w-full md:px-2 md:w-1/2"
-      formControlName="logOutEverywhere"
-      >Log Out From All Devices</mat-checkbox
-    >
-
-    <div class="w-full flex flex-row-reverse p-4">
       <button
-        mat-raised-button
-        type="button"
+        mat-mini-fab
         color="primary"
-        class="ml-2 font-bold rounded"
-        [disabled]="this.changePasswordForm.invalid"
-        (click)="changePassword()">
-        Save
+        class="upload-btn"
+        (click)="fileUpload.click()">
+        <mat-icon>attach_file</mat-icon>
       </button>
     </div>
-  </form>
-</app-card>
-} @if(this.entity){
-<app-card titleText="Login Records">
-  <app-login-records-list [userId]="this.entity.id" />
-</app-card>
-}
+    <div class="p-4">
+      @if (this.uploadProgress) {
+        <mat-progress-bar
+          class="progress-bar"
+          mode="determinate"
+          [value]="this.uploadProgress"
+          >
+        </mat-progress-bar>
+      }
+
+      @if (this.uploadProgress) {
+        <mat-icon
+          class="cancel-upload"
+          (click)="cancelUpload()"
+          >delete_forever</mat-icon
+          >
+        }
+      </div>
+      <div class="w-full flex flex-row-reverse p-4">
+        <button
+          mat-raised-button
+          color="primary"
+          class="ml-2 font-bold rounded"
+          [disabled]="!this.avatarFile"
+          (click)="this.uploadAvatar()">
+          Upload
+        </button>
+      </div>
+    </app-card>
+
+    <app-card titleText="Change Password">
+      <form
+        class="flex flex-row w-full flex-wrap mb-4 items-center"
+        [formGroup]="this.changePasswordForm">
+        <mat-form-field class="w-full md:px-2 md:w-1/2">
+          <mat-label>New Password</mat-label>
+          <input matInput formControlName="password" />
+          <mat-error *hasError="'required'">Field is required</mat-error>
+          <mat-error *hasError="'minlength'">Minimum 6 characters</mat-error>
+        </mat-form-field>
+
+        <mat-checkbox
+          class="w-full md:px-2 md:w-1/2"
+          formControlName="logOutEverywhere"
+          >Log Out From All Devices</mat-checkbox
+          >
+
+          <div class="w-full flex flex-row-reverse p-4">
+            <button
+              mat-raised-button
+              type="button"
+              color="primary"
+              class="ml-2 font-bold rounded"
+              [disabled]="this.changePasswordForm.invalid"
+              (click)="changePassword()">
+              Save
+            </button>
+          </div>
+        </form>
+      </app-card>
+      } @if(this.entity){
+      <app-card titleText="Login Records">
+        <app-login-records-list [userId]="this.entity.id" />
+      </app-card>
+    }

@@ -1,19 +1,20 @@
 <mat-card class="lg:h-96 flex flex-col p-4">
   <mat-card-title>Users</mat-card-title>
-  <div
-    *ngIf="this.$tiles | async as tiles"
-    class="pt-4 grid grid-cols-2 flex-grow justify-items-stretch items-stretch gap-4">
-    <app-number-tile
-      [value]="tiles.totalUsers"
+  @if (this.$tiles | async; as tiles) {
+    <div
+      class="pt-4 grid grid-cols-2 flex-grow justify-items-stretch items-stretch gap-4">
+      <app-number-tile
+        [value]="tiles.totalUsers"
       text="Total Users"></app-number-tile>
-    <app-number-tile
-      [value]="tiles.newUsersToday"
+      <app-number-tile
+        [value]="tiles.newUsersToday"
       text="New Users Today"></app-number-tile>
-    <app-number-tile
-      [value]="tiles.totalLoggedIn"
+      <app-number-tile
+        [value]="tiles.totalLoggedIn"
       text="Logged In Now"></app-number-tile>
-    <app-number-tile
-      [value]="tiles.totalInactive"
+      <app-number-tile
+        [value]="tiles.totalInactive"
       text="Inactive Users"></app-number-tile>
-  </div>
+    </div>
+  }
 </mat-card>

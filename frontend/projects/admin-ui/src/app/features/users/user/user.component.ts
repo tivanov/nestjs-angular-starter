@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -30,7 +30,6 @@ import { CardComponent } from '../../../core/components/card/card.component';
 @Component({
   selector: 'app-user',
   imports: [
-    CommonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatOptionModule,
@@ -44,8 +43,8 @@ import { CardComponent } from '../../../core/components/card/card.component';
     MatIconModule,
     MatProgressBarModule,
     MatCheckboxModule,
-    CardComponent,
-  ],
+    CardComponent
+],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
 })

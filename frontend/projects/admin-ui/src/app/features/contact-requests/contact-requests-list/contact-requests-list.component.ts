@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,7 +21,6 @@ import { ContactTypeEnum } from './../../../../../../../../backend/libs/contract
 @Component({
   selector: 'app-contact-requests-list',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
@@ -33,8 +32,8 @@ import { ContactTypeEnum } from './../../../../../../../../backend/libs/contract
     MatOptionModule,
     MatCheckboxModule,
     MatSortModule,
-    MatDatepickerModule,
-  ],
+    MatDatepickerModule
+],
   templateUrl: './contact-requests-list.component.html',
   styleUrl: './contact-requests-list.component.scss',
 })

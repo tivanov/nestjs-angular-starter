@@ -11,7 +11,8 @@
   <app-login-records-by-device-widget></app-login-records-by-device-widget>
   <app-login-records-by-country-widget></app-login-records-by-country-widget>
 
-  <app-alerts-widget
-    *ngIf="AuthSignal().user.role === UserRoleEnum.Admin"
+  @if (AuthSignal().user.role === UserRoleEnum.Admin) {
+    <app-alerts-widget
     class="md:col-span-2"></app-alerts-widget>
+  }
 </div>

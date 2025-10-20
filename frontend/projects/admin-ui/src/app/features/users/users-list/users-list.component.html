@@ -1,6 +1,8 @@
-<div *ngIf="!this.dataLoaded()" class="overlay">
-  <app-spinner class="absolute"></app-spinner>
-</div>
+@if (!this.dataLoaded()) {
+  <div class="overlay">
+    <app-spinner class="absolute"></app-spinner>
+  </div>
+}
 <div class="flex justify-between pb-4">
   <button mat-raised-button color="accent" [routerLink]="'/users/create'">
     <mat-icon>add</mat-icon>Create
@@ -21,9 +23,11 @@
   <mat-form-field class="w-full md:w-64 md:pr-2">
     <mat-label>Role</mat-label>
     <mat-select formControlName="role">
-      <mat-option *ngFor="let role of this.roles" [value]="role">{{
-        role
-      }}</mat-option>
+      @for (role of this.roles; track role) {
+        <mat-option [value]="role">{{
+          role
+        }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
@@ -92,4 +96,4 @@
   [pageSizeOptions]="this.pageSizeOptions"
   [length]="this.totalItems"
   [showFirstLastButtons]="this.showFirstLastButtons"
-  (page)="this.load($event)"></mat-paginator>
+(page)="this.load($event)"></mat-paginator>
