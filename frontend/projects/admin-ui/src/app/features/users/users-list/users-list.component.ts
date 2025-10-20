@@ -17,23 +17,23 @@ import { MatSortModule } from '@angular/material/sort';
 import { SpinnerComponent } from '../../../core/components/spinner/spinner.component';
 
 @Component({
-    selector: 'app-users-list',
-    imports: [
-        RouterModule,
-        CommonModule,
-        ReactiveFormsModule,
-        MatTableModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatPaginatorModule,
-        MatSelectModule,
-        MatSortModule,
-        SpinnerComponent,
-    ],
-    templateUrl: './users-list.component.html',
-    styleUrl: './users-list.component.scss'
+  selector: 'app-users-list',
+  imports: [
+    RouterModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatSelectModule,
+    MatSortModule,
+    SpinnerComponent,
+  ],
+  templateUrl: './users-list.component.html',
+  styleUrl: './users-list.component.scss',
 })
 export class UsersListComponent extends BaseListComponent<UserDto> {
   roles = Object.values(UserRoleEnum);
@@ -62,10 +62,10 @@ export class UsersListComponent extends BaseListComponent<UserDto> {
 
   onDelete(user: UserDto): void {
     if (confirm('Are you sure to delete this record?')) {
-      this.dataLoaded = false;
+      this.dataLoaded.set(false);
       this.usersService.delete(user.id).subscribe({
         next: () => {
-          this.dataLoaded = true;
+          this.dataLoaded.set(true);
           this.load({ pageIndex: 0 });
           this.snackBar.open('Record deleted.', '', { duration: 2000 });
         },
@@ -75,7 +75,7 @@ export class UsersListComponent extends BaseListComponent<UserDto> {
   }
 
   public load($event: { pageIndex: any; pageSize?: any }) {
-    this.dataLoaded = false;
+    this.dataLoaded.set(false);
     const filter: GetUsersQuery = this.populateShapeableQuery($event);
 
     this.usersService
@@ -86,7 +86,7 @@ export class UsersListComponent extends BaseListComponent<UserDto> {
           this.dataSource.data = paged.docs;
           this.totalItems = paged.totalDocs;
           this.setQueryParams(filter);
-          this.dataLoaded = true;
+          this.dataLoaded.set(true);
         },
         error: this.onFetchError.bind(this),
       });

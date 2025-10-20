@@ -1,24 +1,25 @@
-import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
+import { Component, inject, input } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { RouterModule } from '@angular/router';
 import {
   GetTaskLogsQuery,
   TaskLogDto,
   TaskLogTypeEnum,
   TaskTypeEnum,
 } from '@app/contracts';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { RouterModule } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
+import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
 import { TaskLogsService } from '../../../../../../common-ui/services/task-logs.service';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSortHeader } from '@angular/material/sort';
 
 @Component({
   selector: 'app-task-logs-list',
@@ -36,11 +37,16 @@ import { MatSortHeader } from '@angular/material/sort';
     MatSelectModule,
     MatOptionModule,
     MatDatepickerModule,
+    MatSortModule,
+    MatInputModule,
   ],
 })
 export class TaskLogsListComponent extends BaseListComponent<TaskLogDto> {
   logTypes = Object.values(TaskLogTypeEnum);
   taskTypes = Object.values(TaskTypeEnum);
+
+  taskId = input<string>();
+
   private taskLogsService = inject(TaskLogsService);
 
   override setColumns(): void {
@@ -63,6 +69,7 @@ export class TaskLogsListComponent extends BaseListComponent<TaskLogDto> {
       endDate: [endDate],
       taskType: [],
       logType: [],
+      taskId: [this.taskId()],
     });
   }
 

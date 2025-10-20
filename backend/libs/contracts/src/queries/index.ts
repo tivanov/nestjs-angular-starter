@@ -5,3 +5,5 @@ export * from './get-login-records.query';
 export * from './get-task-logs.query';
 export * from './get-tasks.query';
 export * from './get-identities.query';
+export * from './get-contact-request.query';
+export * from './get-circuit-breakers.query';

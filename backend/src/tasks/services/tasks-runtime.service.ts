@@ -6,7 +6,7 @@ import { SchedulerRegistry } from '@nestjs/schedule';
 import { ModuleRef } from '@nestjs/core';
 import { Task } from '../model/task.model';
 import { CronJob } from 'cron';
-import { ImplementationRepository } from '../implementations/repository';
+import { TaskImplementations } from '../implementations/task-implementations';
 
 @Injectable()
 export class TasksRuntimeService {
@@ -52,6 +52,22 @@ export class TasksRuntimeService {
         this.logger.debug(`Rescheduling task ${task.name}`);
       }
 
+      if (!TaskImplementations.get(task.type)) {
+        this.logger.error(`Task ${task.name} of type ${task.type} not found`);
+        this.tasks
+          .stop(task._id.toHexString())
+          .then(() => {
+            this.logger.debug(`Task ${task.name} of type ${task.type} stopped`);
+          })
+          .catch((error) => {
+            this.logger.error(
+              `Error stopping task ${task.name} of type ${task.type}`,
+              error,
+            );
+          });
+        return false;
+      }
+
       const job = new CronJob(
         task.cronString,
         async () => {
@@ -60,7 +76,7 @@ export class TasksRuntimeService {
               this.schedulerRegistry.deleteCronJob(task._id.toHexString());
               return;
             }
-            await ImplementationRepository.get(task.type)(task, this.moduleRef);
+            await TaskImplementations.get(task.type)(task, this.moduleRef);
           } catch (error) {
             this.logger.error(
               `Error running task ${task.name} of type ${task.type}`,
@@ -90,7 +106,7 @@ export class TasksRuntimeService {
           if (!(await this.tasks.isActive(task))) {
             return;
           }
-          await ImplementationRepository.get(task.type)(task, this.moduleRef);
+          await TaskImplementations.get(task.type)(task, this.moduleRef);
         } catch (error) {
           this.logger.error(
             `Error running task ${task.name} of type ${task.type}`,
@@ -145,6 +161,7 @@ export class TasksRuntimeService {
           }
         } catch (error) {
           this.logger.error('Error managing tasks', error);
+          this.tasks.stop(task._id.toHexString());
         }
       }
     } catch (error) {

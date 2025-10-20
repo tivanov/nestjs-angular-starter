@@ -1,4 +1,4 @@
-import { TaskDto, TaskTypeEnum } from '@app/contracts';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -7,36 +7,38 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { BaseComponent } from '../../../../../../common-ui/base/base.component';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TaskDto, TaskTypeEnum } from '@app/contracts';
+import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { TasksService } from '../../../../../../common-ui/services/tasks.service';
 import { StringUtils } from '../../../../../../common-ui/utils/string-utils';
+import { CardComponent } from '../../../core/components/card/card.component';
+import { TaskLogsListComponent } from '../task-logs-list/task-logs-list.component';
 
 @Component({
-    selector: 'app-task',
-    imports: [
-        CommonModule,
-        MatFormFieldModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatInputModule,
-        MatButtonModule,
-        MatSnackBarModule,
-        MatCheckboxModule,
-        MatSelectModule,
-        MatOptionModule,
-    ],
-    templateUrl: './task.component.html'
+  selector: 'app-task',
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    MatCheckboxModule,
+    CardComponent,
+    TaskLogsListComponent,
+  ],
+  templateUrl: './task.component.html',
 })
 export class TaskComponent extends BaseComponent implements OnInit {
   taskId: string | null = null;

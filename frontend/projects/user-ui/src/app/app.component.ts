@@ -10,17 +10,17 @@ import {
 import { faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-root',
-    imports: [CommonModule, RouterOutlet, SpinnerComponent, FontAwesomeModule],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  imports: [CommonModule, RouterOutlet, SpinnerComponent, FontAwesomeModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent extends BaseComponent {
   constructor(library: FaIconLibrary) {
     super();
     library.addIcons(faSpinner, faTimes);
     setTimeout(() => {
-      this.dataLoaded = true;
+      this.dataLoaded.set(true);
     }, 700);
   }
 }

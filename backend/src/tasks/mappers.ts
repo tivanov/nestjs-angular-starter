@@ -70,6 +70,7 @@ export class TasksMappers extends BaseMapper {
       taskType: taskLog.taskType,
       logType: taskLog.logType,
       message: taskLog.message,
+      task: taskLog.task?.toString(),
       jsonData: taskLog.jsonData,
     };
   }

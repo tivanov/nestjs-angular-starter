@@ -1,51 +1,51 @@
-import { Component, inject, input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, input, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { RouterModule } from '@angular/router';
+import { GetTasksQuery, TaskDto, TaskTypeEnum } from '@app/contracts';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { firstValueFrom } from 'rxjs';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
 import { TasksService } from '../../../../../../common-ui/services/tasks.service';
-import { GetTasksQuery, TaskDto } from '@app/contracts';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { RouterModule } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatSortModule } from '@angular/material/sort';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-    selector: 'app-tasks-list',
-    templateUrl: './tasks-list.component.html',
-    imports: [
-        RouterModule,
-        CommonModule,
-        ReactiveFormsModule,
-        MatTableModule,
-        MatButtonModule,
-        MatIconModule,
-        MatPaginatorModule,
-        MatSlideToggleModule,
-        FormsModule,
-        FontAwesomeModule,
-        MatSortModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatSelectModule,
-    ]
+  selector: 'app-tasks-list',
+  templateUrl: './tasks-list.component.html',
+  imports: [
+    RouterModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatSlideToggleModule,
+    FormsModule,
+    FontAwesomeModule,
+    MatSortModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatSelectModule,
+  ],
 })
 export class TasksListComponent
   extends BaseListComponent<TaskDto>
   implements OnInit
 {
-  public readonly Types = Object.values(this.TaskTypeEnum);
-
   taskId = input<string>();
+  search = input<string>();
+  public readonly Types = Object.values(TaskTypeEnum);
 
   private tasksService = inject(TasksService);
 
@@ -61,13 +61,18 @@ export class TasksListComponent
       'lastRun',
       'actions',
     ];
+
+    this.mobileColumns = ['active', 'name', 'lastRun', 'actions'];
   }
 
   public buildForm(): void {
     this.filterForm = this.formBuilder.group({
-      id: [],
+      id: [this.taskId()],
       activeOnly: [],
       type: [],
+      onlyOneTime: [],
+      onlyRecurring: [],
+      search: [this.search()],
     });
   }
 
@@ -75,18 +80,18 @@ export class TasksListComponent
     super.ngOnInit();
     this.sortBy = 'active';
     this.sortDirection = 'desc';
-
-    if (this.taskId()) {
-      console.log('Task ID:', this.taskId());
-      this.filterForm.patchValue({ id: this.taskId() });
-    }
   }
 
   public load($event: { pageIndex: number; pageSize?: number }) {
     const filter: GetTasksQuery = this.populateShapeableQuery($event);
 
     this.tasksService.get(filter).subscribe({
-      next: this.onDataReceived.bind(this),
+      next: (paged) => {
+        this.dataSource.data = paged.docs;
+        this.totalItems = paged.totalDocs;
+        this.dataLoaded.set(true);
+        this.setQueryParams(filter);
+      },
       error: this.onFetchError.bind(this),
     });
   }

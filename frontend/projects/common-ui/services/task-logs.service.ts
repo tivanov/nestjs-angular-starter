@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { GetTaskLogsQuery, PagedListDto, TaskLogDto } from '@app/contracts';
-import { BaseService } from '../base/base.service';
+import { Observable } from 'rxjs';
+import { BaseApiService } from '../base/base-api.service';
 
 @Injectable({ providedIn: 'root' })
-export class TaskLogsService extends BaseService {
+export class TaskLogsService extends BaseApiService {
   public get(query: GetTaskLogsQuery): Observable<PagedListDto<TaskLogDto>> {
     return this.http.get<PagedListDto<TaskLogDto>>(
       `${this.env.apiUrl}/task-logs`,

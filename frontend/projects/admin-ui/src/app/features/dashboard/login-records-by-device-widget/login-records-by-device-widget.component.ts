@@ -21,10 +21,10 @@ export type ChartOptions = {
 };
 
 @Component({
-    selector: 'app-login-records-by-device-widget',
-    imports: [CommonModule, MatCardModule, NgApexchartsModule],
-    templateUrl: './login-records-by-device-widget.component.html',
-    styleUrl: './login-records-by-device-widget.component.scss'
+  selector: 'app-login-records-by-device-widget',
+  imports: [CommonModule, MatCardModule, NgApexchartsModule],
+  templateUrl: './login-records-by-device-widget.component.html',
+  styleUrl: './login-records-by-device-widget.component.scss',
 })
 export class LoginRecordsByDeviceWidgetComponent
   extends BaseComponent
@@ -42,6 +42,7 @@ export class LoginRecordsByDeviceWidgetComponent
   }
 
   load() {
+    this.dataLoaded.set(false);
     this.dashboardService.getLoginRecordsByDevice().subscribe({
       next: (data) => {
         this.chartOptions = {
@@ -63,7 +64,7 @@ export class LoginRecordsByDeviceWidgetComponent
       },
       error: (e) => {
         console.error(e);
-        this.dataLoaded = true;
+        this.dataLoaded.set(true);
         this.snackBar.open(this.extractErrorMessage(e), 'Dismiss', {
           duration: 3000,
         });

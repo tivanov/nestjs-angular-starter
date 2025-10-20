@@ -26,6 +26,10 @@
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
     "**/node_modules/**": true,
-    "**/dist/**": true
-  }
+    "**/dist/**": true,
+    "**/.angular/**": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "debug.javascript.autoAttachFilter": "always"
 }

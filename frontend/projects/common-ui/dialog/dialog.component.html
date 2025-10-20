@@ -1,8 +1,11 @@
-<div class="overlay" (click)="onOverlayClicked($event)">
-  <div #dialogContainer class="dialog" (click)="onDialogClicked($event)">
+<div class="overlay" (mousedown)="this.onOverlayClicked($event)">
+  <div
+    #dialogContainer
+    class="dialog"
+    (mousedown)="this.onDialogClicked($event)">
     <button class="close-button p-4" (click)="this.close()">
-      <fa-icon icon="times"></fa-icon>
+      <fa-icon icon="times" />
     </button>
-    <ng-template appInsertion> </ng-template>
+    <ng-template appInsertion />
   </div>
 </div>

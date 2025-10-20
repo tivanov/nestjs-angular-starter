@@ -53,7 +53,7 @@ export class TasksController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return TasksMappers.taskToDto(await this.tasksService.baseDelete(id));
+    return TasksMappers.taskToDto(await this.tasksService.delete(id));
   }
 
   @Post(':id/start')
@@ -64,5 +64,14 @@ export class TasksController {
   @Post(':id/stop')
   async stop(@Param('id') id: string) {
     await this.tasksService.stop(id);
+  }
+
+  @Get(':id/status')
+  @Roles(UserRoleEnum.Admin, UserRoleEnum.Manager)
+  async getStatus(@Param('id') id: string) {
+    const task = await this.tasksService.expectEntityExists(id);
+    return {
+      isFinished: task.runOnce && !task.active && !!task.lastRun,
+    };
   }
 }

@@ -1,7 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { TaskLog, TaskLogDocument } from '../model/task-log.model';
 import { BaseService } from 'src/shared/base/base-service';
-import { FilterQuery, Model, PaginateModel, PaginateResult } from 'mongoose';
+import {
+  FilterQuery,
+  Model,
+  PaginateModel,
+  PaginateResult,
+  Types,
+} from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   GetTaskLogsQuery,
@@ -36,22 +42,59 @@ export class TaskLogsService extends BaseService<TaskLog> {
       filter.createdAt = { ...filter.createdAt, $lte: new Date(query.endDate) };
     }
 
+    if (query.taskId) {
+      filter.task = query.taskId;
+    }
+
     return await (this.objectModel as PaginateModel<TaskLog>).paginate(
       filter,
       this.getPaginationOptions(query),
     );
   }
 
-  info(taskType: TaskTypeEnum, message: string, errorObject?: any) {
-    return this.log(TaskLogTypeEnum.Info, taskType, message, errorObject);
+  info(
+    taskType: TaskTypeEnum,
+    message: string,
+    errorObject?: any,
+    taskId?: string,
+  ) {
+    return this.log(
+      TaskLogTypeEnum.Info,
+      taskType,
+      message,
+      errorObject,
+      taskId,
+    );
   }
 
-  error(taskType: TaskTypeEnum, message: string, errorObject?: any) {
-    return this.log(TaskLogTypeEnum.Error, taskType, message, errorObject);
+  error(
+    taskType: TaskTypeEnum,
+    message: string,
+    errorObject?: any,
+    taskId?: string,
+  ) {
+    return this.log(
+      TaskLogTypeEnum.Error,
+      taskType,
+      message,
+      errorObject,
+      taskId,
+    );
   }
 
-  debug(taskType: TaskTypeEnum, message: string, errorObject?: any) {
-    return this.log(TaskLogTypeEnum.Debug, taskType, message, errorObject);
+  debug(
+    taskType: TaskTypeEnum,
+    message: string,
+    errorObject?: any,
+    taskId?: string,
+  ) {
+    return this.log(
+      TaskLogTypeEnum.Debug,
+      taskType,
+      message,
+      errorObject,
+      taskId,
+    );
   }
 
   log(
@@ -59,6 +102,7 @@ export class TaskLogsService extends BaseService<TaskLog> {
     taskType: TaskTypeEnum,
     message: string,
     errorObject?: any,
+    taskId?: string,
   ) {
     let jsonData = '';
 
@@ -85,6 +129,10 @@ export class TaskLogsService extends BaseService<TaskLog> {
       message,
       jsonData,
     };
+
+    if (taskId) {
+      log.task = new Types.ObjectId(taskId);
+    }
 
     try {
       return this.baseCreate(log);

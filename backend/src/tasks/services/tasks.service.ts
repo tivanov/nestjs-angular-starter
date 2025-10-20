@@ -2,7 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { BaseService } from '../../shared/base/base-service';
 import { Task } from '../model/task.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model, PaginateModel, PaginateResult } from 'mongoose';
+import {
+  ClientSession,
+  FilterQuery,
+  Model,
+  PaginateModel,
+  PaginateResult,
+} from 'mongoose';
 import { TasksDefinition } from '../definitions';
 import {
   CreateTaskCommand,
@@ -59,6 +65,18 @@ export class TasksService extends BaseService<Task> {
       filter.type = query.type;
     }
 
+    if (query.onlyOneTime) {
+      filter.runOnce = true;
+    }
+
+    if (query.onlyRecurring) {
+      filter.runOnce = false;
+    }
+
+    if (query.search) {
+      filter.name = { $regex: query.search, $options: 'i' };
+    }
+
     return await (this.objectModel as PaginateModel<Task>).paginate(
       filter,
       this.getPaginationOptions(query),
@@ -83,12 +101,11 @@ export class TasksService extends BaseService<Task> {
   }
 
   public async stop(id: string) {
-    const task = await this.expectEntityExists(id, ErrorCode.TASK_NOT_FOUND);
-    if (!task.active) {
-      throw new AppBadRequestException(ErrorCode.TASK_NOT_FOUND);
-    }
-
-    await this.objectModel.findByIdAndUpdate(id, { active: false });
+    return this.objectModel.findByIdAndUpdate(
+      id,
+      { active: false },
+      { new: true, lean: true },
+    );
   }
 
   public async updateLastRun(id: string): Promise<Task> {
@@ -124,5 +141,25 @@ export class TasksService extends BaseService<Task> {
     } catch (error) {
       this.logger.error(error);
     }
+  }
+
+  public async delete(id: string, options?: { session?: ClientSession }) {
+    const task = await this.expectEntityExists(id, ErrorCode.TASK_NOT_FOUND);
+    if (task.active) {
+      await this.deactivate(id);
+    }
+
+    return super.baseDelete(id, options?.session);
+  }
+
+  public async clean() {
+    const aMonthAgo = new Date();
+    aMonthAgo.setMonth(aMonthAgo.getMonth() - 1);
+
+    return this.objectModel.deleteMany({
+      active: false,
+      lastRun: { $lt: aMonthAgo },
+      runOnce: true,
+    });
   }
 }

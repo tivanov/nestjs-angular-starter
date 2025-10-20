@@ -23,6 +23,10 @@ export interface IAuthConfig {
   jwtRefreshExpirationTime: string;
   userBlockTime: number;
   loginAttempts: number;
+  encryptionKey?: string;
+
+  statePrivateKey?: string;
+  statePublicKey?: string;
 }
 
 export interface IConfig {

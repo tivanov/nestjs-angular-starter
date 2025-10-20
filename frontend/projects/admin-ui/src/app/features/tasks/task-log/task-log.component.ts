@@ -1,18 +1,23 @@
+import { CommonModule, Location } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import { TaskLogDto } from '@app/contracts';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
-import { Component, inject, OnInit } from '@angular/core';
 import { TaskLogsService } from '../../../../../../common-ui/services/task-logs.service';
-import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { SectionDividerComponent } from '../../../core/components/section-divider/section-divider.component';
 import { AppTextComponent } from '../../../core/components/text/text.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Location } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    imports: [CommonModule, AppTextComponent, MatButtonModule],
-    selector: 'app-task-log',
-    templateUrl: 'task-log.component.html'
+  imports: [
+    CommonModule,
+    AppTextComponent,
+    MatButtonModule,
+    SectionDividerComponent,
+  ],
+  selector: 'app-task-log',
+  templateUrl: 'task-log.component.html',
 })
 export class TaskLogComponent extends BaseComponent implements OnInit {
   id: string;

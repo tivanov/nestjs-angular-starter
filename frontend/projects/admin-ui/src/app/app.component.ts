@@ -8,6 +8,7 @@ import {
   faChartLine,
   faChevronDown,
   faClipboardList,
+  faEnvelope,
   faGears,
   faList,
   faPlus,
@@ -16,10 +17,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-root',
-    imports: [RouterOutlet, FontAwesomeModule],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  imports: [RouterOutlet, FontAwesomeModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'admin-ui';
@@ -32,7 +33,8 @@ export class AppComponent {
       faChevronDown,
       faGears,
       faClipboardList,
-      faSpinner
+      faSpinner,
+      faEnvelope
     );
   }
 }

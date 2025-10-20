@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import {
   CreateTaskCommand,
   GetTasksQuery,
@@ -7,12 +6,13 @@ import {
   TaskDto,
   UpdateTaskCommand,
 } from '@app/contracts';
-import { BaseService } from '../base/base.service';
+import { Observable } from 'rxjs';
+import { BaseApiService } from '../base/base-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TasksService extends BaseService {
+export class TasksService extends BaseApiService {
   get(query: GetTasksQuery): Observable<PagedListDto<TaskDto>> {
     return this.http.get<PagedListDto<TaskDto>>(`${this.env.apiUrl}/tasks`, {
       params: this.queryToParams(query),
@@ -41,5 +41,11 @@ export class TasksService extends BaseService {
 
   delete(id: string): Observable<TaskDto> {
     return this.http.delete<TaskDto>(`${this.env.apiUrl}/tasks/${id}`);
+  }
+
+  getStatus(id: string): Observable<{ isFinished: boolean }> {
+    return this.http.get<{ isFinished: boolean }>(
+      `${this.env.apiUrl}/tasks/${id}/status`
+    );
   }
 }

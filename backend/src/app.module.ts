@@ -12,6 +12,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { TasksModule } from './tasks/tasks.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     DashboardModule,
     NotificationsModule,
     TasksModule,
+    UtilsModule,
   ],
   controllers: [],
   providers: [

@@ -1,0 +1,99 @@
+<form class="flex items-center w-full pb-4" [formGroup]="filterForm">
+  <mat-form-field class="w-full lg:w-1/6 lg:pr-2">
+    <mat-label>Start Date</mat-label>
+    <input matInput formControlName="startDate" type="datetime-local" />
+  </mat-form-field>
+
+  <mat-form-field class="w-full lg:w-1/6 lg:pr-2">
+    <mat-label>End Date</mat-label>
+    <input matInput formControlName="endDate" type="datetime-local" />
+  </mat-form-field>
+
+  <mat-form-field class="w-full lg:w-40 lg:pr-2">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option
+        *ngFor="let status of this.contactRequestsStatus"
+        [value]="status">
+        {{ status }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="w-full lg:w-40 lg:pr-2">
+    <mat-label>Type</mat-label>
+    <mat-select formControlName="type">
+      <mat-option *ngFor="let type of this.contactRequestsType" [value]="type">
+        {{ type }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    type="button"
+    mat-button
+    class="ml-auto"
+    (click)="this.filterForm.reset()">
+    Clear
+  </button>
+  <button
+    type="submit"
+    mat-raised-button
+    class="mx-2"
+    color="primary"
+    (click)="this.load({ pageIndex: 0 })">
+    <mat-icon>refresh</mat-icon>
+    Refresh
+  </button>
+</form>
+<table
+  mat-table
+  matSort
+  [dataSource]="this.dataSource"
+  (matSortChange)="this.onSortChange($event)">
+  <ng-container matColumnDef="name">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
+    <td *matCellDef="let row" mat-cell>{{ row.name }}</td>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header>Email</th>
+    <td *matCellDef="let row" mat-cell>{{ row.email }}</td>
+  </ng-container>
+  <ng-container matColumnDef="type">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header>Type</th>
+    <td *matCellDef="let row" mat-cell>{{ row.type }}</td>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header>Status</th>
+    <td *matCellDef="let row" mat-cell>{{ row.status }}</td>
+  </ng-container>
+  <ng-container matColumnDef="company">
+    <th *matHeaderCellDef mat-header-cell mat-sort-header>Company</th>
+    <td *matCellDef="let row" mat-cell>{{ row.company }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th *matHeaderCellDef mat-header-cell>
+      <div class="text-end">Actions</div>
+    </th>
+    <td *matCellDef="let row" mat-cell>
+      <div class="flex items-center justify-end">
+        <button
+          type="button"
+          mat-icon-button
+          title="View"
+          [routerLink]="['/', 'contact-requests', row.id]">
+          <mat-icon>visibility</mat-icon>
+        </button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="this.displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: this.displayedColumns" mat-row></tr>
+</table>
+<mat-paginator
+  #mainPaginator
+  [pageSizeOptions]="this.pageSizeOptions"
+  [length]="this.totalItems"
+  (page)="this.load($event)" />

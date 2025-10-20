@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEAN, IsEnum, IsOptional } from 'class-validator';
 import { ShapeableQuery } from './shapeable-query';
 import { TaskTypeEnum } from '../enums';
 
@@ -7,9 +7,18 @@ export class GetTasksQuery extends ShapeableQuery {
   activeOnly?: boolean;
 
   @IsOptional()
+  id?: string;
+
+  @IsOptional()
   @IsEnum(TaskTypeEnum)
   type?: TaskTypeEnum;
 
   @IsOptional()
-  id?: string;
+  onlyOneTime?: boolean;
+
+  @IsOptional()
+  onlyRecurring?: boolean;
+
+  @IsOptional()
+  search?: string;
 }

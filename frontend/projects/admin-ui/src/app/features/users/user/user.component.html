@@ -1,4 +1,4 @@
-<app-card title="User Info">
+<app-card titleText="User Info">
   <form class="flex flex-row w-full flex-wrap mb-4" [formGroup]="this.form">
     <div class="w-full text-xl font-bold p-4">Login Info</div>
 
@@ -91,8 +91,8 @@
   </form>
 </app-card>
 @if(this.entity){
-<app-card title="Avatar">
-  <div class="w-full flex flex-wrap items-center p-4 items-center">
+<app-card titleText="Avatar">
+  <div class="w-full flex flex-wrap p-4 items-center">
     <img
       class="rounded-full w-28 mr-4"
       [src]="this.avatarUrl || 'assets/images/no-avatar.png'"
@@ -143,7 +143,7 @@
   </div>
 </app-card>
 
-<app-card title="Change Password">
+<app-card titleText="Change Password">
   <form
     class="flex flex-row w-full flex-wrap mb-4 items-center"
     [formGroup]="this.changePasswordForm">
@@ -174,7 +174,7 @@
   </form>
 </app-card>
 } @if(this.entity){
-<app-card title="Login Records">
+<app-card titleText="Login Records">
   <app-login-records-list [userId]="this.entity.id" />
 </app-card>
 }

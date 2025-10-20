@@ -8,11 +8,12 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BaseComponent } from './base.component';
 import { IdNameDto } from '@app/contracts';
 import { takeUntil } from 'rxjs';
+import { BaseComponent } from './base.component';
 
 @Component({
+  selector: 'app-base-picker',
   template: '',
   standalone: true,
 })
@@ -20,8 +21,8 @@ export abstract class BasePickerComponent<T extends IdNameDto>
   extends BaseComponent
   implements OnInit
 {
-  @Input() label;
-  @Input() selectIfOnlyOne: boolean;
+  @Input() label: string | null;
+  @Input() selectIfOnlyOne: boolean | null;
   @Input() protected set disabled(value: boolean) {
     if (value) {
       this.control?.disable();
@@ -29,52 +30,55 @@ export abstract class BasePickerComponent<T extends IdNameDto>
       this.control?.enable();
     }
   }
-  @Input() required: boolean;
-  @Input() placeholder: string;
-  @Input() control: FormControl;
-  @Input() controlName: string;
-  @Input() formGroup: FormGroup;
-  @Input() multiple: boolean;
-  @Input() hint: string;
-  @Input() protected set value(value: string) {
+  @Input() required: boolean | null;
+  @Input() placeholder: string | null;
+  @Input() control: FormControl | null;
+  @Input() controlName: string | null;
+  @Input() formGroup: FormGroup | null;
+  @Input() multiple: boolean | null;
+  @Input() hint: string | null;
+  @Input() protected set value(value: string | null) {
     this.control?.setValue(value);
-    this.valueChange?.emit(value);
+    this.valueChange.emit(value);
   }
-  @Output() valueChange = new EventEmitter<string>();
+  @Output() readonly valueChange = new EventEmitter<string | null>();
 
-  options: T[] = [];
+  options: T[] | null = [];
 
   protected readonly snackBar = inject(MatSnackBar);
 
   protected initControl() {
-    let control: FormControl = null;
+    let control: FormControl | null = this.control;
     if (this.controlName && this.formGroup) {
       control = this.formGroup.controls[this.controlName] as FormControl;
-    } else if (this.control) {
-      control = this.control as FormControl;
-    } else {
-      control = new FormControl('', []);
+      if (!control) {
+        throw new Error(
+          `Control with name ${this.controlName} not found in form group `
+        );
+      }
     }
-    this.control = control;
-    this.control.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value) => {
-        this.valueChange.emit(value);
-      });
+    this.control = control ?? new FormControl('', []);
+    if (this.control) {
+      this.control.valueChanges
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((value) => {
+          this.valueChange.emit(value);
+        });
+    }
   }
 
-  protected onFetchError(error) {
+  protected onFetchError(error: any) {
     this.snackBar.open(this.extractErrorMessage(error), 'Dismiss', {
       duration: 5000,
     });
     console.error(error);
     setTimeout(() => {
-      this.dataLoaded = true;
+      this.dataLoaded.set(true);
     });
   }
 
   ngOnInit() {
-    this.dataLoaded = false;
+    this.dataLoaded.set(false);
     this.initControl();
     this.load();
   }
@@ -82,24 +86,30 @@ export abstract class BasePickerComponent<T extends IdNameDto>
   protected onOptionsLoaded(options: T[]) {
     this.options = options;
     if (this.selectIfOnlyOne && this.options.length === 1) {
-      this.control.setValue(this.options[0].id);
+      this.control?.setValue(this.options[0].id);
       this.valueChange.emit(this.options[0].id);
     } else if (this.control?.value) {
-      if (!this.options.find((c) => c.id === this.control.value)) {
-        this.value = null;
+      if (typeof this.control.value === 'string') {
+        if (!this.options.find((c) => c.id === this.control?.value)) {
+          this.value = null;
+        }
+      } else if (Array.isArray(this.control.value)) {
+        if (!this.options.find((c) => this.control?.value.includes(c.id))) {
+          this.value = null;
+        }
       }
     }
     setTimeout(() => {
-      this.dataLoaded = true;
+      this.dataLoaded.set(true);
     });
   }
 
-  public getSelected(): T {
-    if (!this.options || !this.control.value) {
+  public getSelected(): T | null {
+    if (!this.options || !this.control?.value) {
       return null;
     }
 
-    return this.options.find((o) => o.id === this.control.value);
+    return this.options.find((o) => o.id === this.control?.value) ?? null;
   }
 
   public hasError(error) {
@@ -111,9 +121,7 @@ export abstract class BasePickerComponent<T extends IdNameDto>
   }
 
   public controlHasError(control, error) {
-    return (
-      control && control.hasError(error) && (control.dirty || control.touched)
-    );
+    return control?.hasError(error) && (control.dirty || control.touched);
   }
 
   public isInvalid() {
@@ -124,5 +132,5 @@ export abstract class BasePickerComponent<T extends IdNameDto>
     );
   }
 
-  protected abstract load();
+  protected abstract load(): void;
 }

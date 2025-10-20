@@ -1,6 +1,64 @@
-<div class="py-2">
-  <span class="text-label" *ngIf="label"> {{ label }}: </span>
-  <span class="text-value" *ngIf="value">
-    {{ value }}
-  </span>
+<div class="p-2 flex flex-col items-start overflow-hidden">
+  <div *ngIf="label" class="text-sm text-gray-lighter">{{ this.label() }}</div>
+  <div class="flex flex-row items-center text-lg w-full">
+    @if (this.value() !== null && this.value() !== undefined) { @if (this.type()
+    === 'date') {
+    {{ this.value() | date : 'dd/MM/yyyy' }}
+    } @else if (this.type() === 'datetime') {
+    {{ this.value() | date : this.fullDateFormat }}
+    } @else if (this.type() === 'number') {
+    {{ this.value() | number }}
+    } @else if (this.type() === 'small-number') {
+    {{ this.value() | number : '0.0-8' }}
+    } @else if (this.type() === 'cardano-tx') {
+    <span
+      title="{{ this.value() }}"
+      class="text-value overflow-hidden text-ellipsis">
+      {{ this.value() }}
+    </span>
+    <a
+      href="https://{{
+        this.environment?.environment === 'production' ? '' : 'preprod.'
+      }}cardanoscan.io/transaction/{{ this.value() }}"
+      class="flex items-center ml-1"
+      title="View on CardanoScan"
+      target="_blank">
+      <mat-icon>open_in_new</mat-icon>
+    </a>
+    } @else if (this.type() === 'cardano-address') {
+    <span class="text-value overflow-hidden text-ellipsis">
+      {{ this.value() }}
+    </span>
+    <a
+      href="https://{{
+        this.environment?.environment === 'production' ? '' : 'preprod.'
+      }}cardanoscan.io/address/{{ this.value() }}"
+      class="flex items-center ml-1"
+      title="View on CardanoScan"
+      target="_blank">
+      <mat-icon>open_in_new</mat-icon>
+    </a>
+    } @else if (this.type() === 'boolean') {
+    {{ this.value() ? 'Yes' : 'No' }}
+    } @else if (this.type() === 'currency') {
+    {{ this.value() | currency : this.currency() }}
+    } @else if (this.type() === 'link' && this.link()) {
+    <a class="underline" [routerLink]="this.link()">{{ this.value() }}</a>
+    } @else if (this.type() === 'time-ago') {
+    {{ this.value() | timeAgo }}
+    } @else if (this.type() === 'enum') {
+    {{ this.value() | titlecase }}
+    } @else {
+    <span title="{{ this.value() }}">{{ this.value() }}</span>
+    } } @else { N/A } @if ( this.showCopy() || this.type() === 'cardano-address'
+    || this.type() === 'cardano-tx' ) {
+    <button
+      type="button"
+      class="ml-1 flex items-center"
+      title="Copy"
+      (click)="this.copyToClipboard()">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+    }
+  </div>
 </div>

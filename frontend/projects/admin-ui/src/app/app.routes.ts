@@ -44,6 +44,19 @@ export const routes: Routes = [
       import('./features/tasks/tasks.routes').then((m) => m.routes),
   },
   {
+    path: 'contact-requests',
+    component: LayoutComponent,
+    data: {
+      roles: [UserRoleEnum.Admin],
+    },
+    canActivate: [isLoggedIn, hasRole],
+    canActivateChild: [isLoggedIn, hasRole],
+    loadChildren: () =>
+      import('./features/contact-requests/contact-requests.routes').then(
+        (m) => m.routes
+      ),
+  },
+  {
     path: '**',
     redirectTo: 'auth',
   },

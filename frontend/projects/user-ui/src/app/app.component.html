@@ -1,11 +1,11 @@
 <router-outlet
   [ngClass]="{
-    hidden: !this.dataLoaded,
+    hidden: !this.dataLoaded(),
   }" />
 <div
   class="loading-cover bg-black flex z-[10005]"
   [ngClass]="{
-    hidden: this.dataLoaded,
+    hidden: this.dataLoaded(),
   }">
   <app-spinner></app-spinner>
 </div>

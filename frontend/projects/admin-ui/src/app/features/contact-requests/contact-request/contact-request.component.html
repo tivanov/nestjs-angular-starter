@@ -1,0 +1,47 @@
+@if (!this.dataLoaded()) {
+  <div class="overlay">
+    <app-spinner class="absolute" />
+  </div>
+} @else {
+  <app-card titleText="Actions">
+    <div class="bg-card flex flex-row w-full flex-wrap">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="this.markAsRead()">
+        Mark As Read
+      </button>
+    </div>
+  </app-card>
+  <app-card titleText="Contact Request">
+    <div class="flex flex-row w-full flex-wrap gap-4">
+      @if (this.entity) {
+        <app-text
+          class="w-full lg:px-2 lg:w-1/4"
+          label="Name"
+          [value]="this.entity.name" />
+        <app-text
+          class="w-full lg:px-2 lg:w-1/4"
+          label="Email"
+          [value]="this.entity.email" />
+        <app-text
+          class="w-full lg:px-2 lg:w-1/4"
+          label="Company"
+          [value]="this.entity.company" />
+        <app-text
+          class="w-full lg:px-2 lg:w-1/4"
+          label="Type"
+          [value]="this.entity.type" />
+        <app-text
+          class="w-full lg:px-2 lg:w-1/4"
+          label="Status"
+          [value]="this.entity.status" />
+        <app-text
+          class="w-full lg:px-2"
+          label="Message"
+          [value]="this.entity.message" />
+      }
+    </div>
+  </app-card>
+}

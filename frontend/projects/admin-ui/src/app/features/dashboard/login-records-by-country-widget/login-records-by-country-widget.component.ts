@@ -20,10 +20,10 @@ export type ChartOptions = {
 };
 
 @Component({
-    selector: 'app-login-records-by-country-widget',
-    imports: [CommonModule, MatCardModule, NgApexchartsModule],
-    templateUrl: './login-records-by-country-widget.component.html',
-    styleUrl: './login-records-by-country-widget.component.scss'
+  selector: 'app-login-records-by-country-widget',
+  imports: [CommonModule, MatCardModule, NgApexchartsModule],
+  templateUrl: './login-records-by-country-widget.component.html',
+  styleUrl: './login-records-by-country-widget.component.scss',
 })
 export class LoginRecordsByCountryWidgetComponent
   extends BaseComponent
@@ -41,7 +41,7 @@ export class LoginRecordsByCountryWidgetComponent
   }
 
   load() {
-    this.dataLoaded = false;
+    this.dataLoaded.set(false);
     this.dashboardService.getLoginRecordsByCountry().subscribe({
       next: (data) => {
         this.chartOptions = {
@@ -59,11 +59,11 @@ export class LoginRecordsByCountryWidgetComponent
         if (this.chart) {
           this.chart.updateOptions(this.chartOptions);
         }
-        this.dataLoaded = true;
+        this.dataLoaded.set(true);
       },
       error: (error) => {
         console.error(error);
-        this.dataLoaded = true;
+        this.dataLoaded.set(true);
         this.snackBar.open(this.extractErrorMessage(error), 'Dismiss', {
           duration: 3000,
         });

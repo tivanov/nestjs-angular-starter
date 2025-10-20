@@ -34,6 +34,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "angular-font-awesome": "^3.1.2",
     "apexcharts": "^4.7.0",
+    "cbor2": "^2.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "font-awesome": "^4.7.0",

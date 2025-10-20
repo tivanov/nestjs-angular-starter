@@ -19,7 +19,6 @@ export class SafePipe implements PipeTransform {
     value: any,
     type: string = 'resourceUrl'
   ): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
-    console.log('value', value);
     switch (type) {
       case 'html':
         return this.sanitizer.bypassSecurityTrustHtml(value);

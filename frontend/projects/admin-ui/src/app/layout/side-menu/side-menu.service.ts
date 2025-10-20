@@ -28,6 +28,12 @@ export class SideMenuService {
       roles: [UserRoleEnum.Manager],
     },
     {
+      label: 'Contact Requests',
+      link: '/contact-requests/list',
+      icon: 'envelope',
+      roles: [UserRoleEnum.Admin],
+    },
+    {
       type: MenuItemType.Divider,
     },
     {

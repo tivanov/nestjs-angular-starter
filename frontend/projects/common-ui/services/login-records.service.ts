@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import {
   GetLoginRecordsQuery,
   LoginRecordDto,
   PagedListDto,
 } from '@app/contracts';
-import { EnvironmentService } from './environment.service';
-import { BaseService } from '../base/base.service';
+import { Observable } from 'rxjs';
+import { BaseApiService } from '../base/base-api.service';
 
 @Injectable({ providedIn: 'root' })
-export class LoginRecordsService extends BaseService {
+export class LoginRecordsService extends BaseApiService {
   public get(
     query: GetLoginRecordsQuery
   ): Observable<PagedListDto<LoginRecordDto>> {

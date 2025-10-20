@@ -9,10 +9,10 @@ import {
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseService } from '../base/base.service';
+import { BaseApiService } from '../base/base-api.service';
 
 @Injectable({ providedIn: 'root' })
-export class UsersService extends BaseService {
+export class UsersService extends BaseApiService {
   public get(query: GetUsersQuery): Observable<PagedListDto<UserDto>> {
     return this.http.get<PagedListDto<UserDto>>(`${this.env.apiUrl}/users`, {
       params: this.queryToParams(query),

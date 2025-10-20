@@ -36,8 +36,13 @@ export class BaseMapper {
     }
 
     if (!(source instanceof Types.ObjectId)) {
-      return source;
+      if (!this.isValidDocument(source)) {
+        return null;
+      }
+
+      return source._id?.toHexString();
     }
+
     return (source as Types.ObjectId)?.toHexString();
   }
 

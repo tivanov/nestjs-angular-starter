@@ -21,7 +21,7 @@ export class AlertsController {
 
   @Get()
   public async get(@Query() query: GetAlertsQuery) {
-    return NotificationMappers.alertsToDtoPaginated(
+    return NotificationMappers.alertsToDtoPaged(
       await this.alertsService.get(query),
     );
   }
@@ -29,5 +29,10 @@ export class AlertsController {
   @Patch(':id/dismiss')
   public async dismiss(@Param('id') id: string) {
     return NotificationMappers.alertToDto(await this.alertsService.dismiss(id));
+  }
+
+  @Patch('dismiss-all')
+  public async dismissAll() {
+    await this.alertsService.dismissAll();
   }
 }

@@ -5,5 +5,6 @@ export interface TaskLogDto extends BaseEntityDto {
   taskType: TaskTypeEnum;
   logType: TaskLogTypeEnum;
   message: string;
+  task: string;
   jsonData: string;
 }

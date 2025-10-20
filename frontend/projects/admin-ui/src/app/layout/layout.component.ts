@@ -1,65 +1,84 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { Breakpoints } from '@angular/cdk/layout';
+import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { Title } from '@angular/platform-browser';
 import {
   ActivatedRoute,
   NavigationEnd,
   Router,
   RouterModule,
 } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { Observable } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { AuthSignal, logOut } from '../../../../common-ui/auth/auth.signal';
 import { BaseComponent } from '../../../../common-ui/base/base.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
-import { EnvironmentService } from '../../../../common-ui/services/environment.service';
 
 @Component({
-    selector: 'app-layout',
-    imports: [
-        RouterModule,
-        MatSidenavModule,
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatToolbarModule,
-        SideMenuComponent,
-    ],
-    templateUrl: './layout.component.html',
-    styleUrl: './layout.component.scss'
+  selector: 'app-layout',
+  imports: [
+    RouterModule,
+    MatSidenavModule,
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
+    SideMenuComponent,
+  ],
+  templateUrl: './layout.component.html',
+  styleUrl: './layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent extends BaseComponent implements OnInit {
-  sidenavMode: 'over' | 'side' = 'side';
-  title = 'Control Center';
+  sidenavMode = signal<'over' | 'side'>('side');
+  title = signal('Farmroll Control Center');
 
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly router = inject(Router);
-  private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly route = inject(ActivatedRoute);
-  public env = inject(EnvironmentService);
+  private readonly titleService = inject(Title);
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe([Breakpoints.Handset, Breakpoints.Tablet])
-    .pipe(
-      takeUntil(this.ngUnsubscribe),
-      map((result) => {
-        const mode = result.matches ? 'over' : 'side';
-        if (mode !== this.sidenavMode) {
-          this.sidenavMode = mode;
-          this.cdr.detectChanges();
-        }
-        return result.matches;
-      })
-    );
+  private readonly isHandsetSignal = toSignal(
+    this.breakpointObserver
+      .observe([Breakpoints.Handset, Breakpoints.Tablet])
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        map((result) => {
+          const mode = result.matches ? 'over' : 'side';
+          if (mode !== this.sidenavMode()) {
+            this.sidenavMode.set(mode);
+            // this.cdr.detectChanges();
+          }
+          return result.matches;
+        })
+      ),
+    { initialValue: false }
+  );
+
+  readonly isHandset = computed(() => this.isHandsetSignal());
 
   constructor() {
     super();
+    if (!AuthSignal().isAuthenticated) {
+      console.log('Not authenticated, redirecting to login');
+      void this.router.navigate(['/auth/login']);
+      return;
+    }
     this.router.events
       .pipe(
+        takeUntil(this.ngUnsubscribe),
         filter((event) => event instanceof NavigationEnd),
         map(() => {
           let child: ActivatedRoute | null = this.route.firstChild;
@@ -78,16 +97,17 @@ export class LayoutComponent extends BaseComponent implements OnInit {
       )
       .subscribe((title) => {
         if (title) {
-          this.title = title;
+          this.title.set(title);
         } else {
-          this.title = 'Control Center';
+          this.title.set('Farmroll Control Center');
         }
+        this.titleService.setTitle(`${this.title()} | Farmroll`);
       });
   }
 
   ngOnInit() {
     if (!AuthSignal().isAuthenticated) {
-      this.router.navigate(['/login']);
+      void this.router.navigate(['/auth']);
       return;
     }
   }

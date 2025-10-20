@@ -1,10 +1,17 @@
 <div class="w-full mb-4">
-  <button mat-raised-button color="primary" [routerLink]="'/tasks/create'">
-    <mat-icon>add</mat-icon>Create
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    [routerLink]="'/tasks/create'">
+    <mat-icon>add</mat-icon>
+    Create
   </button>
 </div>
 
-<form [formGroup]="this.filterForm" class="flex flex-row items-center">
+<form
+  class="flex flex-row items-center flex-wrap"
+  [formGroup]="this.filterForm">
   <mat-form-field class="w-full lg:w-1/6">
     <mat-label>ID</mat-label>
     <input matInput formControlName="id" />
@@ -12,105 +19,120 @@
   <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
     <mat-label>Task</mat-label>
     <mat-select formControlName="type">
-      <mat-option *ngFor="let task of this.Types" [value]="task">{{
-        task
-      }}</mat-option>
+      <mat-option *ngFor="let task of this.Types" [value]="task">
+        {{ task }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
+    <mat-label>Search</mat-label>
+    <input matInput formControlName="search" />
+  </mat-form-field>
   <mat-checkbox formControlName="activeOnly">Active</mat-checkbox>
+  <mat-checkbox formControlName="onlyOneTime">One Time</mat-checkbox>
+  <mat-checkbox formControlName="onlyRecurring">Recurring</mat-checkbox>
+
   <button
+    type="button"
+    mat-button
+    class="ml-auto"
+    (click)="this.filterForm.reset()">
+    Clear
+  </button>
+  <button
+    type="button"
     mat-raised-button
     color="primary"
-    (click)="load({ pageIndex: 0 })"
-    class="ml-auto">
-    <mat-icon>refresh</mat-icon> Refresh
+    class="ml-2"
+    (click)="load({ pageIndex: 0 })">
+    <mat-icon>refresh</mat-icon>
+    Refresh
   </button>
 </form>
 <table
   mat-table
-  [dataSource]="this.dataSource"
   class="w-full"
   matSort
+  [dataSource]="this.dataSource"
   (matSortChange)="this.onSortChange($event)">
   <ng-container matColumnDef="active">
-    <th mat-header-cell *matHeaderCellDef>Active</th>
-    <td mat-cell *matCellDef="let element">
+    <th *matHeaderCellDef mat-header-cell>Active</th>
+    <td *matCellDef="let element" mat-cell>
       <mat-slide-toggle
-        [checked]="element.active"
         disableRipple="true"
-        (change)="this.toggleTask($event, element)"></mat-slide-toggle>
+        [checked]="element.active"
+        (change)="this.toggleTask($event, element)" />
     </td>
   </ng-container>
 
   <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef>Type</th>
-    <td mat-cell *matCellDef="let element">
+    <th *matHeaderCellDef mat-header-cell>Type</th>
+    <td *matCellDef="let element" mat-cell>
       {{ element.type }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let element">
+    <th *matHeaderCellDef mat-header-cell>Name</th>
+    <td *matCellDef="let element" mat-cell>
       {{ element.name }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="cronString">
-    <th mat-header-cell *matHeaderCellDef>Cron String</th>
-    <td mat-cell *matCellDef="let element">{{ element.cronString }}</td>
+    <th *matHeaderCellDef mat-header-cell>Cron String</th>
+    <td *matCellDef="let element" mat-cell>{{ element.cronString }}</td>
   </ng-container>
 
   <ng-container matColumnDef="runOnce">
-    <th mat-header-cell *matHeaderCellDef>Run Once</th>
-    <td mat-cell *matCellDef="let element">
+    <th *matHeaderCellDef mat-header-cell>Run Once</th>
+    <td *matCellDef="let element" mat-cell>
       {{ element.runOnce ? 'Yes' : '' }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="timeout">
-    <th mat-header-cell *matHeaderCellDef>Timeout</th>
-    <td mat-cell *matCellDef="let element">
+    <th *matHeaderCellDef mat-header-cell>Timeout</th>
+    <td *matCellDef="let element" mat-cell>
       {{ element.runOnce ? element.timeout + 'ms' : '' }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="runImmediately">
-    <th mat-header-cell *matHeaderCellDef>Run Immediately</th>
-    <td mat-cell *matCellDef="let element">
+    <th *matHeaderCellDef mat-header-cell>Run Immediately</th>
+    <td *matCellDef="let element" mat-cell>
       {{ element.runImmediately ? 'Yes' : '' }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="lastRun">
-    <th mat-header-cell *matHeaderCellDef>Last Run</th>
-    <td mat-cell *matCellDef="let element">
+    <th *matHeaderCellDef mat-header-cell>Last Run</th>
+    <td *matCellDef="let element" mat-cell>
       {{ element.lastRun | date : this.fullDateFormat }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Actions</th>
-    <td mat-cell *matCellDef="let row" class="text-end">
+    <th *matHeaderCellDef mat-header-cell>Actions</th>
+    <td *matCellDef="let row" mat-cell class="text-end">
       <div class="flex justify-end">
-        <button mat-icon-button [routerLink]="'../' + row.id">
+        <button type="button" mat-icon-button [routerLink]="['/tasks', row.id]">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-icon-button (click)="onDelete(row)">
+        <button type="button" mat-icon-button (click)="onDelete(row)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="this.displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: this.displayedColumns"></tr>
+  <tr *matHeaderRowDef="this.displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: this.displayedColumns" mat-row></tr>
 </table>
 
 <mat-paginator
-  class="w-full"
-  [length]="this.totalItems"
   #mainPaginator
   [pageSizeOptions]="this.pageSizeOptions"
-  showFirstLastButtons
-  (page)="this.load($event)"></mat-paginator>
+  [length]="this.totalItems"
+  [showFirstLastButtons]="this.showFirstLastButtons"
+  (page)="this.load($event)" />

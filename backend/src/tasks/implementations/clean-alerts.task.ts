@@ -21,7 +21,7 @@ export class CleanAlertsTask {
 
     try {
       log.debug(task.type, `Running task ${task.name}`);
-      await alerts.cleanOldAlerts();
+      await alerts.clean();
     } catch (error) {
       log.error(task.type, `Error running task ${task.name}`, error);
     } finally {

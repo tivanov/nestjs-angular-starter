@@ -1,32 +1,39 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { EnvironmentService } from '../services/environment.service';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-export class BaseService {
-  protected readonly http = inject(HttpClient);
-  protected readonly env = inject(EnvironmentService);
+@Injectable({
+  providedIn: 'root',
+})
+export class BaseService implements OnDestroy {
+  subscriptions: Subscription[] = [];
 
-  protected queryToParams(query: any): HttpParams {
-    let params = new HttpParams();
+  protected extractErrorMessage(error: any): string {
+    let msg = '';
 
-    for (const name in query) {
-      const val = query[name];
-
-      if (val === undefined || val === null || val === '') {
-        continue;
-      }
-
-      if (Array.isArray(val)) {
-        for (const item of val) {
-          if (item !== undefined && item !== null && item !== '') {
-            params = params.append(`${name}[]`, item);
-          }
-        }
+    if (error.error?.code) {
+      msg = error.error.code;
+    } else if (error.error?.message) {
+      if (Array.isArray(error.error.message)) {
+        msg = error.error.message.join(', ');
       } else {
-        params = params.set(name, val);
+        msg = error.error.message;
       }
+    } else if (error.status && error.status === 404) {
+      msg = error.statusText;
+    } else if (error.message) {
+      msg = error.message;
+    } else {
+      msg = 'An unknown error has occured.';
     }
+    return msg;
+  }
 
-    return params;
+  public clearSubscriptions(): void {
+    this.subscriptions.forEach((s) => s?.unsubscribe());
+    this.subscriptions.length = 0;
+  }
+
+  public ngOnDestroy(): void {
+    this.clearSubscriptions();
   }
 }
