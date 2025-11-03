@@ -8,7 +8,8 @@ import { hasRole } from '../../../common-ui/auth/has-role.guard';
 export const routes: Routes = [
   {
     path: 'auth',
-    component: LoginComponent,
+    loadChildren: () =>
+      import('./features/auth/auth.routes').then((m) => m.routes),
   },
   {
     path: 'dashboard',
@@ -53,6 +54,32 @@ export const routes: Routes = [
     canActivateChild: [isLoggedIn, hasRole],
     loadChildren: () =>
       import('./features/contact-requests/contact-requests.routes').then(
+        (m) => m.routes
+      ),
+  },
+  {
+    path: 'system-settings',
+    component: LayoutComponent,
+    data: {
+      roles: [UserRoleEnum.Admin],
+    },
+    canActivate: [isLoggedIn, hasRole],
+    canActivateChild: [isLoggedIn, hasRole],
+    loadChildren: () =>
+      import('./features/system-settings/system-settings.routes').then(
+        (m) => m.routes
+      ),
+  },
+  {
+    path: 'circuit-breakers',
+    component: LayoutComponent,
+    data: {
+      roles: [UserRoleEnum.Admin],
+    },
+    canActivate: [isLoggedIn, hasRole],
+    canActivateChild: [isLoggedIn, hasRole],
+    loadChildren: () =>
+      import('./features/circuit-breaker/circuit-breaker.routes').then(
         (m) => m.routes
       ),
   },

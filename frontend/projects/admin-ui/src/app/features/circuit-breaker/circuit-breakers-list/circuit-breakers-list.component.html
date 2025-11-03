@@ -1,0 +1,110 @@
+<form
+  class="flex flex-row items-center flex-wrap"
+  [formGroup]="this.filterForm">
+  <mat-form-field class="w-full lg:w-1/6 lg:pr-2">
+    <mat-label>Operation</mat-label>
+    <mat-select formControlName="operation">
+      <mat-option *ngFor="let operation of this.operations" [value]="operation">
+        {{ operation }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="w-full lg:w-1/6 lg:pr-2">
+    <mat-label>Resource ID</mat-label>
+    <input matInput formControlName="resourceId" />
+  </mat-form-field>
+
+  <button
+    type="button"
+    mat-button
+    class="ml-auto"
+    (click)="this.filterForm.reset()">
+    Clear
+  </button>
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    class="ml-2"
+    (click)="load({ pageIndex: 0 })">
+    <mat-icon>refresh</mat-icon>
+    Refresh
+  </button>
+</form>
+<table
+  mat-table
+  class="w-full"
+  matSort
+  [dataSource]="this.dataSource"
+  (matSortChange)="this.onSortChange($event)">
+  <ng-container matColumnDef="operation">
+    <th *matHeaderCellDef mat-header-cell>Operation</th>
+    <td *matCellDef="let element" mat-cell>
+      {{ element.operation }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="resourceId">
+    <th *matHeaderCellDef mat-header-cell>Resource Id</th>
+    <td *matCellDef="let element" mat-cell>
+      {{ element.resourceId }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="state">
+    <th *matHeaderCellDef mat-header-cell>State</th>
+    <td *matCellDef="let element" mat-cell>
+      @if (element.state === 'open') {
+        <span class="text-red-500">{{ element.state }}</span>
+      } @else if (element.state === 'closed') {
+        <span class="text-green-500">{{ element.state }}</span>
+      } @else if (element.state === 'half-open') {
+        <span class="text-yellow-500">{{ element.state }}</span>
+      }
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="failureCount">
+    <th *matHeaderCellDef mat-header-cell>Failure Count</th>
+    <td *matCellDef="let element" mat-cell>{{ element.failureCount }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="lastFailureTime">
+    <th *matHeaderCellDef mat-header-cell>Last Failure Time</th>
+    <td *matCellDef="let element" mat-cell>
+      {{ element.lastFailureTime | date: this.fullDateFormat }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="nextAttemptTime">
+    <th *matHeaderCellDef mat-header-cell>Next Attempt Time</th>
+    <td *matCellDef="let element" mat-cell>
+      {{ element.nextAttemptTime | date: this.fullDateFormat }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th *matHeaderCellDef mat-header-cell>Actions</th>
+    <td *matCellDef="let row" mat-cell class="text-end">
+      <div class="flex justify-end">
+        <button
+          type="button"
+          mat-icon-button
+          [routerLink]="['/circuit-breakers', row.id]">
+          <mat-icon>visibility</mat-icon>
+        </button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr *matHeaderRowDef="this.displayedColumns" mat-header-row></tr>
+  <tr *matRowDef="let row; columns: this.displayedColumns" mat-row></tr>
+</table>
+
+<mat-paginator
+  #mainPaginator
+  [pageSizeOptions]="this.pageSizeOptions"
+  [length]="this.totalItems"
+  [showFirstLastButtons]="this.showFirstLastButtons"
+  (page)="this.load($event)" />

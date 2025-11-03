@@ -1,0 +1,15 @@
+<app-card titleText="System Settings">
+  <form [formGroup]="this.form" class="flex flex-row w-full flex-wrap mb-4">
+    <div class="w-full flex flex-row-reverse p-2">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        class="ml-2 font-bold rounded"
+        [disabled]="this.form.invalid"
+        (click)="this.save()">
+        Save
+      </button>
+    </div>
+  </form>
+</app-card>

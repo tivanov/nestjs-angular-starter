@@ -1,0 +1,118 @@
+@if (!this.dataLoaded()) {
+  <app-spinner />
+}
+@if (this.entity?.state === 'open') {
+  <app-card titleText="Actions">
+    <div class="flex flex-row w-full flex-wrap items-center">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="this.resetCb()">
+        Reset
+      </button>
+      <button
+        class="ml-4"
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="this.open()">
+        Open
+      </button>
+      <mat-form-field class="w-full lg:px-2 lg:w-1/6 ml-4">
+        <mat-label>Next Attempt Time</mat-label>
+        <input
+          matInput
+          type="datetime-local"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          data-lpignore="true"
+          spellcheck="false"
+          [(ngModel)]="this.nextAttemptTime" />
+      </mat-form-field>
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="this.setNextAttemptTime()">
+        Set
+      </button>
+    </div>
+  </app-card>
+}
+@if (this.entity) {
+  <app-card titleText="Info">
+    <form class="flex flex-row w-full flex-wrap" [formGroup]="this.form">
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Operation"
+        [value]="this.entity.operation" />
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Resource Id"
+        [value]="this.entity.resourceId" />
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="State"
+        [value]="this.entity.state" />
+
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Failure Count"
+        type="number"
+        [value]="this.entity.failureCount" />
+
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Failure Threshold"
+        type="number"
+        [value]="this.entity.failureThreshold" />
+
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Last Failure Time"
+        type="datetime"
+        [value]="this.entity.lastFailureTime" />
+
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Next Attempt Time"
+        type="datetime"
+        [value]="this.entity.nextAttemptTime" />
+
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Reset Timeout Ms"
+        type="number"
+        [value]="this.entity.resetTimeoutMs" />
+
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Success Count"
+        type="number"
+        [value]="this.entity.successCount" />
+
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Success Threshold"
+        type="number"
+        [value]="this.entity.successThreshold" />
+
+      <app-text
+        class="w-full px-2"
+        label="Last Error"
+        [value]="this.entity.lastError" />
+    </form>
+    <div class="w-full flex flex-row-reverse">
+      <button
+        type="button"
+        mat-button
+        color="warn"
+        class="ml-2 font-bold rounded"
+        (click)="exit()">
+        Exit
+      </button>
+    </div>
+  </app-card>
+}

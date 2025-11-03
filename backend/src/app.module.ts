@@ -13,6 +13,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { TasksModule } from './tasks/tasks.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UtilsModule } from './utils/utils.module';
+import { SystemModule } from './system/system.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { UtilsModule } from './utils/utils.module';
     NotificationsModule,
     TasksModule,
     UtilsModule,
+    SystemModule,
   ],
   controllers: [],
   providers: [

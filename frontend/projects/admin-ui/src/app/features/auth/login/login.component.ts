@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -22,27 +22,26 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRoleEnum } from '@app/contracts';
 
 @Component({
-    selector: 'app-login',
-    imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatCheckboxModule,
-    ],
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.scss'
+  selector: 'app-login',
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCheckboxModule,
+  ],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent extends BaseComponent implements OnInit {
   form: FormGroup;
-  errorMessage: string = '';
+  errorMessage = signal<string>('');
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private fb: FormBuilder
   ) {
     super();
   }
@@ -69,19 +68,22 @@ export class LoginComponent extends BaseComponent implements OnInit {
     const val = this.form.value;
 
     try {
+      this.dataLoaded.set(false);
       const loginResponse = await firstValueFrom(this.authService.login(val));
       if (
         loginResponse.user.role !== UserRoleEnum.Admin &&
         loginResponse.user.role !== UserRoleEnum.Manager
       ) {
-        this.errorMessage = 'Login not allowed.';
+        this.errorMessage.set('Login not allowed.');
         return;
       }
       logIn(loginResponse);
       this.form.reset();
       this.redirect();
     } catch (error) {
-      this.errorMessage = this.extractErrorMessage(error);
+      this.errorMessage.set(this.extractErrorMessage(error));
+    } finally {
+      this.dataLoaded.set(true);
     }
   }
 

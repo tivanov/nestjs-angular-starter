@@ -1,5 +1,5 @@
 <mat-sidenav-container class="h-full">
-  <mat-sidenav #drawer [mode]="this.sidenavMode()" [opened]="!isHandset()">
+  <mat-sidenav #drawer [mode]="this.sidenavMode()" [opened]="!this.isMobile()">
     <app-side-menu />
   </mat-sidenav>
   <mat-sidenav-content>

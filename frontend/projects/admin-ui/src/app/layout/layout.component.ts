@@ -34,45 +34,23 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    SideMenuComponent
-],
+    SideMenuComponent,
+  ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent extends BaseComponent implements OnInit {
   sidenavMode = signal<'over' | 'side'>('side');
-  title = signal('Farmroll Control Center');
+  title = signal('Control Center');
 
-  private readonly cdr = inject(ChangeDetectorRef);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly titleService = inject(Title);
 
-  private readonly isHandsetSignal = toSignal(
-    this.breakpointObserver
-      .observe([Breakpoints.Handset, Breakpoints.Tablet])
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-        map((result) => {
-          const mode = result.matches ? 'over' : 'side';
-          if (mode !== this.sidenavMode()) {
-            this.sidenavMode.set(mode);
-            // this.cdr.detectChanges();
-          }
-          return result.matches;
-        })
-      ),
-    { initialValue: false }
-  );
-
-  readonly isHandset = computed(() => this.isHandsetSignal());
-
   constructor() {
     super();
-    if (!AuthSignal().isAuthenticated) {
-      console.log('Not authenticated, redirecting to login');
-      void this.router.navigate(['/auth/login']);
+    if (!this.checkAuth()) {
       return;
     }
     this.router.events
@@ -98,15 +76,14 @@ export class LayoutComponent extends BaseComponent implements OnInit {
         if (title) {
           this.title.set(title);
         } else {
-          this.title.set('Farmroll Control Center');
+          this.title.set('Control Center');
         }
         this.titleService.setTitle(`${this.title()} | Farmroll`);
       });
   }
 
   ngOnInit() {
-    if (!AuthSignal().isAuthenticated) {
-      void this.router.navigate(['/auth']);
+    if (!this.checkAuth()) {
       return;
     }
   }
@@ -114,5 +91,13 @@ export class LayoutComponent extends BaseComponent implements OnInit {
   logout() {
     logOut();
     location.reload();
+  }
+
+  private checkAuth() {
+    if (!AuthSignal().isAuthenticated) {
+      void this.router.navigate(['/auth/login']);
+      return false;
+    }
+    return true;
   }
 }

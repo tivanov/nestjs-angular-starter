@@ -5,10 +5,12 @@ import {
   FaIconLibrary,
 } from '@fortawesome/angular-fontawesome';
 import {
+  faBolt,
   faChartLine,
   faChevronDown,
   faClipboardList,
   faEnvelope,
+  faGear,
   faGears,
   faList,
   faPlus,
@@ -34,7 +36,9 @@ export class AppComponent {
       faGears,
       faClipboardList,
       faSpinner,
-      faEnvelope
+      faEnvelope,
+      faGear,
+      faBolt
     );
   }
 }

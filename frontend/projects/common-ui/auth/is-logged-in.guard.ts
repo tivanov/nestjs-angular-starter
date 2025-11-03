@@ -1,12 +1,12 @@
-import { ActivatedRouteSnapshot, Router } from "@angular/router";
-import { AuthSignal } from "./auth.signal";
-import { inject } from "@angular/core";
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { AuthSignal } from './auth.signal';
+import { inject } from '@angular/core';
 
-export const isLoggedIn = (route: ActivatedRouteSnapshot): boolean => {  
+export const isLoggedIn = (route: ActivatedRouteSnapshot): boolean => {
   if (!AuthSignal().isAuthenticated) {
     const router = inject(Router);
-    router.navigate(['/auth']);
+    router.navigate(['/auth/login']);
     return false;
   }
   return true;
-}
+};

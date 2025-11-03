@@ -9,6 +9,19 @@
 <div class="w-full text-sm text-center">
   {{ AuthSignal().user?.role | titlecase }}
 </div>
+<div class="w-full flex items-center justify-center my-4">
+  @if (AuthSignal().user?.role === UserRoleEnum.Admin) {
+  <div
+    class="mr-2 px-2 py-1 rounded"
+    [ngClass]="{
+        'bg-green-500': this.environment.environment === 'production',
+        'bg-yellow-500': this.environment.environment === 'stage',
+        'bg-red-500': this.environment.environment === 'development',
+      }">
+    {{ this.environment.environment | uppercase }}
+  </div>
+  }
+</div>
 <div class="flex flex-col mt-4">
   @for (item of this.items; track $index) { @if (!item.type || item.type ===
   MenuItemType.Link) {
