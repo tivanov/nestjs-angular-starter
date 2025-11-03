@@ -5,7 +5,7 @@ import { RolesGuard } from 'src/auth/guards/roles-guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { IdentitiesService } from '../services/identities.service';
 import { UsersService } from 'src/users/services/users.service';
-import { AuthMappers } from '../mappers';
+import { IdentityMappers } from '../mappers/identity.mappers';
 
 @Controller('identities')
 @UseGuards(JwtGuard, RolesGuard)
@@ -18,6 +18,6 @@ export class IdentitiesController {
 
   @Get()
   public async get(@Query() query: GetIdentitiesQuery) {
-    return AuthMappers.identitiesToDtoPaged(await this.identities.get(query));
+    return IdentityMappers.toDtosPaged(await this.identities.get(query));
   }
 }

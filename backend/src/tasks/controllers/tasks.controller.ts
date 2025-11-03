@@ -1,4 +1,4 @@
-import { TasksMappers } from './../mappers';
+import { TaskMappers } from '../mappers/task.mappers';
 import {
   Controller,
   Get,
@@ -33,27 +33,27 @@ export class TasksController {
 
   @Post()
   async create(@Body() command: CreateTaskCommand) {
-    return TasksMappers.taskToDto(await this.tasksService.create(command));
+    return TaskMappers.toDto(await this.tasksService.create(command));
   }
 
   @Get()
   async findAll(@Query() query: GetTasksQuery) {
-    return TasksMappers.tasksToDtoPaged(await this.tasksService.get(query));
+    return TaskMappers.toDtosPaged(await this.tasksService.get(query));
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return TasksMappers.taskToDto(await this.tasksService.getByIdLean(id));
+    return TaskMappers.toDto(await this.tasksService.getByIdLean(id));
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() command: UpdateTaskCommand) {
-    return TasksMappers.taskToDto(await this.tasksService.update(id, command));
+    return TaskMappers.toDto(await this.tasksService.update(id, command));
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return TasksMappers.taskToDto(await this.tasksService.delete(id));
+    return TaskMappers.toDto(await this.tasksService.delete(id));
   }
 
   @Post(':id/start')

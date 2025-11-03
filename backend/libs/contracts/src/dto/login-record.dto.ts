@@ -1,5 +1,5 @@
 import { BaseEntityDto } from './base-entity.dto';
-import { UserDto } from './user.dto';
+import { IdNameDto } from './id-name.dto';
 
 export interface LoginRecordDto extends BaseEntityDto {
   ip: string;
@@ -13,5 +13,5 @@ export interface LoginRecordDto extends BaseEntityDto {
   deviceType?: string;
   deviceName?: string;
   isBot?: boolean;
-  user: string | UserDto;
+  user: string | IdNameDto;
 }

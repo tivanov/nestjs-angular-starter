@@ -4,7 +4,7 @@ import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles-guard';
-import { TasksMappers } from '../mappers';
+import { TaskLogMappers } from '../mappers/task-log.mappers';
 
 @Controller('task-logs')
 @Roles(UserRoleEnum.Admin)
@@ -14,14 +14,14 @@ export class TaskLogsController {
 
   @Get()
   async findAll(@Query() query: GetTaskLogsQuery) {
-    return TasksMappers.taskLogsToDtoPaged(
+    return TaskLogMappers.toDtosPaged(
       await this.taskLogsService.get(query),
     );
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return TasksMappers.taskLogToDto(
+    return TaskLogMappers.toDto(
       await this.taskLogsService.expectEntityExists(id),
     );
   }

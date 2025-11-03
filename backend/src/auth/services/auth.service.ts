@@ -10,17 +10,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Request } from 'express';
 import { getClientIp } from 'request-ip';
-import { UserMappers } from '../../users/mappers';
 import { IAuthConfig } from '../../../config/model';
 import {
   CreateRefreshTokenCommand,
   ErrorCode,
   IdentityProviderEnum,
+  IdNameDto,
   UserDto,
 } from '@app/contracts';
 import * as ms from 'ms';
 import { IdentitiesService } from './identities.service';
 import { Identity } from '../model/identity.model';
+import { UserMappers } from 'src/users/mappers/user.mappers';
 
 @Injectable()
 export class AuthService {
@@ -65,7 +66,7 @@ export class AuthService {
       token: await this.createAccessToken(user, identity),
       refreshToken: refreshToken.token,
       expirationDate: refreshToken.expires?.toISOString(),
-      user: UserMappers.userToDto(user) as UserDto,
+      user: UserMappers.toDto(user) as UserDto,
     };
   }
 

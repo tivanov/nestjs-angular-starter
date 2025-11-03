@@ -10,8 +10,8 @@ import { JwtGuard } from '../../auth/guards/jwt.guard';
 import { GetAlertsQuery, UserRoleEnum } from '@app/contracts';
 import { RolesGuard } from 'src/auth/guards/roles-guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { NotificationMappers } from '../mappers';
 import { AlertsService } from '../services/alerts.service';
+import { AlertMappers } from '../mappers/alert.mappers';
 
 @Controller('alerts')
 @UseGuards(JwtGuard, RolesGuard)
@@ -21,14 +21,12 @@ export class AlertsController {
 
   @Get()
   public async get(@Query() query: GetAlertsQuery) {
-    return NotificationMappers.alertsToDtoPaged(
-      await this.alertsService.get(query),
-    );
+    return AlertMappers.toDtosPaged(await this.alertsService.get(query));
   }
 
   @Patch(':id/dismiss')
   public async dismiss(@Param('id') id: string) {
-    return NotificationMappers.alertToDto(await this.alertsService.dismiss(id));
+    return AlertMappers.toDto(await this.alertsService.dismiss(id));
   }
 
   @Patch('dismiss-all')

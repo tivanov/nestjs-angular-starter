@@ -1,5 +1,1 @@
-export enum ContactTypeEnum {
-  FUNROLL = 'funroll',
-  ACCELEROLL = 'acceleroll',
-  FARMROLL = 'farmroll',
-}
+export enum ContactTypeEnum {}

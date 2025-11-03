@@ -41,6 +41,7 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent extends BaseComponent implements OnInit {
+  appName = 'Farmroll';
   sidenavMode = signal<'over' | 'side'>('side');
   title = signal('Control Center');
 
@@ -78,7 +79,7 @@ export class LayoutComponent extends BaseComponent implements OnInit {
         } else {
           this.title.set('Control Center');
         }
-        this.titleService.setTitle(`${this.title()} | Farmroll`);
+        this.titleService.setTitle(`${this.title()} | ${this.appName}`);
       });
   }
 
