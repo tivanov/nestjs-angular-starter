@@ -18,8 +18,8 @@ import {
 } from '../../../../../../common-ui/auth/auth.signal';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { AuthService } from '../../../../../../common-ui/auth/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRoleEnum } from '@app/contracts';
+import { SpinnerComponent } from '../../../../../../user-ui/src/app/shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-login',
@@ -30,6 +30,7 @@ import { UserRoleEnum } from '@app/contracts';
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,
+    SpinnerComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
