@@ -1,4 +1,11 @@
-import { Document, Types, Model, FilterQuery, ClientSession } from 'mongoose';
+import {
+  Document,
+  Types,
+  Model,
+  FilterQuery,
+  ClientSession,
+  PaginateOptions,
+} from 'mongoose';
 import { AppBadRequestException } from '../exceptions/app-bad-request-exception';
 import { ErrorCode, ShapeableQuery } from '@app/contracts';
 import { Logger } from '@nestjs/common';
@@ -246,7 +253,7 @@ export class BaseService<T> {
   }
 
   protected getPaginationOptions(query: any, session?: ClientSession) {
-    const options: any = {
+    const options: PaginateOptions = {
       page: query.page && parseInt(query.page),
       limit: query.limit && parseInt(query.limit),
       lean: true,
@@ -265,7 +272,7 @@ export class BaseService<T> {
     }
 
     if (session) {
-      options.options.session = session;
+      options.options = { session };
     }
 
     if (query.sortBy && query.sortBy !== '') {

@@ -14,21 +14,17 @@
   <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
     <mat-label>Task</mat-label>
     <mat-select formControlName="taskType">
-      @for (task of this.taskTypes; track task) {
-        <mat-option [value]="task">
-          {{ task }}
-        </mat-option>
-      }
+      <mat-option *ngFor="let task of this.taskTypes" [value]="task">
+        {{ task | statusEnum }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
     <mat-label>Log</mat-label>
     <mat-select formControlName="logType">
-      @for (log of this.logTypes; track log) {
-        <mat-option [value]="log">
-          {{ log }}
-        </mat-option>
-      }
+      <mat-option *ngFor="let log of this.logTypes" [value]="log">
+        {{ log | statusEnum }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
@@ -61,7 +57,7 @@
   <ng-container matColumnDef="createdAt">
     <th *matHeaderCellDef mat-header-cell mat-sort-header>Date</th>
     <td *matCellDef="let element" mat-cell>
-      {{ element.createdAt | date : this.fullDateFormat }}
+      {{ element.createdAt | date: this.fullDateFormat }}
     </td>
   </ng-container>
 
@@ -69,8 +65,10 @@
     <th *matHeaderCellDef mat-header-cell>Task</th>
     <td *matCellDef="let element" mat-cell>
       <div class="flex items-center">
-        {{ element.taskType }}
-        {{ element.task }}
+        {{ element.taskType | statusEnum }}
+        @if (element.task) {
+          ({{ element.task }})
+        }
       </div>
     </td>
   </ng-container>

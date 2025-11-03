@@ -18,7 +18,7 @@ import {
   IdentityProviderEnum,
   UserDto,
 } from '@app/contracts';
-import ms, { StringValue } from 'ms';
+import * as ms from 'ms';
 import { IdentitiesService } from './identities.service';
 import { Identity } from '../model/identity.model';
 
@@ -158,7 +158,7 @@ export class AuthService {
     const expDate = new Date();
     expDate.setTime(
       expDate.getTime() +
-        ms(this.authConfig.jwtRefreshExpirationTime as StringValue),
+        ms(this.authConfig.jwtRefreshExpirationTime as ms.StringValue),
     );
 
     const command: CreateRefreshTokenCommand = {

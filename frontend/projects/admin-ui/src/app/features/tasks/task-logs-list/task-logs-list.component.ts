@@ -19,6 +19,7 @@ import {
   TaskTypeEnum,
 } from '@app/contracts';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
+import { StatusEnumPipe } from '../../../../../../common-ui/pipes/status-enum.pipe';
 import { TaskLogsService } from '../../../../../../common-ui/services/task-logs.service';
 
 @Component({
@@ -39,11 +40,12 @@ import { TaskLogsService } from '../../../../../../common-ui/services/task-logs.
     MatDatepickerModule,
     MatSortModule,
     MatInputModule,
+    StatusEnumPipe,
   ],
 })
 export class TaskLogsListComponent extends BaseListComponent<TaskLogDto> {
-  logTypes = Object.values(TaskLogTypeEnum);
-  taskTypes = Object.values(TaskTypeEnum);
+  logTypes = Object.values(TaskLogTypeEnum).sort((a, b) => a.localeCompare(b));
+  taskTypes = Object.values(TaskTypeEnum).sort((a, b) => a.localeCompare(b));
 
   taskId = input<string>();
 

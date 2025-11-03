@@ -1,4 +1,4 @@
-import { StringValue } from 'ms';
+import * as ms from 'ms';
 
 export interface IAppConfig {
   isProduction: boolean;
@@ -20,9 +20,9 @@ export interface IDbConfig {
 
 export interface IAuthConfig {
   jwtSecret: string;
-  jwtExpirationTime: number | StringValue;
+  jwtExpirationTime: number | ms.StringValue;
   jwtRefreshSecret: string;
-  jwtRefreshExpirationTime: number | StringValue;
+  jwtRefreshExpirationTime: number | ms.StringValue;
   userBlockTime: number;
   loginAttempts: number;
   encryptionKey?: string;

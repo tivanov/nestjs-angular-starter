@@ -19,11 +19,9 @@
   <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
     <mat-label>Task</mat-label>
     <mat-select formControlName="type">
-      @for (task of this.Types; track task) {
-        <mat-option [value]="task">
-          {{ task }}
-        </mat-option>
-      }
+      <mat-option *ngFor="let task of this.Types" [value]="task">
+        {{ task | statusEnum }}
+      </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
@@ -70,7 +68,7 @@
   <ng-container matColumnDef="type">
     <th *matHeaderCellDef mat-header-cell>Type</th>
     <td *matCellDef="let element" mat-cell>
-      {{ element.type }}
+      {{ element.type | statusEnum }}
     </td>
   </ng-container>
 
@@ -110,7 +108,7 @@
   <ng-container matColumnDef="lastRun">
     <th *matHeaderCellDef mat-header-cell>Last Run</th>
     <td *matCellDef="let element" mat-cell>
-      {{ element.lastRun | date : this.fullDateFormat }}
+      {{ element.lastRun | date: this.fullDateFormat }}
     </td>
   </ng-container>
 

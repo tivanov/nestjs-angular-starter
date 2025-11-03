@@ -5,11 +5,9 @@
       <mat-select
         formControlName="type"
         (valueChange)="this.onTypeChange($event)">
-        @for (type of this.types; track type) {
-          <mat-option [value]="type">
-            {{ type }}
-          </mat-option>
-        }
+        <mat-option *ngFor="let type of this.types" [value]="type">
+          {{ type | statusEnum }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -45,76 +43,74 @@
 
     <div class="w-full p-2 flex">
       <pre>
-        *    *    *    *    *    *
-        ┬    ┬    ┬    ┬    ┬    ┬
-        │    │    │    │    │    │
-        │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
-        │    │    │    │    └───── month (1 - 12)
-        │    │    │    └────────── day of month (1 - 31)
-        │    │    └─────────────── hour (0 - 23)
-        │    └──────────────────── minute (0 - 59)
-        └───────────────────────── second (0 - 59, OPTIONAL)
+*    *    *    *    *    *
+┬    ┬    ┬    ┬    ┬    ┬
+│    │    │    │    │    │
+│    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
+│    │    │    │    └───── month (1 - 12)
+│    │    │    └────────── day of month (1 - 31)
+│    │    └─────────────── hour (0 - 23)
+│    └──────────────────── minute (0 - 59)
+└───────────────────────── second (0 - 59, OPTIONAL)
         </pre
-        >
-        <div class="ml-4 font-mono">
-          <p>Examples:</p>
-          <p>
-            42 * * * * - Execute when the minute is 42 (e.g. 19:42, 20:42, etc.)
-          </p>
-          <p>* * * * * * - Every second</p>
-          <p>0 */5 * * * * - Execute a cron job every 5 Minutes.</p>
-          <p>0 */10 * * * * - Every 10 minutes</p>
-          <p>0 */30 * * * * - Every 30 minutes</p>
-          <p>0 0-23/1 * * * - Every hour</p>
-          <p>0 01 * * * - Every day at 1 AM</p>
-          <p>0 15 * * * - Every day at 3 PM</p>
-        </div>
+      >
+      <div class="ml-4 font-mono">
+        <p>Examples:</p>
+        <p>
+          42 * * * * - Execute when the minute is 42 (e.g. 19:42, 20:42, etc.)
+        </p>
+        <p>* * * * * * - Every second</p>
+        <p>0 */5 * * * * - Execute a cron job every 5 Minutes.</p>
+        <p>0 */10 * * * * - Every 10 minutes</p>
+        <p>0 */30 * * * * - Every 30 minutes</p>
+        <p>0 0-23/1 * * * - Every hour</p>
+        <p>0 01 * * * - Every day at 1 AM</p>
+        <p>0 15 * * * - Every day at 3 PM</p>
       </div>
+    </div>
 
-      <mat-form-field class="w-full sm:px-2">
-        <mat-label>Parameters (JSON)</mat-label>
-        <textarea matInput formControlName="params"></textarea>
-      </mat-form-field>
+    <mat-form-field class="w-full sm:px-2">
+      <mat-label>Parameters (JSON)</mat-label>
+      <textarea matInput formControlName="params"></textarea>
+    </mat-form-field>
 
-      <mat-form-field class="w-full sm:px-2">
-        <mat-label>Script (JS)</mat-label>
-        <textarea matInput formControlName="script"></textarea>
-        <mat-hint>
-          A `task` variable containing task data and `logger` variable for logging
-          will be available in the context of the script.
-        </mat-hint>
-      </mat-form-field>
+    <mat-form-field class="w-full sm:px-2">
+      <mat-label>Script (JS)</mat-label>
+      <textarea matInput formControlName="script"></textarea>
+      <mat-hint>
+        A `task` variable containing task data and `logger` variable for logging
+        will be available in the context of the script.
+      </mat-hint>
+    </mat-form-field>
 
-      <div class="w-full flex flex-row-reverse">
-        <button
-          mat-raised-button
-          color="primary"
-          class="ml-2 font-bold rounded"
-          [disabled]="!form.valid"
-          (click)="onSubmit()">
-          {{ this.taskId ? 'Save' : 'Create' }}
-        </button>
+    <div class="w-full flex flex-row-reverse">
+      <button
+        mat-raised-button
+        color="primary"
+        class="ml-2 font-bold rounded"
+        [disabled]="!form.valid"
+        (click)="onSubmit()">
+        {{ this.taskId ? 'Save' : 'Create' }}
+      </button>
 
-        <button
-          mat-button
-          color="warn"
-          class="ml-2 font-bold rounded"
-          (click)="clear()">
-          Cancel
-        </button>
+      <button
+        mat-button
+        color="warn"
+        class="ml-2 font-bold rounded"
+        (click)="clear()">
+        Cancel
+      </button>
 
-        <button
-          mat-button
-          color="warn"
-          class="ml-2 font-bold rounded"
-          (click)="exit()">
-          Exit
-        </button>
-      </div>
-    </form>
-  </app-card>
-  @if (taskId) {
-    <app-card titleText="Task Logs">
-      <app-task-logs-list [taskId]="taskId" />
-    </app-card>
-  }
+      <button
+        mat-button
+        color="warn"
+        class="ml-2 font-bold rounded"
+        (click)="exit()">
+        Exit
+      </button>
+    </div>
+  </form>
+</app-card>
+<app-card titleText="Task Logs" *ngIf="taskId">
+  <app-task-logs-list [taskId]="taskId" />
+</app-card>

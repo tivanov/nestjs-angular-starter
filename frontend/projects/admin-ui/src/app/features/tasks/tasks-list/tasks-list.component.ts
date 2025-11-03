@@ -16,6 +16,7 @@ import { GetTasksQuery, TaskDto, TaskTypeEnum } from '@app/contracts';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { firstValueFrom } from 'rxjs';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
+import { StatusEnumPipe } from '../../../../../../common-ui/pipes/status-enum.pipe';
 import { TasksService } from '../../../../../../common-ui/services/tasks.service';
 
 @Component({
@@ -37,6 +38,7 @@ import { TasksService } from '../../../../../../common-ui/services/tasks.service
     MatFormFieldModule,
     MatCheckboxModule,
     MatSelectModule,
+    StatusEnumPipe,
   ],
 })
 export class TasksListComponent
@@ -45,7 +47,9 @@ export class TasksListComponent
 {
   taskId = input<string>();
   search = input<string>();
-  public readonly Types = Object.values(TaskTypeEnum);
+  public readonly Types = Object.values(TaskTypeEnum).sort((a, b) =>
+    a.localeCompare(b),
+  );
 
   private tasksService = inject(TasksService);
 

@@ -1,28 +1,32 @@
-@if (this.entry) {
+@if (!this.dataLoaded()) {
+  <app-spinner class="absolute" />
+}
+
+@if (this.entity) {
   <div class="p-4 flex flex-col bg-card">
     <app-text
       label="Date"
-      value="{{ this.entry.createdAt | date : this.fullDateFormat }}" />
-    <app-text label="Task" value="{{ this.entry.taskType }}" />
-    <app-text label="Task ID" value="{{ this.entry.task }}" />
-    <app-text label="Type" value="{{ this.entry.logType }}" />
-    <app-text label="Message" value="{{ this.entry.message }}" />
+      value="{{ this.entity.createdAt | date: this.fullDateFormat }}" />
+    <app-text label="Task" value="{{ this.entity.taskType }}" />
+    <app-text label="Task ID" value="{{ this.entity.task }}" />
+    <app-text label="Type" value="{{ this.entity.logType }}" />
+    <app-text label="Message" value="{{ this.entity.message }}" />
     @if (this.additionalData) {
       <app-section-divider title="Additional Data" />
       <pre class="text-sm text-monospace overflow-auto bg-gray-darker">
-        {{ this.additionalData | json }}
-        </pre
-        >
-      }
-      <div class="flex justify-end">
-        <button
-          type="button"
-          mat-raised-button
-          class="btn btn-primary"
-          color="warn"
-          (click)="this.goBack()">
-          Back
-        </button>
-      </div>
+    {{ this.additionalData | json }}
+    </pre
+      >
+    }
+    <div class="flex justify-end">
+      <button
+        type="button"
+        mat-raised-button
+        class="btn btn-primary"
+        color="warn"
+        (click)="this.goBack()">
+        Back
+      </button>
     </div>
-  }
+  </div>
+}

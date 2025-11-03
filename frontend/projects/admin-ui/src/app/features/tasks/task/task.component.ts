@@ -1,4 +1,4 @@
-
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -17,6 +17,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TaskDto, TaskTypeEnum } from '@app/contracts';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
+import { StatusEnumPipe } from '../../../../../../common-ui/pipes/status-enum.pipe';
 import { TasksService } from '../../../../../../common-ui/services/tasks.service';
 import { StringUtils } from '../../../../../../common-ui/utils/string-utils';
 import { CardComponent } from '../../../core/components/card/card.component';
@@ -25,6 +26,7 @@ import { TaskLogsListComponent } from '../task-logs-list/task-logs-list.componen
 @Component({
   selector: 'app-task',
   imports: [
+    CommonModule,
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
@@ -35,8 +37,9 @@ import { TaskLogsListComponent } from '../task-logs-list/task-logs-list.componen
     MatSnackBarModule,
     MatCheckboxModule,
     CardComponent,
-    TaskLogsListComponent
-],
+    TaskLogsListComponent,
+    StatusEnumPipe,
+  ],
   templateUrl: './task.component.html',
 })
 export class TaskComponent extends BaseComponent implements OnInit {
@@ -45,14 +48,14 @@ export class TaskComponent extends BaseComponent implements OnInit {
   form: FormGroup;
   task: TaskDto;
 
-  types = Object.values(TaskTypeEnum);
+  types = Object.values(TaskTypeEnum).sort((a, b) => a.localeCompare(b));
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private tasksService: TasksService,
     private snackBar: MatSnackBar,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) {
     super();
   }
