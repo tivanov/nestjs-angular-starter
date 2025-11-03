@@ -19,7 +19,6 @@ import {
   FileTypeValidator,
 } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guards/jwt.guard';
-import { UserMappers } from '../mappers';
 import {
   CreateUserCommand,
   ErrorCode,
@@ -36,6 +35,7 @@ import * as fs from 'fs/promises';
 import { IAppConfig } from 'config/model';
 import { ConfigService } from '@nestjs/config';
 import * as sharp from 'sharp';
+import { UserMappers } from '../mappers/user.mappers';
 
 @Controller('users')
 export class UsersController {
@@ -53,7 +53,7 @@ export class UsersController {
   @Roles(UserRoleEnum.Admin)
   public async create(@Body() createUserCommand: CreateUserCommand) {
     const createdUser = await this.usersService.create(createUserCommand);
-    return UserMappers.userToDto(createdUser);
+    return UserMappers.toDto(createdUser);
   }
 
   @Put(':id')
@@ -63,7 +63,7 @@ export class UsersController {
     @Param('id') userId: string,
     @Body() command: UpdateUserDataCommand,
   ) {
-    return UserMappers.userToDto(
+    return UserMappers.toDto(
       await this.usersService.updateBasicData(userId, command),
     );
   }
@@ -75,7 +75,7 @@ export class UsersController {
     @Param('id') userId: string,
     @Body() command: UpdateUserPasswordCommand,
   ) {
-    return UserMappers.userToDto(
+    return UserMappers.toDto(
       await this.usersService.updatePassword(userId, command),
     );
   }
@@ -84,7 +84,7 @@ export class UsersController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRoleEnum.Admin)
   public async delete(@Param('id') userId: string) {
-    return UserMappers.userToDto(await this.usersService.deleteUser(userId));
+    return UserMappers.toDto(await this.usersService.deleteUser(userId));
   }
 
   @Get()
@@ -92,7 +92,7 @@ export class UsersController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRoleEnum.Admin)
   public async get(@Query() query: GetUsersQuery) {
-    return UserMappers.usersToDtoPaginated(await this.usersService.get(query));
+    return UserMappers.toDtosPaged(await this.usersService.get(query));
   }
 
   @Get(':id')
@@ -100,7 +100,7 @@ export class UsersController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRoleEnum.Admin)
   public async getOne(@Param('id') id: string) {
-    return UserMappers.userToDto(await this.usersService.getById(id));
+    return UserMappers.toDto(await this.usersService.getById(id));
   }
 
   @Put(':id/avatar')
