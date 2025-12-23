@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult, Model } from 'mongoose';
-type FilterQuery<T> = Record<string, any>;
+import { PaginateModel, PaginateResult, Model, QueryFilter } from 'mongoose';
 import { BaseService } from '../../shared/base/base-service';
 import { AlertTypeEnum, GetAlertsQuery } from '@app/contracts';
 import { Alert } from '../model/alert.model';
@@ -13,7 +12,7 @@ export class AlertsService extends BaseService<Alert> {
   }
 
   async get(query: GetAlertsQuery): Promise<PaginateResult<Alert>> {
-    const filter: FilterQuery<Alert> = {};
+    const filter: QueryFilter<Alert> = {};
 
     if (query.type) {
       filter.type = query.type;

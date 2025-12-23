@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult, Model } from 'mongoose';
-type FilterQuery<T> = Record<string, any>;
+import { PaginateModel, PaginateResult, Model, QueryFilter } from 'mongoose';
 import { BaseService } from '../../shared/base/base-service';
 import {
   ContactRequestCommand,
@@ -21,7 +20,7 @@ export class ContactRequestService extends BaseService<ContactRequest> {
   async get(
     query: GetContactRequestQuery,
   ): Promise<PaginateResult<ContactRequest>> {
-    const filter: FilterQuery<ContactRequest> = {};
+    const filter: QueryFilter<ContactRequest> = {};
 
     if (query.status) {
       filter.status = query.status;

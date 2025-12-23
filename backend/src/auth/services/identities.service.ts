@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from '../../shared/base/base-service';
-import { Model, PaginateModel } from 'mongoose';
-type FilterQuery<T> = Record<string, any>;
+import { Model, PaginateModel, QueryFilter } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Identity, IdentityDocument } from '../model/identity.model';
 import { GetIdentitiesQuery, IdentityProviderEnum } from '@app/contracts';
@@ -13,7 +12,7 @@ export class IdentitiesService extends BaseService<Identity> {
   }
 
   async get(query: GetIdentitiesQuery) {
-    const filter: FilterQuery<IdentityDocument> = {};
+    const filter: QueryFilter<IdentityDocument> = {};
 
     if (query.uid) {
       filter.uid = query.uid;
@@ -65,7 +64,7 @@ export class IdentitiesService extends BaseService<Identity> {
     provider: IdentityProviderEnum,
     version?: number,
   ): Promise<Identity> {
-    const query: FilterQuery<IdentityDocument> = {
+    const query: QueryFilter<IdentityDocument> = {
       user: userId,
       expirationDate: { $gte: new Date() },
       provider,

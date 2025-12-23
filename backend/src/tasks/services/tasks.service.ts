@@ -7,8 +7,8 @@ import {
   Model,
   PaginateModel,
   PaginateResult,
+  QueryFilter,
 } from 'mongoose';
-type FilterQuery<T> = Record<string, any>;
 import { TasksDefinition } from '../definitions';
 import {
   CreateTaskCommand,
@@ -51,7 +51,7 @@ export class TasksService extends BaseService<Task> {
   }
 
   public async get(query: GetTasksQuery): Promise<PaginateResult<Task>> {
-    const filter: FilterQuery<Task> = {};
+    const filter: QueryFilter<Task> = {};
 
     if (query.activeOnly) {
       filter.active = true;

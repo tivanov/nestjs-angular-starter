@@ -1,8 +1,7 @@
 // backend/src/system/services/circuit-breaker.service.ts
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PaginateModel } from 'mongoose';
-type FilterQuery<T> = Record<string, any>;
+import { Model, PaginateModel, QueryFilter } from 'mongoose';
 import {
   CircuitBreaker,
   CircuitBreakerState,
@@ -25,7 +24,7 @@ export class CircuitBreakersService extends BaseService<CircuitBreaker> {
   }
 
   async get(query: GetCircuitBreakersQuery) {
-    const filter: FilterQuery<CircuitBreaker> = {};
+    const filter: QueryFilter<CircuitBreaker> = {};
 
     if (query.operation) {
       filter.operation = query.operation;

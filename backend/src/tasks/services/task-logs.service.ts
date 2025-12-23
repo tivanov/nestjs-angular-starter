@@ -6,8 +6,8 @@ import {
   PaginateModel,
   PaginateResult,
   Types,
+  QueryFilter,
 } from 'mongoose';
-type FilterQuery<T> = Record<string, any>;
 import { InjectModel } from '@nestjs/mongoose';
 import {
   GetTaskLogsQuery,
@@ -24,7 +24,7 @@ export class TaskLogsService extends BaseService<TaskLog> {
   }
 
   async get(query: GetTaskLogsQuery): Promise<PaginateResult<TaskLog>> {
-    const filter: FilterQuery<TaskLog> = {};
+    const filter: QueryFilter<TaskLog> = {};
 
     if (query.taskType) {
       filter.taskType = query.taskType;
@@ -34,12 +34,15 @@ export class TaskLogsService extends BaseService<TaskLog> {
       filter.logType = query.logType;
     }
 
-    if (query.startDate) {
-      filter.createdAt = { $gte: new Date(query.startDate) };
-    }
-
-    if (query.endDate) {
-      filter.createdAt = { ...filter.createdAt, $lte: new Date(query.endDate) };
+    if (query.startDate || query.endDate) {
+      const dateFilter: any = {};
+      if (query.startDate) {
+        dateFilter.$gte = new Date(query.startDate);
+      }
+      if (query.endDate) {
+        dateFilter.$lte = new Date(query.endDate);
+      }
+      filter.createdAt = dateFilter as any;
     }
 
     if (query.taskId) {

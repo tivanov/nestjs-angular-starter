@@ -4,10 +4,8 @@ import {
   Model,
   ClientSession,
   PaginateOptions,
+  QueryFilter,
 } from 'mongoose';
-
-// In Mongoose v9, FilterQuery was removed. Define it as a generic filter object type.
-type FilterQuery<T> = Record<string, any>;
 import { AppBadRequestException } from '../exceptions/app-bad-request-exception';
 import { ErrorCode, ShapeableQuery } from '@app/contracts';
 import { Logger } from '@nestjs/common';
@@ -72,7 +70,7 @@ export class BaseService<T> {
     const entities = await this.objectModel
       .find({
         _id: { $in: idsToCheck.map((id) => new Types.ObjectId(id)) },
-      } as FilterQuery<T>)
+      } as QueryFilter<T>)
       .session(session);
 
     if ((entities?.length ?? 0) !== idsToCheck.length) {
@@ -174,7 +172,7 @@ export class BaseService<T> {
     const query = this.objectModel
       .find({
         _id: { $in: this.getStringsAsObjectIds(ids) },
-      } as FilterQuery<T>)
+      } as QueryFilter<T>)
       .session(session);
 
     if (populate) {
@@ -192,7 +190,7 @@ export class BaseService<T> {
     const query = this.objectModel
       .find({
         _id: { $in: this.getStringsAsObjectIds(ids) },
-      } as FilterQuery<T>)
+      } as QueryFilter<T>)
       .session(session);
 
     if (populate) {
