@@ -4,9 +4,11 @@
   <mat-form-field class="w-full lg:w-1/6 lg:pr-2">
     <mat-label>Operation</mat-label>
     <mat-select formControlName="operation">
-      <mat-option *ngFor="let operation of this.operations" [value]="operation">
-        {{ operation }}
-      </mat-option>
+      @for (operation of this.operations; track operation) {
+        <mat-option [value]="operation">
+          {{ operation }}
+        </mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
