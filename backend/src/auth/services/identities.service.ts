@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from '../../shared/base/base-service';
-import { FilterQuery, Model, PaginateModel } from 'mongoose';
+import { Model, PaginateModel } from 'mongoose';
+type FilterQuery<T> = Record<string, any>;
 import { InjectModel } from '@nestjs/mongoose';
 import { Identity, IdentityDocument } from '../model/identity.model';
 import { GetIdentitiesQuery, IdentityProviderEnum } from '@app/contracts';

@@ -2,12 +2,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { TaskLog, TaskLogDocument } from '../model/task-log.model';
 import { BaseService } from 'src/shared/base/base-service';
 import {
-  FilterQuery,
   Model,
   PaginateModel,
   PaginateResult,
   Types,
 } from 'mongoose';
+type FilterQuery<T> = Record<string, any>;
 import { InjectModel } from '@nestjs/mongoose';
 import {
   GetTaskLogsQuery,

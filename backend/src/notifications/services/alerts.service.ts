@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, PaginateModel, PaginateResult } from 'mongoose';
+import { PaginateModel, PaginateResult, Model } from 'mongoose';
+type FilterQuery<T> = Record<string, any>;
 import { BaseService } from '../../shared/base/base-service';
 import { AlertTypeEnum, GetAlertsQuery } from '@app/contracts';
 import { Alert } from '../model/alert.model';

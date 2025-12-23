@@ -4,11 +4,11 @@ import { Task } from '../model/task.model';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   ClientSession,
-  FilterQuery,
   Model,
   PaginateModel,
   PaginateResult,
 } from 'mongoose';
+type FilterQuery<T> = Record<string, any>;
 import { TasksDefinition } from '../definitions';
 import {
   CreateTaskCommand,

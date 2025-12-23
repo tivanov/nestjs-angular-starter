@@ -2,10 +2,12 @@ import {
   Document,
   Types,
   Model,
-  FilterQuery,
   ClientSession,
   PaginateOptions,
 } from 'mongoose';
+
+// In Mongoose v9, FilterQuery was removed. Define it as a generic filter object type.
+type FilterQuery<T> = Record<string, any>;
 import { AppBadRequestException } from '../exceptions/app-bad-request-exception';
 import { ErrorCode, ShapeableQuery } from '@app/contracts';
 import { Logger } from '@nestjs/common';

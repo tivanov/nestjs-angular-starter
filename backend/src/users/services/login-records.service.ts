@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, PaginateModel, PaginateResult } from 'mongoose';
+import { PaginateModel, PaginateResult, Model } from 'mongoose';
+type FilterQuery<T> = Record<string, any>;
 import { BaseService } from '../../shared/base/base-service';
 import { LoginRecord, LoginRecordDocument } from '../model/login-record.model';
 import { User } from '../model/user.model';

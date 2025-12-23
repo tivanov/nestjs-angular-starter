@@ -3,7 +3,8 @@ import { BaseService } from 'src/shared/base/base-service';
 import { User, UserDocument } from '../model/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { IAppConfig, IAuthConfig } from 'config/model';
-import { FilterQuery, PaginateModel, PaginateResult, Types } from 'mongoose';
+import { PaginateModel, PaginateResult, Types, Model } from 'mongoose';
+type FilterQuery<T> = Record<string, any>;
 import { ConfigService } from '@nestjs/config';
 import {
   Constants,
