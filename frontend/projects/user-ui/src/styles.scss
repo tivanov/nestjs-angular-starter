@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-
+@import 'tailwindcss' layer(tailwindcss);
+// layer(tailwindcss) to avoid Sass warnings.
 html,
 body {
   background-color: black;
