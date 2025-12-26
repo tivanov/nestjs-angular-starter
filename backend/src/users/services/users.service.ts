@@ -3,7 +3,7 @@ import { BaseService } from 'src/shared/base/base-service';
 import { User, UserDocument } from '../model/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { IAppConfig, IAuthConfig } from 'config/model';
-import { FilterQuery, PaginateModel, PaginateResult, Types } from 'mongoose';
+import { PaginateModel, PaginateResult, Types, Model, QueryFilter } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
 import {
   Constants,
@@ -44,7 +44,7 @@ export class UsersService extends BaseService<User> {
   }
 
   async get(query: GetUsersQuery): Promise<PaginateResult<User>> {
-    const filter: FilterQuery<User> = {};
+    const filter: QueryFilter<User> = {};
 
     if (query.userName) {
       filter.userName = query.userName;
@@ -190,7 +190,7 @@ export class UsersService extends BaseService<User> {
     try {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      const filter: FilterQuery<UserDocument> = {
+      const filter: QueryFilter<UserDocument> = {
         createdAt: { $gte: today },
         role: UserRoleEnum.Regular,
       };
@@ -207,7 +207,7 @@ export class UsersService extends BaseService<User> {
       const threshold = new Date();
       threshold.setTime(threshold.getTime() - 5 * 24 * 60 * 60 * 1000);
 
-      const filter: FilterQuery<UserDocument> = {
+      const filter: QueryFilter<UserDocument> = {
         $or: [
           { lastLogin: { $exists: false } },
           { lastLogin: { $lt: threshold } },
@@ -223,7 +223,7 @@ export class UsersService extends BaseService<User> {
   }
 
   getRegularUsersCount() {
-    const filter: FilterQuery<UserDocument> = {
+    const filter: QueryFilter<UserDocument> = {
       role: UserRoleEnum.Regular,
     };
     return this.objectModel.countDocuments(filter);

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   AfterViewInit,
   Component,
@@ -24,7 +24,6 @@ import { AppTextComponent } from '../../../core/components/text/text.component';
 @Component({
   selector: 'app-circuit-breaker',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
@@ -36,8 +35,8 @@ import { AppTextComponent } from '../../../core/components/text/text.component';
     CardComponent,
     AppTextComponent,
     MatDatepickerModule,
-    FormsModule,
-  ],
+    FormsModule
+],
   templateUrl: './circuit-breaker.component.html',
   styleUrl: './circuit-breaker.component.scss',
 })

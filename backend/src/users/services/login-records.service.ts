@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, PaginateModel, PaginateResult } from 'mongoose';
+import { PaginateModel, PaginateResult, Model, QueryFilter } from 'mongoose';
 import { BaseService } from '../../shared/base/base-service';
 import { LoginRecord, LoginRecordDocument } from '../model/login-record.model';
 import { User } from '../model/user.model';
@@ -24,20 +24,20 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
   public async get(
     query: GetLoginRecordsQuery,
   ): Promise<PaginateResult<LoginRecordDocument>> {
-    const filter: FilterQuery<LoginRecordDocument> = {};
+    const filter: QueryFilter<LoginRecordDocument> = {};
     if (query.userId) {
       filter.user = query.userId;
     }
 
-    if (query.startDate) {
-      filter.createdAt = { $gte: query.startDate };
-    }
-
-    if (query.endDate) {
-      if (!filter.createdAt) {
-        filter.createdAt = {};
+    if (query.startDate || query.endDate) {
+      const dateFilter: any = {};
+      if (query.startDate) {
+        dateFilter.$gte = query.startDate;
       }
-      filter.createdAt.$lte = query.endDate;
+      if (query.endDate) {
+        dateFilter.$lte = query.endDate;
+      }
+      filter.createdAt = dateFilter as any;
     }
 
     return await (
@@ -49,7 +49,7 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
     const startDate = new Date();
     startDate.setTime(startDate.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-    const filter: FilterQuery<LoginRecordDocument> = {
+    const filter: QueryFilter<LoginRecordDocument> = {
       createdAt: { $gte: startDate },
     };
 
@@ -66,7 +66,7 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
   public async weeklyByCountrySummary() {
     const startDate = new Date();
     startDate.setTime(startDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const filter: FilterQuery<LoginRecordDocument> = {
+    const filter: QueryFilter<LoginRecordDocument> = {
       createdAt: { $gte: startDate },
     };
 

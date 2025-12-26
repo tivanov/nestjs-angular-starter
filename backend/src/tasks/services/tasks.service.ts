@@ -4,10 +4,10 @@ import { Task } from '../model/task.model';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   ClientSession,
-  FilterQuery,
   Model,
   PaginateModel,
   PaginateResult,
+  QueryFilter,
 } from 'mongoose';
 import { TasksDefinition } from '../definitions';
 import {
@@ -51,7 +51,7 @@ export class TasksService extends BaseService<Task> {
   }
 
   public async get(query: GetTasksQuery): Promise<PaginateResult<Task>> {
-    const filter: FilterQuery<Task> = {};
+    const filter: QueryFilter<Task> = {};
 
     if (query.activeOnly) {
       filter.active = true;

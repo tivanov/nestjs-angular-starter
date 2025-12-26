@@ -19,9 +19,11 @@
   <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
     <mat-label>Task</mat-label>
     <mat-select formControlName="type">
-      <mat-option *ngFor="let task of this.Types" [value]="task">
-        {{ task | statusEnum }}
-      </mat-option>
+      @for (task of this.Types; track task) {
+        <mat-option [value]="task">
+          {{ task | statusEnum }}
+        </mat-option>
+      }
     </mat-select>
   </mat-form-field>
   <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
@@ -62,77 +64,77 @@
         disableRipple="true"
         [checked]="element.active"
         (change)="this.toggleTask($event, element)" />
-    </td>
-  </ng-container>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="type">
-    <th *matHeaderCellDef mat-header-cell>Type</th>
-    <td *matCellDef="let element" mat-cell>
-      {{ element.type | statusEnum }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="type">
+      <th *matHeaderCellDef mat-header-cell>Type</th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.type | statusEnum }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="name">
-    <th *matHeaderCellDef mat-header-cell>Name</th>
-    <td *matCellDef="let element" mat-cell>
-      {{ element.name }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell>Name</th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.name }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="cronString">
-    <th *matHeaderCellDef mat-header-cell>Cron String</th>
-    <td *matCellDef="let element" mat-cell>{{ element.cronString }}</td>
-  </ng-container>
+    <ng-container matColumnDef="cronString">
+      <th *matHeaderCellDef mat-header-cell>Cron String</th>
+      <td *matCellDef="let element" mat-cell>{{ element.cronString }}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="runOnce">
-    <th *matHeaderCellDef mat-header-cell>Run Once</th>
-    <td *matCellDef="let element" mat-cell>
-      {{ element.runOnce ? 'Yes' : '' }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="runOnce">
+      <th *matHeaderCellDef mat-header-cell>Run Once</th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.runOnce ? 'Yes' : '' }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="timeout">
-    <th *matHeaderCellDef mat-header-cell>Timeout</th>
-    <td *matCellDef="let element" mat-cell>
-      {{ element.runOnce ? element.timeout + 'ms' : '' }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="timeout">
+      <th *matHeaderCellDef mat-header-cell>Timeout</th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.runOnce ? element.timeout + 'ms' : '' }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="runImmediately">
-    <th *matHeaderCellDef mat-header-cell>Run Immediately</th>
-    <td *matCellDef="let element" mat-cell>
-      {{ element.runImmediately ? 'Yes' : '' }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="runImmediately">
+      <th *matHeaderCellDef mat-header-cell>Run Immediately</th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.runImmediately ? 'Yes' : '' }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="lastRun">
-    <th *matHeaderCellDef mat-header-cell>Last Run</th>
-    <td *matCellDef="let element" mat-cell>
-      {{ element.lastRun | date: this.fullDateFormat }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="lastRun">
+      <th *matHeaderCellDef mat-header-cell>Last Run</th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.lastRun | date: this.fullDateFormat }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <th *matHeaderCellDef mat-header-cell>Actions</th>
-    <td *matCellDef="let row" mat-cell class="text-end">
-      <div class="flex justify-end">
-        <button type="button" mat-icon-button [routerLink]="['/tasks', row.id]">
-          <mat-icon>visibility</mat-icon>
-        </button>
-        <button type="button" mat-icon-button (click)="onDelete(row)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="actions">
+      <th *matHeaderCellDef mat-header-cell>Actions</th>
+      <td *matCellDef="let row" mat-cell class="text-end">
+        <div class="flex justify-end">
+          <button type="button" mat-icon-button [routerLink]="['/tasks', row.id]">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button type="button" mat-icon-button (click)="onDelete(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
 
-  <tr *matHeaderRowDef="this.displayedColumns" mat-header-row></tr>
-  <tr *matRowDef="let row; columns: this.displayedColumns" mat-row></tr>
-</table>
+    <tr *matHeaderRowDef="this.displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: this.displayedColumns" mat-row></tr>
+  </table>
 
-<mat-paginator
-  #mainPaginator
-  [pageSizeOptions]="this.pageSizeOptions"
-  [length]="this.totalItems"
-  [showFirstLastButtons]="this.showFirstLastButtons"
-  (page)="this.load($event)" />
+  <mat-paginator
+    #mainPaginator
+    [pageSizeOptions]="this.pageSizeOptions"
+    [length]="this.totalItems"
+    [showFirstLastButtons]="this.showFirstLastButtons"
+    (page)="this.load($event)" />

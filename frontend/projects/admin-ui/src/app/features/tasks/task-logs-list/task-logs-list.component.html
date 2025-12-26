@@ -6,108 +6,112 @@
         matStartDate
         formControlName="startDate"
         placeholder="Start date" />
-      <input matEndDate formControlName="endDate" placeholder="End date" />
-    </mat-date-range-input>
-    <mat-datepicker-toggle matIconSuffix [for]="picker" />
-    <mat-date-range-picker #picker />
-  </mat-form-field>
-  <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
-    <mat-label>Task</mat-label>
-    <mat-select formControlName="taskType">
-      <mat-option *ngFor="let task of this.taskTypes" [value]="task">
-        {{ task | statusEnum }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
-    <mat-label>Log</mat-label>
-    <mat-select formControlName="logType">
-      <mat-option *ngFor="let log of this.logTypes" [value]="log">
-        {{ log | statusEnum }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
-    <mat-label>Task ID</mat-label>
-    <input matInput formControlName="taskId" />
-  </mat-form-field>
-  <button
-    type="button"
-    mat-button
-    class="ml-auto"
-    (click)="this.filterForm.reset()">
-    Clear
-  </button>
-  <button
-    type="submit"
-    mat-raised-button
-    color="primary"
-    class="ml-2"
-    (click)="load({ pageIndex: 0 })">
-    <mat-icon>refresh</mat-icon>
-    Refresh
-  </button>
-</form>
-<table
-  mat-table
-  class="w-full"
-  matSort
-  [dataSource]="this.dataSource"
-  (matSortChange)="this.onSortChange($event)">
-  <ng-container matColumnDef="createdAt">
-    <th *matHeaderCellDef mat-header-cell mat-sort-header>Date</th>
-    <td *matCellDef="let element" mat-cell>
-      {{ element.createdAt | date: this.fullDateFormat }}
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="taskType">
-    <th *matHeaderCellDef mat-header-cell>Task</th>
-    <td *matCellDef="let element" mat-cell>
-      <div class="flex items-center">
-        {{ element.taskType | statusEnum }}
-        @if (element.task) {
-          ({{ element.task }})
+        <input matEndDate formControlName="endDate" placeholder="End date" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker" />
+      <mat-date-range-picker #picker />
+    </mat-form-field>
+    <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
+      <mat-label>Task</mat-label>
+      <mat-select formControlName="taskType">
+        @for (task of this.taskTypes; track task) {
+          <mat-option [value]="task">
+            {{ task | statusEnum }}
+          </mat-option>
         }
-      </div>
-    </td>
-  </ng-container>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
+      <mat-label>Log</mat-label>
+      <mat-select formControlName="logType">
+        @for (log of this.logTypes; track log) {
+          <mat-option [value]="log">
+            {{ log | statusEnum }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="w-full lg:w-1/6 lg:pl-2">
+      <mat-label>Task ID</mat-label>
+      <input matInput formControlName="taskId" />
+    </mat-form-field>
+    <button
+      type="button"
+      mat-button
+      class="ml-auto"
+      (click)="this.filterForm.reset()">
+      Clear
+    </button>
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      class="ml-2"
+      (click)="load({ pageIndex: 0 })">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+  </form>
+  <table
+    mat-table
+    class="w-full"
+    matSort
+    [dataSource]="this.dataSource"
+    (matSortChange)="this.onSortChange($event)">
+    <ng-container matColumnDef="createdAt">
+      <th *matHeaderCellDef mat-header-cell mat-sort-header>Date</th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.createdAt | date: this.fullDateFormat }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="logType">
-    <th *matHeaderCellDef mat-header-cell>Log</th>
-    <td *matCellDef="let element" mat-cell>
-      {{ element.logType }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="taskType">
+      <th *matHeaderCellDef mat-header-cell>Task</th>
+      <td *matCellDef="let element" mat-cell>
+        <div class="flex items-center">
+          {{ element.taskType | statusEnum }}
+          @if (element.task) {
+            ({{ element.task }})
+          }
+        </div>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="message">
-    <th *matHeaderCellDef mat-header-cell>Message</th>
-    <td *matCellDef="let element" mat-cell>
-      {{ element.message }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="logType">
+      <th *matHeaderCellDef mat-header-cell>Log</th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.logType }}
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <th *matHeaderCellDef mat-header-cell>Actions</th>
-    <td *matCellDef="let row" mat-cell class="text-end">
-      <div class="flex justify-end">
-        <button
-          type="button"
-          mat-icon-button
-          [routerLink]="['/tasks/logs', row.id]">
-          <mat-icon>visibility</mat-icon>
-        </button>
-      </div>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="message">
+      <th *matHeaderCellDef mat-header-cell>Message</th>
+      <td *matCellDef="let element" mat-cell>
+        {{ element.message }}
+      </td>
+    </ng-container>
 
-  <tr *matHeaderRowDef="this.displayedColumns" mat-header-row></tr>
-  <tr *matRowDef="let row; columns: this.displayedColumns" mat-row></tr>
-</table>
+    <ng-container matColumnDef="actions">
+      <th *matHeaderCellDef mat-header-cell>Actions</th>
+      <td *matCellDef="let row" mat-cell class="text-end">
+        <div class="flex justify-end">
+          <button
+            type="button"
+            mat-icon-button
+            [routerLink]="['/tasks/logs', row.id]">
+            <mat-icon>visibility</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
 
-<mat-paginator
-  #mainPaginator
-  [pageSizeOptions]="this.pageSizeOptions"
-  [length]="this.totalItems"
-  [showFirstLastButtons]="this.showFirstLastButtons"
-  (page)="this.load($event)" />
+    <tr *matHeaderRowDef="this.displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: this.displayedColumns" mat-row></tr>
+  </table>
+
+  <mat-paginator
+    #mainPaginator
+    [pageSizeOptions]="this.pageSizeOptions"
+    [length]="this.totalItems"
+    [showFirstLastButtons]="this.showFirstLastButtons"
+    (page)="this.load($event)" />

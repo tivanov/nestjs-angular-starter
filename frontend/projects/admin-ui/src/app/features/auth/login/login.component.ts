@@ -19,7 +19,7 @@ import {
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { AuthService } from '../../../../../../common-ui/auth/auth.service';
 import { UserRoleEnum } from '@app/contracts';
-import { SpinnerComponent } from '../../../../../../user-ui/src/app/shared/components/spinner/spinner.component';
+import { SpinnerComponent } from '../../../core/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-login',

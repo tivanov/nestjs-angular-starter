@@ -1,5 +1,8 @@
 @use '@angular/material' as mat;
 
+@import 'tailwindcss' layer(tailwindcss);
+// layer(tailwindcss) to avoid Sass warnings.
+
 @include mat.elevation-classes();
 @include mat.app-background();
 
@@ -48,10 +51,6 @@ $my-theme: mat.m2-define-dark-theme(
 );
 
 @include mat.all-component-themes($my-theme);
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 html,
 body {

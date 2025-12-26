@@ -2,7 +2,7 @@
   <mat-card-title>Users</mat-card-title>
   @if (this.$tiles | async; as tiles) {
     <div
-      class="pt-4 grid grid-cols-2 flex-grow justify-items-stretch items-stretch gap-4">
+      class="pt-4 grid grid-cols-2 grow justify-items-stretch items-stretch gap-4">
       <app-number-tile
         [value]="tiles.totalUsers"
       text="Total Users"></app-number-tile>

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { AfterViewInit, Component, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,9 +16,8 @@ import { SystemConfigService } from '../../../../../common-ui/services/system-co
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatButtonModule,
-    CommonModule,
-  ],
+    MatButtonModule
+],
   templateUrl: './system-settings.component.html',
   styleUrl: './system-settings.component.scss',
 })
