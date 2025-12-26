@@ -41,7 +41,7 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent extends BaseComponent implements OnInit {
-  appName = 'Farmroll';
+  appName = 'Your Project Name';
   sidenavMode = signal<'over' | 'side'>('side');
   title = signal('Control Center');
 
