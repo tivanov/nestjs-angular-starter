@@ -73,7 +73,13 @@ export class TasksRuntimeService {
         async () => {
           try {
             if (!(await this.tasks.isActive(task))) {
-              this.schedulerRegistry.deleteCronJob(task._id.toHexString());
+              const existingJob = this.schedulerRegistry.getCronJob(
+                task._id.toHexString(),
+              );
+              if (existingJob) {
+                existingJob.stop();
+                this.schedulerRegistry.deleteCronJob(task._id.toHexString());
+              }
               return;
             }
             await TaskImplementations.get(task.type)(task, this.moduleRef);
