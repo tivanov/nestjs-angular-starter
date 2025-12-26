@@ -1,82 +1,118 @@
 # NestJS + Angular Starter
 
-This is a starter project to quickly kick off NestJS + Angular web applications.
+A production-ready starter template for building full-stack web applications with NestJS backend and Angular frontend. Includes authentication, user management, and common infrastructure patterns.
 
-It contains a simple role based user authentication integrated in the backend and frontend.
+## Features
 
-The starter has implemented some production features and should provide a good baseline for new projects without having to worry about the boring details.
+- **Backend (NestJS)**
 
-Please note that this code is provided as-is and you should always be prepared for some bugs.
+  - JWT-based authentication with refresh tokens
+  - Role-based access control (Admin, Manager, Regular)
+  - MongoDB integration with Mongoose
+  - RESTful API with validation and error handling
+  - Task scheduling system
+  - Notifications and alerts
+  - Circuit breakers and utility services
+  - Rate limiting and security guards
+  - Shared contracts library (DTOs, Commands, Queries, Enums)
 
-## Backend
+- **Frontend (Angular 20)**
+  - Admin UI with Angular Material components
+  - User UI (public-facing application)
+  - Signals-based state management with local storage
+  - Tailwind CSS configured
+  - Shared common UI library
+  - JWT authentication interceptors
 
-The folder `backend` contains the NestJS backend as a monorepo. The folder contains a separate `libs` folder for NestJS library projects.
+## Prerequisites
 
-Already present is the `contracts` library for contracts shared between the backend and the frontend (DTOs, enums, error codes etc.).
+- Node.js (v18 or higher)
+- MongoDB (running locally or connection string)
+- npm or yarn
 
-You can add any other library projects there.
+## Quick Start
 
-The backend uses a MongoDB database.
+1. **Install dependencies:**
 
-### Config
+   ```bash
+   npm install
+   cd frontend && npm install
+   cd ../backend && npm install
+   ```
 
-Backend config is in the `config` folder as a javascript object. It can be overriden for production.
+2. **Configure MongoDB:**
+   Update `backend/config/development.ts` with your MongoDB connection string:
 
-## Frontend
+   ```typescript
+   mongoUri: "mongodb://localhost/nest-angular-starter";
+   ```
 
-The frontend contains two projects. Both projects use signals + local storage for state management.
+3. **Initialize database:**
 
-Tailwind is also setup with default config.
+   ```bash
+   cd backend
+   npm run init-db:dev
+   ```
 
-### Admin UI
+   This creates the database and seeds users for each role (Admin, Manager, Regular).
 
-The Admin UI project is located in the `frontend/projects/admin-ui` folder. The project uses Material Components to build a simple admin user interface.
+4. **Start development servers:**
 
-Curently it only contains the user management section, but can be easily expanded. 
+   ```bash
+   # From project root
+   npm run dev
+   ```
 
-The user managemet section is an example of a pattern to be used in the future for managing lists of entities (see `BaseListComponent` class).
+   Or run individually:
 
-### User UI
+   - Backend: `cd backend && npm run start:debug` (port 8200)
+   - Admin UI: `cd frontend && npm run start:admin` (port 5100)
+   - User UI: `cd frontend && npm run start:user` (port 5200)
 
-The user-facing part of the application. It is just a blank project that uses SSR.
+## Project Structure
 
-### Common UI
-
-Just a folder with code meant to be shared between projects. Contains auth interceptors, services, base classes etc.
-
-## Setup & Run
-
-There are 3 package.json files: in the project root, frontend and backend dirs. You need to first install those.
-
-From the project root run:
-
-```bash
-  npm i
-  cd frontend && npm i
-  cd ../backend && npm i
+```
+├── backend/          # NestJS backend (monorepo)
+│   ├── src/          # Application modules
+│   ├── libs/         # Shared libraries (contracts)
+│   └── config/       # Environment configurations
+├── frontend/         # Angular workspace
+│   ├── projects/
+│   │   ├── admin-ui/    # Admin dashboard (Material UI)
+│   │   ├── user-ui/     # Public-facing app
+│   │   └── common-ui/   # Shared components & services
+└── package.json      # Root scripts
 ```
 
-While in the `backend` folder you can run the db seed script:
+## Configuration
 
-```bash
-  npm run init-db:dev
-```
+- **Backend config:** `backend/config/development.ts` (or `production.ts`, `stage.ts`)
+- **Frontend config:** Environment files in `frontend/projects/*/src/environments/`
+- **Shared contracts:** `backend/libs/contracts/src/` (automatically available in frontend via TypeScript path alias)
 
-This will:
+## Available Scripts
 
-- create the db as configured in the `development.ts` config file
-- create a user for every specified role in the UserRoleEnum
+**Root:**
 
-Then you can run everything in dev mode from the project root by simply running
+- `npm run dev` - Start all services in development mode
+- `npm run dev:admin` - Start backend + admin UI
+- `npm run dev:user` - Start backend + user UI
+- `npm run build-prod` - Build all for production
+- `npm run build-stage` - Build all for staging
 
-```bash
-  npm run dev
-```
+**Backend:**
 
-Or you can look in the separate package.json files for individual run scripts.
+- `npm run start:dev` - Development with watch mode
+- `npm run start:debug` - Development with debugger
+- `npm run init-db:dev` - Initialize and seed database
 
-## Shared Contracts
+**Frontend:**
 
-Since both the frontend and backend use TypeScript, this allows for sharing of DTOs, Commands, Queries and Enums. These can be found in the backend/libs/contracts folder.
+- `npm run start:admin` - Serve admin UI
+- `npm run start:user` - Serve user UI
+- `npm run build-prod:admin` - Build admin UI for production
+- `npm run build-prod:user` - Build user UI for production
 
-This folder is defined as an alias in the frontend tsconfig, so any additional contracts can be added there as well and will be available for use on the frontend.
+## License
+
+MIT

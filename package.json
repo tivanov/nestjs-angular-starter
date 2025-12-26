@@ -7,7 +7,8 @@
     "dev:user": "concurrently \"cd backend && npm run start:debug\" \"cd frontend && npm run start:user\"",
     "dev": "concurrently \"cd backend && npm run start:debug\" \"cd frontend && npm run start:user\" \"cd frontend && npm run start:admin\"",
     "build-prod": "concurrently \"cd backend && npm run build-prod\" \"cd frontend && npm run build-prod\"",
-    "build-stage": "concurrently \"cd backend && npm run build-stage\" \"cd frontend && npm run build-stage\""
+    "build-stage": "concurrently \"cd backend && npm run build-stage\" \"cd frontend && npm run build-stage\"",
+    "install-all": "concurrently \"npm install\" \"cd backend && npm install\" \"cd frontend && npm install\""
   },
   "author": "",
   "license": "ISC",
