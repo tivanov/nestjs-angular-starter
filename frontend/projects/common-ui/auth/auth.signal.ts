@@ -50,3 +50,10 @@ export const logIn = (response: ISignInResponse) => {
 
   updateAuth(sessionState);
 };
+
+export const refreshUser = (user: UserDto) => {
+  const old = writableSignal();
+  old.user = user;
+  const updated = { ...old };
+  updateAuth(updated);
+};

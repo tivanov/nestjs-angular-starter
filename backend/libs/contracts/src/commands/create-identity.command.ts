@@ -4,7 +4,7 @@ export class CreateIdentityCommand {
   token?: string;
   secret?: string;
   refreshToken?: string;
-  expirationDate?: Date;
+  expirationDate: Date;
   provider: IdentityProviderEnum;
   uid: string;
   version: number;

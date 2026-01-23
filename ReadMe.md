@@ -47,7 +47,20 @@ A production-ready starter template for building full-stack web applications wit
    mongoUri: "mongodb://localhost/nest-angular-starter";
    ```
 
-3. **Initialize database:**
+3. **Generate OAuth State Keys:**
+   The application uses RSA key pairs for OAuth state verification to prevent CSRF attacks. A `keys` folder must exist in the `backend/config` directory for the state verification to work correctly.
+
+   Generate the keys using OpenSSL:
+
+   ```bash
+   cd backend/config
+   mkdir keys
+   cd keys
+   openssl genpkey -algorithm RSA -out statePrivateKey.pem
+   openssl rsa -pubout -in statePrivateKey.pem -out statePublicKey.pem
+   ```
+
+4. **Initialize database:**
 
    ```bash
    cd backend
@@ -56,7 +69,7 @@ A production-ready starter template for building full-stack web applications wit
 
    This creates the database and seeds users for each role (Admin, Manager, Regular).
 
-4. **Start development servers:**
+5. **Start development servers:**
 
    ```bash
    # From project root

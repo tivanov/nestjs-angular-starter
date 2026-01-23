@@ -4,6 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EnvironmentService } from '../services/environment.service';
 
+export interface ILoginCredentials {
+  userName: string;
+  password: string;
+}
+
 export interface ISignInResponse {
   token: string;
   refreshToken: string;
@@ -18,7 +23,7 @@ export class AuthService {
   constructor(private http: HttpClient, private env: EnvironmentService) {
   }
 
-  login(credentials: any): Observable<ISignInResponse> {
+  login(credentials: ILoginCredentials): Observable<ISignInResponse> {
     return this.http.post<ISignInResponse>(`${this.env.apiUrl}/auth/login`, credentials);
   }
 
