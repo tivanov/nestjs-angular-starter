@@ -54,6 +54,17 @@ export class Task extends BaseEntity {
     maxlength: 100,
   })
   cronString: string;
+
+  @Prop({
+    default: false,
+  })
+  running?: boolean;
+
+  @Prop()
+  workItemsTotal?: number;
+
+  @Prop()
+  workItemsRemaining?: number;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

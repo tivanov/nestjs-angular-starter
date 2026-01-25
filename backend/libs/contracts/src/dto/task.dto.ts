@@ -12,4 +12,7 @@ export interface TaskDto extends BaseEntityDto {
   script?: string;
   cronString: string;
   lastRun?: string;
+  running?: boolean;
+  workItemsTotal?: number;
+  workItemsRemaining?: number;
 }

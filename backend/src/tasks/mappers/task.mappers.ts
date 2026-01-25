@@ -51,6 +51,9 @@ export class TaskMappers extends BaseMapper {
       params: task.params,
       script: task.script,
       cronString: task.cronString,
+      running: task.running,
+      workItemsTotal: task.workItemsTotal,
+      workItemsRemaining: task.workItemsRemaining,
     };
   }
 }

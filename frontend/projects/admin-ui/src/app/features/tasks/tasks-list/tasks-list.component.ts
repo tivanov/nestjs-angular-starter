@@ -18,6 +18,7 @@ import { firstValueFrom } from 'rxjs';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
 import { StatusEnumPipe } from '../../../../../../common-ui/pipes/status-enum.pipe';
 import { TasksService } from '../../../../../../common-ui/services/tasks.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-tasks-list',
@@ -39,6 +40,7 @@ import { TasksService } from '../../../../../../common-ui/services/tasks.service
     MatCheckboxModule,
     MatSelectModule,
     StatusEnumPipe,
+    MatTooltipModule,
   ],
 })
 export class TasksListComponent
@@ -48,7 +50,7 @@ export class TasksListComponent
   taskId = input<string>();
   search = input<string>();
   public readonly Types = Object.values(TaskTypeEnum).sort((a, b) =>
-    a.localeCompare(b),
+    a.localeCompare(b)
   );
 
   private tasksService = inject(TasksService);
@@ -56,17 +58,23 @@ export class TasksListComponent
   override setColumns(): void {
     this.defaultColumns = [
       'active',
+      'statusProgress',
       'type',
       'name',
-      'runOnce',
-      'timeout',
-      'runImmediately',
+      'attributes',
       'cronString',
       'lastRun',
       'actions',
     ];
 
-    this.mobileColumns = ['active', 'name', 'lastRun', 'actions'];
+    this.mobileColumns = [
+      'active',
+      'statusProgress',
+      'name',
+      'attributes',
+      'lastRun',
+      'actions',
+    ];
   }
 
   public buildForm(): void {
@@ -84,6 +92,33 @@ export class TasksListComponent
     super.ngOnInit();
     this.sortBy = 'active';
     this.sortDirection = 'desc';
+  }
+
+  public getProgressPercentage(task: TaskDto): number {
+    if (!task.running || !task.workItemsTotal || task.workItemsTotal === 0) {
+      return 0;
+    }
+    const completed = task.workItemsTotal - (task.workItemsRemaining || 0);
+    return Math.round((completed / task.workItemsTotal) * 100);
+  }
+
+  public getProgressTooltip(task: TaskDto): string {
+    if (!task.running || !task.workItemsTotal) {
+      return '';
+    }
+    const completed = task.workItemsTotal - (task.workItemsRemaining || 0);
+    return `${completed} / ${task.workItemsTotal} items completed`;
+  }
+
+  public shouldShowProgress(task: TaskDto): boolean {
+    return task.running && task.workItemsTotal > 0;
+  }
+
+  public getStatusTooltip(task: TaskDto): string {
+    if (task.running) {
+      return 'Task is currently running';
+    }
+    return 'Task is active but not running';
   }
 
   public load($event: { pageIndex: number; pageSize?: number }) {

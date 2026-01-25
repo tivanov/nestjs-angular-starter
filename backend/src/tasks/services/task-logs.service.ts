@@ -35,14 +35,13 @@ export class TaskLogsService extends BaseService<TaskLog> {
     }
 
     if (query.startDate || query.endDate) {
-      const dateFilter: any = {};
+      filter.createdAt = {};
       if (query.startDate) {
-        dateFilter.$gte = new Date(query.startDate);
+        filter.createdAt.$gte = new Date(query.startDate);
       }
       if (query.endDate) {
-        dateFilter.$lte = new Date(query.endDate);
+        filter.createdAt.$lte = new Date(query.endDate);
       }
-      filter.createdAt = dateFilter as any;
     }
 
     if (query.taskId) {

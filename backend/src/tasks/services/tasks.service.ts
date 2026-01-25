@@ -8,6 +8,7 @@ import {
   PaginateModel,
   PaginateResult,
   QueryFilter,
+  Types,
 } from 'mongoose';
 import { TasksDefinition } from '../definitions';
 import {
@@ -134,6 +135,8 @@ export class TasksService extends BaseService<Task> {
 
   public async afterRun(inputTask: Task) {
     try {
+      await this.setRunning(inputTask, false);
+      await this.resetProgress(inputTask._id.toHexString());
       const task = await this.updateLastRun(inputTask._id.toHexString());
       if (task.runOnce) {
         await this.deactivate(inputTask._id.toHexString());
@@ -160,6 +163,28 @@ export class TasksService extends BaseService<Task> {
       active: false,
       lastRun: { $lt: aMonthAgo },
       runOnce: true,
+    });
+  }
+
+  public async resetRunningFlags(): Promise<void> {
+    try {
+      await this.objectModel.updateMany(
+        {},
+        { running: false, workItemsTotal: 0, workItemsRemaining: 0 },
+      );
+    } catch (error) {
+      this.logger.error('Error resetting running flags', error);
+    }
+  }
+
+  public async setRunning(task: Task, running: boolean): Promise<void> {
+    await this.objectModel.findByIdAndUpdate(task._id, { running });
+  }
+
+  public async resetProgress(taskId: Types.ObjectId | string): Promise<void> {
+    await this.objectModel.findByIdAndUpdate(taskId, {
+      workItemsTotal: 0,
+      workItemsRemaining: 0,
     });
   }
 }

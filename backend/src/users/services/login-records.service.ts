@@ -30,14 +30,13 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
     }
 
     if (query.startDate || query.endDate) {
-      const dateFilter: any = {};
+      filter.createdAt = {};
       if (query.startDate) {
-        dateFilter.$gte = query.startDate;
+        filter.createdAt.$gte = new Date(query.startDate);
       }
       if (query.endDate) {
-        dateFilter.$lte = query.endDate;
+        filter.createdAt.$lte = new Date(query.endDate);
       }
-      filter.createdAt = dateFilter as any;
     }
 
     return await (
