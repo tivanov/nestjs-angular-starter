@@ -1,8 +1,27 @@
 <div class="my-2 w-full">
-  <div class="bg-black p-4 w-full rounded-t-xl">
-    <p class="text-lg font-medium">{{ this.titleText() }}</p>
-  </div>
-  <div class="bg-card flex flex-col w-full flex-wrap p-4 rounded-b-xl">
-    <ng-content />
-  </div>
+  @if (this.titleText()) {
+    <div
+      class="bg-black p-4 w-full flex items-center justify-between gap-2"
+      [class.cursor-pointer]="this.collapsible()"
+      [class.rounded-t-xl]="!this.collapsible() || !this.collapsed()"
+      [class.rounded-xl]="this.collapsible() && this.collapsed()"
+      (click)="this.toggleCollapsed()">
+      <p class="text-lg font-medium">{{ this.titleText() }}</p>
+      @if (this.collapsible()) {
+        <mat-icon
+          class="transition-transform duration-200"
+          [class.rotate-180]="this.collapsed()">
+          expand_more
+        </mat-icon>
+      }
+    </div>
+  }
+  @if (!this.collapsible() || !this.collapsed()) {
+    <div
+      class="bg-card flex flex-col w-full flex-wrap p-4"
+      [class.rounded-xl]="this.collapsible() && this.collapsed()"
+      [class.rounded-b-xl]="!this.collapsible() || !this.collapsed()">
+      <ng-content />
+    </div>
+  }
 </div>
