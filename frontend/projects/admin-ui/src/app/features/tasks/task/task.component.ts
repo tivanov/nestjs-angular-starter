@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -37,8 +36,8 @@ import { TaskLogsListComponent } from '../task-logs-list/task-logs-list.componen
     MatCheckboxModule,
     CardComponent,
     TaskLogsListComponent,
-    StatusEnumPipe
-],
+    StatusEnumPipe,
+  ],
   templateUrl: './task.component.html',
 })
 export class TaskComponent extends BaseComponent implements OnInit {
@@ -54,7 +53,7 @@ export class TaskComponent extends BaseComponent implements OnInit {
     private router: Router,
     private tasksService: TasksService,
     private snackBar: MatSnackBar,
-    private activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute
   ) {
     super();
   }
@@ -164,7 +163,7 @@ export class TaskComponent extends BaseComponent implements OnInit {
     }
 
     this.form.patchValue({
-      name: StringUtils.toTitleCase(type.replace('-', ' ')),
+      name: StringUtils.kebabToTitleCase(type),
     });
   }
 }

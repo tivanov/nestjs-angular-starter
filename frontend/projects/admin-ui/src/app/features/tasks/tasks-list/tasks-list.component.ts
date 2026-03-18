@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { GetTasksQuery, TaskDto, TaskTypeEnum } from '@app/contracts';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,7 +19,6 @@ import { firstValueFrom } from 'rxjs';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
 import { StatusEnumPipe } from '../../../../../../common-ui/pipes/status-enum.pipe';
 import { TasksService } from '../../../../../../common-ui/services/tasks.service';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-tasks-list',
@@ -39,8 +39,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatFormFieldModule,
     MatCheckboxModule,
     MatSelectModule,
-    StatusEnumPipe,
     MatTooltipModule,
+    StatusEnumPipe,
   ],
 })
 export class TasksListComponent
@@ -77,23 +77,6 @@ export class TasksListComponent
     ];
   }
 
-  public buildForm(): void {
-    this.filterForm = this.formBuilder.group({
-      id: [this.taskId()],
-      activeOnly: [],
-      type: [],
-      onlyOneTime: [],
-      onlyRecurring: [],
-      search: [this.search()],
-    });
-  }
-
-  override ngOnInit(): void {
-    super.ngOnInit();
-    this.sortBy = 'active';
-    this.sortDirection = 'desc';
-  }
-
   public getProgressPercentage(task: TaskDto): number {
     if (!task.running || !task.workItemsTotal || task.workItemsTotal === 0) {
       return 0;
@@ -119,6 +102,23 @@ export class TasksListComponent
       return 'Task is currently running';
     }
     return 'Task is active but not running';
+  }
+
+  public buildForm(): void {
+    this.filterForm = this.formBuilder.group({
+      id: [this.taskId()],
+      activeOnly: [],
+      type: [],
+      onlyOneTime: [],
+      onlyRecurring: [],
+      search: [this.search()],
+    });
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+    this.sortBy = 'active';
+    this.sortDirection = 'desc';
   }
 
   public load($event: { pageIndex: number; pageSize?: number }) {
