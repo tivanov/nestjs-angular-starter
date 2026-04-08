@@ -1,27 +1,48 @@
-# Frontend
+# Frontend (Angular Workspace)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.0.
+Angular workspace containing two apps and shared frontend code.
 
-## Development server
+## Projects
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```text
+frontend/projects/
+├── admin-ui/   # Admin application (Angular Material + Tailwind)
+├── user-ui/    # User application (Tailwind)
+└── common-ui/  # Shared frontend code (services, base classes, pipes, auth utils)
+```
 
-## Code scaffolding
+## Stack
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Angular 21
+- Angular Material (used in `admin-ui`)
+- Tailwind CSS 4
+- RxJS
+- Shared contract imports from `@app/contracts`
 
-## Build
+## Contracts Integration
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+The workspace maps `@app/contracts` to `../backend/libs/contracts/src` in `frontend/tsconfig.json`.
 
-## Running unit tests
+When backend API payloads change:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Update contracts in backend `libs/contracts`.
+2. Update backend implementation.
+3. Update frontend consumers.
 
-## Running end-to-end tests
+## Scripts
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- `npm run start:admin` - run `admin-ui` on `5100`
+- `npm run start:user` - run `user-ui` on `5200`
+- `npm run build:admin` - build `admin-ui`
+- `npm run build:user` - build `user-ui`
+- `npm run build-prod:admin` - production build for `admin-ui`
+- `npm run build-prod:user` - production build for `user-ui`
+- `npm run build-stage:admin` - stage build for `admin-ui`
+- `npm run build-stage:user` - stage build for `user-ui`
+- `npm run test` - run tests
 
-## Further help
+## Conventions
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- Keep app-specific UI logic in its own project.
+- Move reusable code to `projects/common-ui`.
+- Reuse enums/constants from `@app/contracts` instead of duplicating values.

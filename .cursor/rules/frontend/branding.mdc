@@ -1,0 +1,610 @@
+---
+description: These guidelines define the visual and interaction rules for the project's user UI. They are intended to be used as a Cursor rule / implementation reference for all frontend work.
+alwaysApply: false
+---
+
+# Zavisi — User UI Branding Guidelines
+
+## Purpose
+
+These guidelines define the visual and interaction rules for the **Zavisi** user UI.  
+They are intended to be used as a **Cursor rule / implementation reference** for all frontend work.
+
+The UI must feel:
+
+- calm
+- trustworthy
+- analytical
+- structured
+- legal-first, not chat-first
+
+The design should communicate:
+
+- source authority
+- legal hierarchy
+- clarity of interpretation
+- confidence vs uncertainty
+
+---
+
+## Brand Identity
+
+**Product name:** Зависи
+
+**Core idea:**  
+There is no single answer, but there is legal basis.
+
+**Design tone:**
+
+- neutral
+- modern
+- restrained
+- precise
+- institutional, but not bureaucratic
+
+**The UI must not feel like:**
+
+- a generic chatbot
+- a marketing landing page
+- a colorful dashboard
+- a consumer social app
+
+---
+
+## Design Principles
+
+1. Prioritize clarity over style.
+2. Prioritize structure over decoration.
+3. Prioritize readability over density.
+4. Always separate **law**, **citation**, and **AI explanation**.
+5. Use accent color sparingly and intentionally.
+6. Make the search experience feel central.
+7. The interface should feel like a modern legal console.
+
+---
+
+## Color System
+
+Use a controlled palette built around deep legal blue, neutral surfaces, and muted gold.
+
+### Core Palette
+
+- **Primary / Deep Legal Blue:** `#1E2A38`
+- **Secondary / Slate:** `#2F3E4F`
+- **Main Background:** `#F5F7FA`
+- **Surface Background:** `#FFFFFF`
+- **Primary Text:** `#1A1A1A`
+- **Secondary Text:** `#6B7280`
+- **Accent / Muted Gold:** `#C8A96A`
+- **Accent Soft:** `#E7D3A8`
+- **Interactive Blue:** `#3A7CA5`
+- **Success:** `#2E7D32`
+- **Warning:** `#ED6C02`
+- **Error:** `#D32F2F`
+
+---
+
+## Tailwind v4 Configuration
+
+This project uses the latest version of Tailwind CSS, so brand colors must be defined using the **Tailwind v4 theme system**.
+
+Add the brand tokens to the global stylesheet that Tailwind processes, typically `src/styles.css` or `src/app.css`.
+
+```css
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1e2a38;
+  --color-primary-2: #2f3e4f;
+
+  --color-bg-main: #f5f7fa;
+  --color-bg-surface: #ffffff;
+
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #6b7280;
+
+  --color-accent: #c8a96a;
+  --color-accent-soft: #e7d3a8;
+
+  --color-interactive: #3a7ca5;
+
+  --color-success: #2e7d32;
+  --color-warning: #ed6c02;
+  --color-error: #d32f2f;
+}
+```
+
+These tokens then become available as utility classes such as:
+
+- `bg-primary`
+- `bg-bg-main`
+- `bg-bg-surface`
+- `text-text-primary`
+- `text-text-secondary`
+- `text-accent`
+- `border-primary`
+- `border-accent`
+
+If a token does not map exactly as expected in a specific setup, keep the source of truth in `@theme` and expose any additional aliases in the global stylesheet rather than introducing one-off inline styles.
+
+---
+
+## Color Usage Rules
+
+### Allowed Usage
+
+- Use **primary blue** for headers, strong sections, answer panels, and key structure.
+- Use **muted gold** only for legal emphasis:
+  - article numbers
+  - active legal markers
+  - citation accents
+  - key trust indicators
+- Use **neutral backgrounds** for readability and long-form text.
+- Use **interactive blue** for links, hoverable controls, and active states.
+
+### Forbidden Usage
+
+- Do not introduce random new colors.
+- Do not use bright saturated colors.
+- Do not use strong gradients.
+- Do not use gold as a primary fill for large surfaces.
+- Do not use red, orange, or green for decorative purposes.
+
+---
+
+## Typography
+
+Use a clean sans-serif font.
+
+Recommended:
+
+- Inter
+- system UI stack if Inter is unavailable
+
+### Type Hierarchy
+
+#### Page Title
+
+Use for page headings and major section titles.
+
+Suggested utilities:
+
+```html
+<h1 class="text-2xl font-semibold text-primary tracking-tight"></h1>
+```
+
+#### Section Title
+
+Use for content blocks and result sections.
+
+```html
+<h2 class="text-xl font-semibold text-primary"></h2>
+```
+
+#### Law Title
+
+Use for law names above retrieved legal text.
+
+```html
+<div class="text-sm font-medium text-text-secondary"></div>
+```
+
+#### Article Number
+
+This is a high-importance legal marker.
+
+```html
+<div class="text-sm font-semibold text-accent"></div>
+```
+
+#### Main Body Text
+
+```html
+<p class="text-base leading-7 text-text-primary"></p>
+```
+
+#### Secondary Information
+
+```html
+<div class="text-sm text-text-secondary"></div>
+```
+
+### Typography Rules
+
+- Do not use decorative fonts.
+- Do not overuse uppercase text.
+- Use weight and spacing for hierarchy before using color.
+- Long legal text must always prioritize comfortable line-height.
+
+---
+
+## Layout System
+
+The product should use a centered reading layout with predictable structure.
+
+### Default Page Shell
+
+```html
+<div class="max-w-5xl mx-auto px-4 py-6"></div>
+```
+
+### Layout Rules
+
+- Prefer `max-w-5xl` for main application pages.
+- Use strong vertical rhythm.
+- Avoid edge-to-edge content for reading views.
+- Search and results should feel spatially connected.
+- Large blocks of legal text must have generous padding.
+
+### Preferred Spacing Scale
+
+Use a limited spacing system:
+
+- `p-2`
+- `p-4`
+- `p-6`
+- `p-8`
+- `gap-2`
+- `gap-4`
+- `gap-6`
+- `gap-8`
+
+Do not use arbitrary spacing values unless there is a strong reason.
+
+---
+
+## Core UI Structure
+
+Every primary page should generally follow this order:
+
+1. Header / page context
+2. Search / query input
+3. AI answer block
+4. Supporting legal sources
+5. Citations / provenance / warnings
+
+The structure must remain stable and predictable.
+
+---
+
+## Component Guidelines
+
+## Search Bar
+
+The search bar is the primary interaction point and should visually anchor the page.
+
+Example structure:
+
+```html
+<input
+  class="w-full rounded-xl border border-slate-300 bg-bg-surface px-4 py-4 text-base text-text-primary outline-none transition-colors focus:border-primary"
+  placeholder="Постави правно прашање..."
+/>
+```
+
+### Rules
+
+- Large and easy to scan
+- Always visually important
+- No overly rounded consumer-style look
+- No flashy focus effects
+
+---
+
+## Result Card
+
+Used for retrieved legal sources and supporting context.
+
+Example:
+
+```html
+<div class="rounded-xl border border-slate-200 bg-bg-surface p-6 shadow-sm">
+  <div class="text-sm font-medium text-text-secondary">
+    Закон за работни односи
+  </div>
+  <div class="mt-1 text-sm font-semibold text-accent">Член 82</div>
+  <div class="mt-3 text-base leading-7 text-text-primary">...</div>
+</div>
+```
+
+### Rules
+
+- Clean white surface
+- Low-contrast border
+- Minimal shadow
+- Strong internal text hierarchy
+
+---
+
+## AI Answer Block
+
+This block contains interpretation or explanation generated from retrieved law.
+
+It must look distinct from the raw law text.
+
+Example:
+
+```html
+<section class="rounded-2xl bg-primary p-6 text-white">
+  <h2 class="text-lg font-semibold">Одговор</h2>
+  <p class="mt-3 text-base leading-7 text-white/90">...</p>
+</section>
+```
+
+### Rules
+
+- Use deep blue background
+- White text
+- Never style it like raw legal source text
+- Must feel like an explanation layer, not an official document
+
+---
+
+## Citation Block
+
+Used for quoted legal text or traceable source fragments.
+
+Example:
+
+```html
+<blockquote
+  class="border-l-4 border-accent pl-4 text-sm leading-6 text-text-secondary"
+>
+  ...
+</blockquote>
+```
+
+### Rules
+
+- Always visually restrained
+- Gold is allowed only as the left border or a small accent
+- Citations must feel evidentiary, not decorative
+
+---
+
+## Warning / Uncertainty Block
+
+Used when the answer is incomplete, ambiguous, or needs legal caution.
+
+Example:
+
+```html
+<div
+  class="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900"
+>
+  ...
+</div>
+```
+
+### Rules
+
+- Use warning colors only for genuine caution states
+- Do not overuse
+- Keep the tone factual, not alarming
+
+---
+
+## Legal Hierarchy Visualization
+
+The UI must clearly distinguish between:
+
+- legal source
+- article identifier
+- source text
+- AI explanation
+- uncertainty / caveat
+
+Recommended visual mapping:
+
+- **Law title:** subdued secondary text
+- **Article number:** gold accent
+- **Legal text:** primary dark text on white surface
+- **AI explanation:** white on dark blue panel
+- **Citations:** smaller restrained text with left accent rule
+
+This separation is mandatory.
+
+---
+
+## Interactions
+
+### Hover
+
+Use subtle hover states only.
+
+Examples:
+
+- `hover:bg-slate-50`
+- `hover:border-slate-300`
+
+### Focus
+
+Focus states should be clean and understated.
+
+Examples:
+
+- `focus:border-primary`
+- `focus:outline-none`
+
+### Clickable Elements
+
+Clickable elements must look interactive, but not loud.
+
+Preferred styles:
+
+- text links with subtle color change
+- restrained outlined buttons
+- low-contrast hover transitions
+
+Avoid heavy button styling unless the action is primary.
+
+---
+
+## Buttons
+
+### Primary Button
+
+Use for main actions such as submit, search, or continue.
+
+Example:
+
+```html
+<button
+  class="rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-2"
+>
+  Прашај
+</button>
+```
+
+### Secondary Button
+
+Use for secondary actions.
+
+Example:
+
+```html
+<button
+  class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-text-primary transition-colors hover:bg-slate-50"
+>
+  Отвори извор
+</button>
+```
+
+### Rules
+
+- No oversized CTA style
+- No bright colors
+- No pill-shaped consumer app buttons
+- Radius should remain restrained and consistent
+
+---
+
+## Borders, Radius, and Shadows
+
+### Border Rules
+
+- Borders should usually be subtle
+- Prefer light slate / gray borders
+- Use accent borders only for legal emphasis
+
+### Radius Rules
+
+Use:
+
+- `rounded-lg`
+- `rounded-xl`
+- `rounded-2xl` only for major panels
+
+Do not over-round everything.
+
+### Shadow Rules
+
+Use minimal shadows only:
+
+- `shadow-sm`
+- `shadow-md` rarely
+
+This product should rely more on spacing and borders than on shadows.
+
+---
+
+## Dark Mode
+
+If dark mode is implemented later, use this token direction:
+
+```css
+@theme {
+  --color-dark-bg: #0f172a;
+  --color-dark-surface: #1e293b;
+  --color-dark-text: #e5e7eb;
+  --color-dark-accent: #d4b97f;
+}
+```
+
+### Dark Mode Rules
+
+- Preserve the same hierarchy
+- Do not invert everything blindly
+- Legal text readability remains the highest priority
+
+---
+
+## Angular Implementation Rules
+
+This project should follow the existing frontend architecture standards.
+
+### Required
+
+- Angular latest stable version
+- Signals for state management
+- `ChangeDetectionStrategy.OnPush`
+- Tailwind utilities as the primary styling method
+
+### Preferred Component Split
+
+- `search-bar.component`
+- `answer-card.component`
+- `law-card.component`
+- `citation-block.component`
+- `uncertainty-banner.component`
+
+### Styling Rules
+
+- Tailwind only for the majority of styling
+- No ad hoc inline styles
+- No scattered custom CSS per component unless necessary
+- Brand tokens must come from the global Tailwind v4 `@theme` definition
+
+---
+
+## Anti-Patterns
+
+Do not implement the UI in any of the following ways:
+
+- generic Material-style dashboard
+- bootstrap-like enterprise admin interface
+- consumer chat bubbles
+- colorful card mosaics
+- excessive icons
+- animated gimmicks
+- decorative gradients
+- emoji-based UI communication
+
+The product must remain visually serious and restrained.
+
+---
+
+## UX Philosophy
+
+The interface should feel like a legal research and explanation tool, not like a chat toy.
+
+The product should communicate:
+
+- the law is primary
+- explanation is secondary
+- sources are always visible
+- uncertainty is acknowledged clearly
+- trust comes from structure, not decoration
+
+A good final test is:
+
+**Does this screen look like a place where a user can trust a legal answer enough to verify it?**
+
+If the answer is no, simplify and increase hierarchy.
+
+---
+
+## Cursor Rule Summary
+
+When generating or editing UI for Zavisi, always follow these rules:
+
+1. Use Tailwind v4 theme tokens defined via `@theme`.
+2. Use only the approved brand palette.
+3. Keep layouts centered, spacious, and predictable.
+4. Separate AI explanation from legal source text.
+5. Highlight article numbers with the accent color.
+6. Keep legal sources readable and visually neutral.
+7. Prefer restrained cards, borders, and typography over decoration.
+8. Do not use bright colors, flashy effects, or playful UI patterns.
+9. Use Angular signals and OnPush-compatible component structure.
+10. Build the product as a modern legal console, not a chatbot clone.

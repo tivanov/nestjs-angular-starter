@@ -1,6 +1,5 @@
 ---
-description: This is a set of rules for generating NestJS backend code
-globs: ['backend/src/**/*.{ts}']
+globs: ["backend/**/*.ts"]
 alwaysApply: false
 ---
 

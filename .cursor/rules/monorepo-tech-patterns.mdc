@@ -1,0 +1,37 @@
+---
+description: Monorepo architecture, technology stack, and shared-boundary patterns
+alwaysApply: true
+---
+
+# Monorepo Tech and Pattern Rules
+
+Use this as the default project context before implementing features or refactors.
+
+## Stack Overview
+
+- Monorepo with `backend/` (NestJS + MongoDB/Mongoose) and `frontend/` (Angular + Tailwind).
+- Frontend has two Angular apps: `frontend/projects/admin-ui` and `frontend/projects/user-ui`.
+- `admin-ui` uses Angular Material components.
+- `user-ui` is a separate Angular application with its own routes/assets/build targets.
+- Shared frontend code belongs in `frontend/projects/common-ui` (base classes, HTTP services, pipes, common utilities).
+
+## Backend Structure
+
+- `backend/src` is the main NestJS application.
+- `backend/libs/contracts` is a shared library for frontend and backend contracts.
+- Put cross-layer DTOs, commands, queries, enums, and constants in `backend/libs/contracts`.
+- Keep backend internals (domain services, persistence models, private implementation details) out of contracts.
+
+## Integration and Boundaries
+
+- Prefer contract-first changes when backend and frontend both consume the same shape.
+- If an API payload changes, update shared contracts first, then backend implementation, then frontend usage.
+- Do not duplicate shared enums/constants in frontend apps when they exist in contracts.
+- Keep admin-specific UI logic in `admin-ui`; move reusable logic to `common-ui`.
+
+## Implementation Priorities
+
+- Follow existing project conventions from starter code; extend patterns instead of introducing parallel architectures.
+- Favor small, incremental edits aligned with existing module/folder structure.
+- Keep public interfaces strongly typed and avoid `any` in shared boundaries.
+- Document any intentional deviations from existing patterns directly in code comments near the change.
