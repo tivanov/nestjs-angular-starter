@@ -1,0 +1,29 @@
+@if (!this.dataLoaded()) {
+  <app-spinner />
+}
+@if (this.result(); as health) {
+  <app-card titleText="System Health">
+    <div class="flex flex-row w-full flex-wrap mb-4">
+      <app-text
+        class="w-full lg:px-2 lg:w-1/4"
+        label="Overall Status"
+        [value]="health.status" />
+      @for (entry of this.indicatorEntries(); track entry.name) {
+        <app-text
+          class="w-full lg:px-2 lg:w-1/4"
+          [label]="entry.name"
+          [value]="entry.status" />
+      }
+    </div>
+    <div class="w-full flex flex-row-reverse p-2">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        class="font-bold rounded"
+        (click)="this.load()">
+        Refresh
+      </button>
+    </div>
+  </app-card>
+}

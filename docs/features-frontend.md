@@ -22,6 +22,7 @@ Top-level routes defined in `frontend/projects/admin-ui/src/app/app.routes.ts`. 
 | **Tasks** | `/tasks` | Admin | `features/tasks/tasks.routes.ts` | `TasksService`, `TaskLogsService` | Task list, create/edit, start/stop, global and embedded task logs |
 | **Contact Requests** | `/contact-requests` | Admin | `features/contact-requests/contact-requests.routes.ts` | `ContactRequestsService` | Inbound contact form list and detail |
 | **System Settings** | `/system-settings` | Admin | `features/system-settings/system-settings.routes.ts` | `SystemConfigService` | Read-only system config view |
+| **System Health** | `/system-health` | Admin | `features/system-health/system-health.routes.ts` | `HealthService` | Application health check status |
 | **Circuit Breakers** | `/circuit-breakers` | Admin | `features/circuit-breaker/circuit-breaker.routes.ts` | `CircuitBreakersService` | List and detail with reset action |
 
 ### Route Details
@@ -64,6 +65,11 @@ Widgets: `UserTilesWidgetComponent`, `LoginRecordsByDeviceWidgetComponent`, `Log
 | Route | Component | Description |
 |-------|-----------|-------------|
 | `/system-settings` | `SystemSettingsComponent` | Read-only system config |
+
+#### System Health
+| Route | Component | Description |
+|-------|-----------|-------------|
+| `/system-health` | `SystemHealthComponent` | MongoDB and overall app health via Terminus |
 
 #### Circuit Breakers
 | Route | Component | Description |
@@ -110,6 +116,7 @@ All extend `BaseApiService` and call `${env.apiUrl}/...`. Located in `frontend/p
 | `CircuitBreakersService` | `GET /circuit-breakers`, reset | admin-ui circuit-breakers |
 | `DashboardService` | `GET /dashboard/*` | admin-ui dashboard |
 | `SystemConfigService` | `GET /system-config` | admin-ui system-settings |
+| `HealthService` | `GET /health` | admin-ui system-health |
 | `EnvironmentService` | — (reads `window.__env`) | Both apps |
 | `MeService` | `GET /me` | **Stub** — backend endpoint active; service not wired |
 | `GlobalWipService` | — (localStorage drafts) | **Unused** |

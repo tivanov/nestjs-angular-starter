@@ -65,6 +65,7 @@ export class SideMenuService {
       children: [
         { label: 'Tasks', link: '/tasks/list', icon: 'gears' },
         { label: 'Settings', link: '/system-settings', icon: 'gears' },
+        { label: 'Health', link: '/system-health', icon: 'heart-pulse' },
         {
           label: 'Circuit Breakers',
           link: '/circuit-breakers/list',

@@ -86,6 +86,7 @@ All routes prefixed `/v1/`. Auth column: **Public**, **Admin**, **Manager**, or 
 | Method | Route                         | Auth  | Description              |
 | ------ | ----------------------------- | ----- | ------------------------ |
 | GET    | `/system-config`              | Admin | Get system configuration |
+| GET    | `/health`                     | Admin | Application health check |
 | GET    | `/circuit-breakers`           | Admin | List circuit breakers    |
 | GET    | `/circuit-breakers/:id`       | Admin | Get circuit breaker      |
 | POST   | `/circuit-breakers/:id/reset` | Admin | Reset circuit breaker    |
@@ -109,7 +110,7 @@ Shared types live in `backend/libs/contracts/src/`. Key exports:
 | Tasks         | `TaskDto`, `TaskLogDto`                        | `GetTasksQuery`, `GetTaskLogsQuery`        | `CreateTaskCommand`, `UpdateTaskCommand`                                                               | `TaskTypeEnum`, `TaskLogTypeEnum`                              |
 | Notifications | `AlertDto`, `ContactRequestDto`                | `GetAlertsQuery`, `GetContactRequestQuery` | `ContactRequestCommand`                                                                                | `AlertTypeEnum`, `ContactRequestStatusEnum`, `ContactTypeEnum`, `CryptoNetworkEnum` |
 | Utils         | `CircuitBreakerDto`                            | `GetCircuitBreakersQuery`                  | —                                                                                                      | `CircuitBreakerOperation`                                      |
-| System        | `SystemConfigDto`                              | —                                          | —                                                                                                      | —                                                              |
+| System        | `SystemConfigDto`, `HealthCheckResultDto`      | —                                          | —                                                                                                      | —                                                              |
 
 ## Reference Implementations
 

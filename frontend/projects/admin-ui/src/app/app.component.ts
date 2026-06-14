@@ -12,6 +12,7 @@ import {
   faEnvelope,
   faGear,
   faGears,
+  faHeartPulse,
   faList,
   faPlus,
   faSpinner,
@@ -38,7 +39,8 @@ export class AppComponent {
       faSpinner,
       faEnvelope,
       faGear,
-      faBolt
+      faBolt,
+      faHeartPulse
     );
   }
 }

@@ -71,6 +71,19 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'system-health',
+    component: LayoutComponent,
+    data: {
+      roles: [UserRoleEnum.Admin],
+    },
+    canActivate: [isLoggedIn, hasRole],
+    canActivateChild: [isLoggedIn, hasRole],
+    loadChildren: () =>
+      import('./features/system-health/system-health.routes').then(
+        (m) => m.routes
+      ),
+  },
+  {
     path: 'circuit-breakers',
     component: LayoutComponent,
     data: {

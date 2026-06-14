@@ -11,3 +11,4 @@ export * from './identity.dto';
 export * from './contact-request.dto';
 export * from './circuit-breaker.dto';
 export * from './system-config.dto';
+export * from './health-check.dto';
