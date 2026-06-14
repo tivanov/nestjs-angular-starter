@@ -1,0 +1,100 @@
+---
+description: Standard backend database model flow with paging and get()
+globs: backend/src/**/*.ts
+alwaysApply: false
+---
+
+# Backend Database Model Standard
+
+Use this when creating features that persist entities and expose them through API.
+
+## 1) Model (Mongoose schema)
+
+- Extend `BaseEntity`.
+- Use `@Schema({ timestamps: true })`.
+- Define fields with `@Prop(...)` validation/indexing.
+- Add `SchemaFactory.createForClass(...)`.
+- Add `mongoose-paginate-v2` plugin for list endpoints.
+- Keep role/enums/types from `@app/contracts` (do not duplicate).
+
+## 2) Service access pattern
+
+- Service extends `BaseService<Entity>`.
+- Inject model as `PaginateModel<Entity>` and pass to `super(...)`.
+- Implement `get(query)` with `QueryFilter<Entity>` and conditional filters.
+- For text search, use `filter.$text = { $search: query.searchQuery }`.
+- Return `paginate(filter, this.getPaginationOptions(query))`.
+
+### Prefer `get()` — avoid single-use query methods
+
+Do **not** add entity-service helpers that duplicate what `get()` (or `BaseService` ID helpers) already provide. Callers pass filters via the contracts query; extend `GetXQuery` when a new filter is needed.
+
+Every list/read path goes through **one** `get(query: GetXQuery)` that uses `mongoose-paginate-v2` and `BaseService.getPaginationOptions(query)` — do not bypass pagination with raw `find()` / `findOne()` for entity reads.
+
+| Need | Use |
+|------|-----|
+| List/filter/sort/paginate | `service.get(query)` with fields on `GetXQuery` |
+| One row by filters (e.g. “base law”) | `get({ lawKey, documentType, versionKind, sortBy, page: 1, limit: 1 })` → `docs[0]` |
+| All rows matching filters (no paging) | `get({ ...filters })` without `page` — `getPaginationOptions` sets `pagination: false` |
+| Many rows by ID | `service.getByIdsLean(ids)` from `BaseService` |
+| Single row by ID | `service.getByIdLean(id)` |
+
+**Avoid** adding methods like `findAllByPublicationId`, `findAllByLawKey`, `findBaseLawPublication`, or `findByIds` on entity services — they fragment the query surface and bypass shared paging/sort/include behavior.
+
+**Do** add narrow methods only when they encode real domain transitions or writes (e.g. `markForReparse`, `onParsed`, `deleteByPublicationId`), not read-only lookups.
+
+Standard `get()` shape:
+
+```ts
+async get(query: GetXQuery): Promise<PaginateResult<X>> {
+  const filter: QueryFilter<X> = {};
+  // map query fields -> filter
+  return (this.objectModel as PaginateModel<XDocument>).paginate(
+    filter,
+    this.getPaginationOptions(query),
+  );
+}
+```
+
+## 3) Controller exposure pattern
+
+- `@Get()` accepts `@Query() query: GetXQuery`.
+- Return mapper paged DTO (`toDtosPaged(await service.get(query))`).
+- `@Get(':id')` uses `service.getById(id)` and mapper `toDto`.
+- Keep auth/roles guards consistent with module conventions.
+
+## 4) Contracts (library)
+
+Every entity list query **must**:
+
+1. **Extend `ShapeableQuery`** from [`backend/libs/contracts/src/queries/shapeable-query.ts`](backend/libs/contracts/src/queries/shapeable-query.ts) — never define a standalone query DTO without pagination/sort/include support.
+2. **Add entity-specific filters** on the subclass (e.g. `GetLegalPublicationsQuery extends ShapeableQuery`).
+3. **Be consumed by `service.get(query)`** which returns `PaginateResult<T>` via `paginate(..., this.getPaginationOptions(query))`.
+
+Inherited from `ShapeableQuery`: `page`, `limit`, `include`, `select`, `sortBy`, `sortDirection`.
+
+- Omit `page` when callers need all matching rows; `getPaginationOptions` disables pagination automatically.
+- HTTP list endpoints return `PagedListDto<T>` (mapped from `PaginateResult`).
+- DTO extends `BaseEntityDto` and uses shared enums from contracts.
+
+```ts
+// contracts
+export class GetXQuery extends ShapeableQuery {
+  @IsOptional()
+  @IsEnum(SomeEnum)
+  someFilter?: SomeEnum;
+}
+
+// service — always paginate
+return (this.objectModel as PaginateModel<XDocument>).paginate(
+  filter,
+  this.getPaginationOptions(query),
+);
+```
+
+## 5) Reference implementation
+
+- Model: `backend/src/users/model/user.model.ts`
+- Service paging/get: `backend/src/users/services/users.service.ts`
+- Controller exposure: `backend/src/users/controllers/users.controller.ts`
+- Contracts: `backend/libs/contracts/src/queries/get-users.query.ts`, `backend/libs/contracts/src/dto/user.dto.ts`, `backend/libs/contracts/src/dto/paged-list.dto.ts`

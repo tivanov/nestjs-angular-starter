@@ -1,6 +1,7 @@
 ---
 description: This rule provides comprehensive best practices and coding standards for Angular development, focusing on modern TypeScript, standalone components, signals, and performance optimizations.
-globs: ['frontend/projects/**/*.{ts,html,scss,css}']
+globs: frontend/projects/**/*.ts,frontend/projects/**/*.css,frontend/projects/**/*.scss,frontend/projects/**/*.html
+alwaysApply: true
 ---
 
 # Angular Best Practices
@@ -13,11 +14,11 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
 - **Prefer Type Inference:** Allow TypeScript to infer types when they are obvious from the context. This reduces verbosity while maintaining type safety.
   - **Bad:**
     ```typescript
-    let name: string = 'Angular';
+    let name: string = "Angular";
     ```
   - **Good:**
     ```typescript
-    let name = 'Angular';
+    let name = "Angular";
     ```
 - **Avoid `any`:** Do not use the `any` type unless absolutely necessary as it bypasses type checking. Prefer `unknown` when a type is uncertain and you need to handle it safely.
 
@@ -59,10 +60,10 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
   - **New Function Syntax:**
 
     ```typescript
-    import { input, output } from '@angular/core';
+    import { input, output } from "@angular/core";
 
     // ...
-    userId = input<string>('');
+    userId = input<string>("");
     userSelected = output<string>();
     ```
 
@@ -131,7 +132,7 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
   - **New `inject()` Function:**
 
     ```typescript
-    import { inject } from '@angular/core';
+    import { inject } from "@angular/core";
 
     export class MyComponent {
       private myService = inject(MyService);

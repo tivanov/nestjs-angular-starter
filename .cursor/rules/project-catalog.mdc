@@ -1,0 +1,43 @@
+---
+description: Consult project feature catalog before building; update docs after new features
+alwaysApply: true
+---
+
+# Project Catalog — Consult Before Building
+
+## Pre-build gate
+
+Before adding a module, service, util class, admin feature area, or background job system:
+
+1. Read [docs/shared-infrastructure.md](../../docs/shared-infrastructure.md) — check the "Do Not Build" table.
+2. Read [docs/features-backend.md](../../docs/features-backend.md) and/or [docs/features-frontend.md](../../docs/features-frontend.md).
+3. Confirm nothing equivalent exists. Extend existing modules instead of creating parallel systems.
+
+Examples:
+- Background work → extend `TasksModule` / `TaskTypeEnum`, not Bull/Redis queues.
+- Pagination → `ShapeableQuery` + `BaseService.get()`, not custom paging.
+- Admin list page → `BaseListComponent`, not a new table component.
+- String/date/crypto helpers → `UtilsModule` or `common-ui/utils/`, not new util classes.
+
+See [AGENTS.md](../../AGENTS.md) for full workflow and checklists.
+
+## Post-build requirement
+
+Any session that adds a feature **must** update the catalog:
+
+| Change | Update |
+|--------|--------|
+| Backend module or endpoint | `docs/features-backend.md` |
+| Admin UI feature or API service | `docs/features-frontend.md` |
+| Reusable infra (base class, util, shared service) | `docs/shared-infrastructure.md` |
+| Architectural change | `docs/architecture.md` |
+
+Bump the **Last updated** date in each edited file. Use the entry templates at the bottom of each doc.
+
+## Entry format
+
+```markdown
+| **Name** | `path/` | One-line description | Active |
+```
+
+Include API routes (backend) or routes + service (frontend) in the appropriate section.

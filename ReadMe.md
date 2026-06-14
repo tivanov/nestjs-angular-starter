@@ -126,6 +126,14 @@ A production-ready starter template for building full-stack web applications wit
 - `npm run build-prod:admin` - Build admin UI for production
 - `npm run build-prod:user` - Build user UI for production
 
+## Documentation
+
+- [Architecture](docs/architecture.md) — system design and layers
+- [Backend features](docs/features-backend.md) — modules and API routes
+- [Frontend features](docs/features-frontend.md) — admin/user UI catalog
+- [Shared infrastructure](docs/shared-infrastructure.md) — reusable building blocks (check before adding new utils/modules)
+- [AGENTS.md](AGENTS.md) — agent workflow for consulting and updating the catalog
+
 ## License
 
 MIT

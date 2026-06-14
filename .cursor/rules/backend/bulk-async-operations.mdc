@@ -1,0 +1,37 @@
+---
+description: Bulk pipeline actions mark async state; scheduled tasks do the work
+globs:
+  - backend/src/legal-documents/**/*.ts
+  - frontend/projects/common-ui/services/**/*.ts
+  - frontend/projects/admin-ui/**/features/**/*.ts
+alwaysApply: false
+---
+
+# Bulk async pipeline operations
+
+Use this pattern for admin bulk actions that queue background pipeline work (reparse, metadata extraction, operation extraction, etc.).
+
+## Backend
+
+1. **Contracts** — add `Bulk*Command` in `backend/libs/contracts/src/commands/` with `@IsMongoId({ each: true })` on ID arrays.
+2. **Service** — add `markFor*()` or `mark*Pending()` on the owning entity service. Update flags/status only; do not run pipeline logic synchronously.
+3. **Controller** — `POST legal/<entity>/bulk-<action>` on the entity controller (not pipeline-trigger). Return `{ markedCount: number }`.
+4. **Task runtime** — existing scheduled task picks up marked rows (e.g. `status: new` → `legal-parsing` task).
+
+## Frontend
+
+1. **common-ui** — add `bulk*()` on the entity HTTP service → POST to the bulk endpoint.
+2. **admin-ui list** — extend `BaseListComponent` with:
+   - `select` column + selection toolbar when `selection.hasValue()`
+   - action method collecting IDs from selected rows (dedupe when needed)
+   - snackbar with `markedCount`, clear selection, reload list
+
+## Reference implementations
+
+| Action | Endpoint | Service mark method | Task |
+|--------|----------|---------------------|------|
+| Re-extract operations | `POST legal/articles-raw/bulk-extract-operations` | `markOperationExtractionPending` | `legal-operation-extraction` |
+| Reparse | `POST legal/publications/bulk-reparse` | `markForReparse` (status → `new`) | `legal-parsing` |
+| Metadata extraction | `POST legal/publications/metadata-extraction` | `markMetadataExtractionPending` | `legal-metadata-extraction` |
+
+Do not call `legal/*/trigger` endpoints from list bulk actions unless the action must run synchronously for the whole law (e.g. one-off admin pipeline triggers page).

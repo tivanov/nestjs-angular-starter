@@ -1,0 +1,45 @@
+---
+description: NestJS modules encapsulate entity model, services, controllers, and mappers
+globs: backend/src/**/*.ts
+alwaysApply: false
+---
+
+# NestJS Entity Module Encapsulation
+
+Each entity/domain should be implemented as a self-contained module that owns its API and persistence logic.
+
+## Structure per module
+
+- Keep entity code together under one folder (example: `backend/src/users`).
+- Use subfolders: `model`, `services`, `controllers`, `mappers`.
+- Put all entity-specific logic in the same module; avoid leaking it to unrelated modules.
+
+## Module wiring standard
+
+- Register module schemas in `MongooseModule.forFeatureAsync([...])`.
+- Declare all entity-related services in `providers`.
+- Declare route handlers in `controllers`.
+- Export only services needed by other modules.
+- Use `forwardRef` only when a real circular dependency exists.
+
+## Responsibilities
+
+- **Model**: schema fields, indexes, plugins, persistence shape.
+- **Service**: business logic + data access; extends shared base service when available.
+- **Controller**: HTTP layer only (validation/guards/route orchestration), delegates to service.
+- **Mapper**: explicit model-to-contract DTO mapping; controllers return mapped DTOs, not raw model docs.
+
+## `users` module reference
+
+- Module: `backend/src/users/users.module.ts`
+- Models: `backend/src/users/model/*.ts`
+- Services: `backend/src/users/services/*.ts`
+- Controllers: `backend/src/users/controllers/*.ts`
+- Mappers: `backend/src/users/mappers/*.ts`
+
+## Checklist for new entity modules
+
+- Module contains model + services + controllers + mappers.
+- Controller methods call service methods and return mapped DTOs.
+- Service owns query/filter/paging logic for the entity.
+- Contracts are consumed from `@app/contracts` instead of redefining shapes locally.

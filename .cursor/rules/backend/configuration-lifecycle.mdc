@@ -1,0 +1,43 @@
+---
+description: Backend configuration strategy and environment file loading
+globs: backend/**/*.ts
+alwaysApply: false
+---
+
+# Backend Configuration Lifecycle
+
+Use `backend/config/*.ts` for values that are stable at runtime and only change between deployments or restarts.
+
+## Environment file model
+
+- Keep environment-specific config in:
+  - `backend/config/development.ts`
+  - `backend/config/stage.ts`
+  - `backend/config/production.ts`
+- Each file exports one typed `config` object (`IConfig`) with the same shape.
+
+## How loading works
+
+- `backend/config/index.ts` selects the file by `NODE_ENV`:
+  - `production` -> `production.ts`
+  - `stage` -> `stage.ts`
+  - default -> `development.ts`
+- It registers each top-level section (`app`, `db`, `auth`, etc.) via `registerAs(...)` so values are available through NestJS `ConfigService`.
+
+## What belongs here
+
+- Put values that are not expected to change while the app is running.
+- If changing a value should require application restart, it belongs in this config layer.
+- Typical examples: ports, feature toggles for startup behavior, DB URI, JWT expiration defaults, upload paths.
+
+## What does not belong here
+
+- Do not put frequently changing runtime state here (per-request/per-user/per-tenant data).
+- Do not use this config layer as a dynamic settings store.
+
+## Implementation guidance
+
+- Add new settings to all three env files and keep keys aligned.
+- Extend `IConfig` before consuming new keys.
+- Access values through `ConfigService` / registered namespaces, not direct imports of env files.
+- never use env vars.

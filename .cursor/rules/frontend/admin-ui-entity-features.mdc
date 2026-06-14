@@ -1,0 +1,49 @@
+---
+description: Admin-ui CRUD/list pattern — HTTP services in common-ui, list/edit routes and menu
+globs:
+  - frontend/projects/admin-ui/**/*.ts
+  - frontend/projects/common-ui/services/**/*.ts
+alwaysApply: true
+---
+
+# Admin UI: list / filter / edit / delete entities
+
+Use this template when adding or extending **admin-managed entities** (tables with filters, row actions, create/edit/detail).
+
+## HTTP API client (`common-ui`)
+
+- Add an `@Injectable({ providedIn: 'root' })` service under `frontend/projects/common-ui/services/` (e.g. `users.service.ts`).
+- Extend **`BaseApiService`** from `frontend/projects/common-ui/base/base-api.service.ts` — it wraps `HttpClient`, `EnvironmentService`, and **`queryToParams()`** for list queries.
+- Use **contracts** (`@app/contracts`) for DTOs, commands, queries, and enums — mirror backend REST paths (e.g. `GET ${this.env.apiUrl}/users` with query params).
+
+The Nest helper `backend/src/shared/base/base-api.service.ts` is backend-only; the Angular side uses the common-ui base above.
+
+## List page (`admin-ui`)
+
+- Add a **list component** with filters and table actions under `frontend/projects/admin-ui/src/app/features/<feature>/`. Table actions should include at minimum a view action that routes to a view/edit component.
+- Extend **`BaseListComponent<T>`** from `frontend/projects/common-ui/base/base-list.component.ts` — shared paging, filters, selection, responsive columns pattern.
+- For entities that can be included as IdName or DTO, look for display-cell components that can check the type of data (ID, DTO or IdNameDto) and show it appropriately. If no such component exists, create new one.
+
+## Create / view / edit (`admin-ui`)
+
+- When the flow fits a single screen for view and edit: add a component extending **`BaseEditComponent`** from `frontend/projects/common-ui/base/base-edit.component.ts` (see `features/users/user/user.component.ts`).
+- If view vs edit diverge too much, split into separate components instead of one overloaded screen.
+
+## Routing
+
+- Define routes in a dedicated file per entity or logical group, e.g. `frontend/projects/admin-ui/src/app/features/users/users.routes.ts` — list, create, `:id`, guards (`isLoggedIn`), **roles** and **title** in `data`.
+
+## Navigation
+
+- If the feature should appear in the shell: register it in **`frontend/projects/admin-ui/src/app/layout/side-menu/side-menu.service.ts`** (route + label + icon as used elsewhere).
+- If you add icons, you must add them to the FaIconLibrary in AppComponent. The full FontAwesome library is not loaded.
+
+## Quick reference (users example)
+
+| Piece          | Location                                                                               |
+| -------------- | -------------------------------------------------------------------------------------- |
+| API service    | `frontend/projects/common-ui/services/users.service.ts`                                |
+| List UI        | `frontend/projects/admin-ui/src/app/features/users/users-list/users-list.component.ts` |
+| Edit/create UI | `frontend/projects/admin-ui/src/app/features/users/user/user.component.ts`             |
+| Routes         | `frontend/projects/admin-ui/src/app/features/users/users.routes.ts`                    |
+| Display Cell   | `frontend/projects/admin-ui/src/app/core/components/legal-publication-display-cell     |

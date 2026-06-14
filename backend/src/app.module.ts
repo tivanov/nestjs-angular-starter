@@ -14,6 +14,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UtilsModule } from './utils/utils.module';
 import { SystemModule } from './system/system.module';
+import { MeModule } from './me/me.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { SystemModule } from './system/system.module';
     TasksModule,
     UtilsModule,
     SystemModule,
+    MeModule,
   ],
   controllers: [],
   providers: [
