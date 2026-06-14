@@ -111,14 +111,14 @@ All extend `BaseApiService` and call `${env.apiUrl}/...`. Located in `frontend/p
 | `DashboardService` | `GET /dashboard/*` | admin-ui dashboard |
 | `SystemConfigService` | `GET /system-config` | admin-ui system-settings |
 | `EnvironmentService` | — (reads `window.__env`) | Both apps |
-| `MeService` | — | **Stub** (empty) |
+| `MeService` | `GET /me` | **Stub** — backend endpoint active; service not wired |
 | `GlobalWipService` | — (localStorage drafts) | **Unused** |
 
 ## Stubs and Unused Pieces
 
 | Piece | Path | Notes |
 |-------|------|-------|
-| `MeService` | `common-ui/services/me.service.ts` | Empty stub |
+| `MeService` | `common-ui/services/me.service.ts` | Empty stub; backend `GET /v1/me` is active |
 | `DialogService` | `common-ui/dialog/` | Built but not integrated in either app |
 | `BasePickerComponent` | `common-ui/base/base-picker.component.ts` | No concrete subclasses |
 | `BaseInputComponent` | `common-ui/base/base-input.component.ts` | No concrete subclasses |
@@ -157,4 +157,4 @@ See `.cursor/rules/frontend/admin-ui-entity-features.mdc` for detailed patterns.
 
 ## Last updated
 
-2026-06-14
+2026-06-15

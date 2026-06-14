@@ -107,7 +107,7 @@ export class BaseApiService {
       return null;
     }
 
-    let remaining = Number.parseInt(rateLimitRemaining);
+    const remaining = Number.parseInt(rateLimitRemaining);
     if (isNaN(remaining)) {
       return null;
     }

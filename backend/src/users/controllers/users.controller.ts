@@ -134,5 +134,7 @@ export class UsersController {
     await fs.writeFile(fileFullPath, compressedImageBuffer);
 
     await this.usersService.updateAvatar(id, frontendPath);
+
+    return { avatar: frontendPath };
   }
 }

@@ -116,7 +116,7 @@ export class TaskComponent extends BaseComponent implements OnInit {
           this.snackBar.open('Task updated', 'Close', {
             duration: 3000,
           });
-          this.router.navigate(['./tasks/list']);
+          this.router.navigate(['/tasks/list']);
         },
 
         error: (err) => {
@@ -132,7 +132,7 @@ export class TaskComponent extends BaseComponent implements OnInit {
           this.snackBar.open('Task created', 'Close', {
             duration: 3000,
           });
-          this.router.navigate(['./tasks/list']);
+          this.router.navigate(['/tasks/list']);
         },
 
         error: (err) => {

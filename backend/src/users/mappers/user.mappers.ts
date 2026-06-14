@@ -57,6 +57,7 @@ export class UserMappers extends BaseMapper {
       email: user.email,
       address: user.address,
       phone: user.phone,
+      country: user.country,
       creator: UserMappers.toDto(user.creator),
       settings: UserMappers.settingsToDto(user.settings),
     };

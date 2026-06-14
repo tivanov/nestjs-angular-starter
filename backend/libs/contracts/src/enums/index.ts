@@ -6,3 +6,4 @@ export * from './identity-provider.enum';
 export * from './contact-request-status.enum';
 export * from './contact-type.enum';
 export * from './circuit-breaker-operation.enum';
+export * from './crypto-network.enum';

@@ -53,7 +53,7 @@ flowchart LR
 ### Bootstrap (`backend/src/main.ts`)
 
 - URI versioning: all routes prefixed `/v1/`
-- Global `ValidationPipe` (whitelist unknown properties)
+- Global `ValidationPipe` (whitelist unknown properties, `transform: true` for query coercion)
 - Global `ThrottlerGuard` (20 requests / 10 seconds)
 - Node cluster mode in production; worker `0` runs scheduled tasks
 - Static file serving for uploads at `/v1/uploads`
@@ -75,7 +75,7 @@ Reference implementation: `backend/src/users/`.
 
 ### Registered Modules (`AppModule`)
 
-Auth, Users, Dashboard, Notifications, Tasks, Utils, System — plus global Config, Mongoose, Throttler, and static uploads.
+Auth, Users, Me, Dashboard, Notifications, Tasks, Utils, System — plus global Config, Mongoose, Throttler, and static uploads.
 
 ### Background Jobs
 
@@ -138,10 +138,17 @@ Top-level routes in `app.routes.ts` wrap authenticated features in `LayoutCompon
 
 | Concern | Backend | Frontend |
 |---------|---------|----------|
-| Auth | JWT + refresh, `JwtGuard`, `RolesGuard`, `@Roles()` | `AuthSignal`, `authInterceptor`, `isLoggedIn`, `hasRole` guards |
+| Auth | JWT + refresh, `JwtGuard`, `RolesGuard`, `@Roles()` | `AuthSignal` (localStorage), `authInterceptor`, `isLoggedIn`, `hasRole` guards |
 | Pagination | `ShapeableQuery` + `PagedListDto` | `BaseListComponent` + `queryToParams()` |
 | Errors | Custom exceptions (`AppBadRequestException`, …) | `BaseComponent.extractErrorMessage()` |
 | Resilience | `CircuitBreakersService`, `MutexService` | `CircuitBreakersService` (admin UI) |
+
+### Security notes (starter defaults)
+
+- **Uploads** are served publicly at `/v1/uploads` via `ServeStaticModule`. Restrict or proxy avatar access in production if files are sensitive.
+- **JWT tokens** persist in browser `localStorage` (`AuthSignal`). Consider httpOnly cookies for stricter XSS posture.
+- **Production CORS** defaults to an empty `corsOrigins` list in `production.ts` — set your deployed frontend URLs before going live.
+- **Background tasks** require `app.enableTasks: true` (set in all env config files) and worker `0` in cluster mode.
 
 ## Implementation Rules (How to Build)
 
@@ -160,4 +167,4 @@ These Cursor rules cover *how* to implement; the docs in this folder cover *what
 
 ## Last updated
 
-2026-06-14
+2026-06-15

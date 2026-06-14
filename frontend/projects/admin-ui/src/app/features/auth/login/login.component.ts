@@ -89,6 +89,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   redirect() {
-    this.router.navigate(['./dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 }

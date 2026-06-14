@@ -14,7 +14,7 @@ Catalog of NestJS modules and API surface. Before adding a new module, check [sh
 | **Utils**         | `backend/src/utils/`         | Mutex locks, circuit breakers, crypto/string/date helpers, DB transactions           | Active |
 | **Dashboard**     | `backend/src/dashboard/`     | Admin dashboard aggregate stats (users, login analytics)                             | Active |
 | **Shared**        | `backend/src/shared/`        | Empty placeholder module; base classes imported directly                             | Active |
-| **Me**            | `backend/src/me/`            | Stub — operations for the currently authenticated users; not imported in `AppModule` | Stub   |
+| **Me**            | `backend/src/me/`            | Current-user profile and activity tracking (`GET /v1/me`)                            | Active |
 
 ## Standalone / Unregistered Modules
 
@@ -34,16 +34,22 @@ All routes prefixed `/v1/`. Auth column: **Public**, **Admin**, **Manager**, or 
 | POST   | `/auth/refresh` | Public | Refresh access token    |
 | GET    | `/identities`   | Admin  | List identity records   |
 
+### Me (`/v1/me`)
+
+| Method | Route | Auth   | Description                              |
+| ------ | ----- | ------ | ---------------------------------------- |
+| GET    | `/me` | JWT    | Get current authenticated user profile   |
+
 ### Users (`/v1/users`, `/v1/login-records`)
 
 | Method | Route                 | Auth  | Description            |
 | ------ | --------------------- | ----- | ---------------------- |
 | POST   | `/users`              | Admin | Create user            |
-| GET    | `/users`              | Mixed | List users (paginated) |
-| GET    | `/users/:id`          | Mixed | Get user by ID         |
-| PUT    | `/users/:id`          | Mixed | Update user data       |
-| PATCH  | `/users/:id/password` | Mixed | Change password        |
-| PUT    | `/users/:id/avatar`   | Mixed | Upload avatar          |
+| GET    | `/users`              | Admin | List users (paginated) |
+| GET    | `/users/:id`          | Admin | Get user by ID         |
+| PUT    | `/users/:id`          | Admin | Update user data       |
+| PATCH  | `/users/:id/password` | Admin | Change password        |
+| PUT    | `/users/:id/avatar`   | Admin | Upload avatar          |
 | DELETE | `/users/:id`          | Admin | Delete user            |
 | GET    | `/login-records`      | Admin | List login records     |
 
@@ -101,7 +107,7 @@ Shared types live in `backend/libs/contracts/src/`. Key exports:
 | Auth          | `IdentityDto`                                  | `GetIdentitiesQuery`                       | `CreateIdentityCommand`, `CreateRefreshTokenCommand`                                                   | `IdentityProviderEnum`                                         |
 | Users         | `UserDto`, `UserSettingsDto`, `LoginRecordDto` | `GetUsersQuery`, `GetLoginRecordsQuery`    | `CreateUserCommand`, `UpdateUserDataCommand`, `UpdateUserPasswordCommand`, `CreateUserSettingsCommand` | `UserRoleEnum`                                                 |
 | Tasks         | `TaskDto`, `TaskLogDto`                        | `GetTasksQuery`, `GetTaskLogsQuery`        | `CreateTaskCommand`, `UpdateTaskCommand`                                                               | `TaskTypeEnum`, `TaskLogTypeEnum`                              |
-| Notifications | `AlertDto`, `ContactRequestDto`                | `GetAlertsQuery`, `GetContactRequestQuery` | `ContactRequestCommand`                                                                                | `AlertTypeEnum`, `ContactRequestStatusEnum`, `ContactTypeEnum` |
+| Notifications | `AlertDto`, `ContactRequestDto`                | `GetAlertsQuery`, `GetContactRequestQuery` | `ContactRequestCommand`                                                                                | `AlertTypeEnum`, `ContactRequestStatusEnum`, `ContactTypeEnum`, `CryptoNetworkEnum` |
 | Utils         | `CircuitBreakerDto`                            | `GetCircuitBreakersQuery`                  | —                                                                                                      | `CircuitBreakerOperation`                                      |
 | System        | `SystemConfigDto`                              | —                                          | —                                                                                                      | —                                                              |
 
@@ -126,4 +132,4 @@ Include API routes in the routes section and contracts in the contracts table. I
 
 ## Last updated
 
-2026-06-14
+2026-06-15

@@ -12,6 +12,9 @@ export interface ISessionState {
 
 const localStorageKey = 'app_sessionState';
 
+// Tokens are stored in localStorage for this starter. Production apps with
+// strict XSS requirements should consider httpOnly cookie-based sessions instead.
+
 const blankState: ISessionState = {
   isAuthenticated: false,
 };

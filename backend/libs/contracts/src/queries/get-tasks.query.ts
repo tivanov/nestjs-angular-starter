@@ -5,6 +5,8 @@ import { Transform } from 'class-transformer';
 
 export class GetTasksQuery extends ShapeableQuery {
   @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true' || value === true)
   activeOnly?: boolean;
 
   @IsOptional()

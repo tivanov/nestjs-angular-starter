@@ -3,7 +3,13 @@ import { BaseService } from 'src/shared/base/base-service';
 import { User, UserDocument } from '../model/user.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { IAppConfig, IAuthConfig } from 'config/model';
-import { PaginateModel, PaginateResult, Types, Model, QueryFilter } from 'mongoose';
+import {
+  PaginateModel,
+  PaginateResult,
+  Types,
+  Model,
+  QueryFilter,
+} from 'mongoose';
 import { ConfigService } from '@nestjs/config';
 import {
   Constants,

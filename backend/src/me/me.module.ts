@@ -1,12 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
+import { AuthModule } from 'src/auth/auth.module';
+import { UsersModule } from 'src/users/users.module';
 import { MeController } from './controllers/me.controller';
 
 @Module({
-  imports: [],
+  imports: [forwardRef(() => UsersModule), forwardRef(() => AuthModule)],
   providers: [],
-  controllers: [
-    MeController,
-  ],
+  controllers: [MeController],
   exports: [],
 })
 export class MeModule {}

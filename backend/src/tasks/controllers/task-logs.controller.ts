@@ -14,9 +14,7 @@ export class TaskLogsController {
 
   @Get()
   async findAll(@Query() query: GetTaskLogsQuery) {
-    return TaskLogMappers.toDtosPaged(
-      await this.taskLogsService.get(query),
-    );
+    return TaskLogMappers.toDtosPaged(await this.taskLogsService.get(query));
   }
 
   @Get(':id')

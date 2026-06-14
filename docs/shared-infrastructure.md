@@ -121,8 +121,8 @@
 | `ShortNumberPipe` | `common-ui/pipes/short-number.pipe.ts` | Abbreviated numbers (K, M) |
 | `PrettyJsonPipe` | `common-ui/pipes/pretty-json.pipe.ts` | JSON formatting |
 | `SafeUrlPipe` | `common-ui/pipes/safe-url.pipe.ts` | Sanitized URLs |
-| `TxHashPipe` | `common-ui/pipes/tx-hash.pipe.ts` | Transaction hash display |
-| `CryptoNetworkPipe` | `common-ui/pipes/crypto-network.pipe.ts` | Crypto network labels |
+| `TxHashPipe` | `common-ui/pipes/tx-hash.pipe.ts` | Transaction hash display (`CryptoNetworkEnum`) |
+| `CryptoNetworkPipe` | `common-ui/pipes/crypto-network.pipe.ts` | Crypto network labels (`CryptoNetworkEnum`) |
 
 ## Frontend — Utils
 
@@ -146,4 +146,4 @@ When you introduce infrastructure others should reuse, append a row to the relev
 
 ## Last updated
 
-2026-06-14
+2026-06-15

@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm run install-all
+
+      - name: Build backend
+        run: cd backend && npm run build
+
+      - name: Build frontend (admin-ui)
+        run: cd frontend && npm run build-prod:admin
+
+      - name: E2E smoke test
+        run: cd backend && npm run test:e2e

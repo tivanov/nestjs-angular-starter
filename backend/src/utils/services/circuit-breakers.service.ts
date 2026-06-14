@@ -109,7 +109,7 @@ export class CircuitBreakersService extends BaseService<CircuitBreaker> {
       successThreshold?: number;
     },
   ): Promise<CircuitBreaker> {
-    let circuitBreaker = await this.objectModel
+    const circuitBreaker = await this.objectModel
       .findOne({
         operation,
         resourceId,

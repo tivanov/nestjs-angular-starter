@@ -15,8 +15,7 @@ import { RouterModule } from '@angular/router';
 import { ContactRequestDto, GetContactRequestQuery } from '@app/contracts';
 import { BaseListComponent } from '../../../../../../common-ui/base/base-list.component';
 import { ContactRequestsService } from '../../../../../../common-ui/services/contact-requests.service';
-import { ContactRequestStatusEnum } from './../../../../../../../../backend/libs/contracts/src/enums/contact-request-status.enum';
-import { ContactTypeEnum } from './../../../../../../../../backend/libs/contracts/src/enums/contact-type.enum';
+import { ContactRequestStatusEnum, ContactTypeEnum } from '@app/contracts';
 
 @Component({
   selector: 'app-contact-requests-list',

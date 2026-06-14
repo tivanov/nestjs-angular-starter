@@ -16,7 +16,7 @@ A production-ready starter template for building full-stack web applications wit
   - Rate limiting and security guards
   - Shared contracts library (DTOs, Commands, Queries, Enums)
 
-- **Frontend (Angular 20)**
+- **Frontend (Angular 21)**
   - Admin UI with Angular Material components
   - User UI (public-facing application)
   - Signals-based state management with local storage
@@ -47,20 +47,7 @@ A production-ready starter template for building full-stack web applications wit
    mongoUri: "mongodb://localhost/nest-angular-starter";
    ```
 
-3. **Generate OAuth State Keys:**
-   The application uses RSA key pairs for OAuth state verification to prevent CSRF attacks. A `keys` folder must exist in the `backend/config` directory for the state verification to work correctly.
-
-   Generate the keys using OpenSSL:
-
-   ```bash
-   cd backend/config
-   mkdir keys
-   cd keys
-   openssl genpkey -algorithm RSA -out statePrivateKey.pem
-   openssl rsa -pubout -in statePrivateKey.pem -out statePublicKey.pem
-   ```
-
-4. **Initialize database:**
+3. **Initialize database:**
 
    ```bash
    cd backend
@@ -69,7 +56,7 @@ A production-ready starter template for building full-stack web applications wit
 
    This creates the database and seeds users for each role (Admin, Manager, Regular).
 
-5. **Start development servers:**
+4. **Start development servers:**
 
    ```bash
    # From project root
@@ -100,7 +87,7 @@ A production-ready starter template for building full-stack web applications wit
 ## Configuration
 
 - **Backend config:** `backend/config/development.ts` (or `production.ts`, `stage.ts`)
-- **Frontend config:** Environment files in `frontend/projects/*/src/environments/`
+- **Frontend config:** Runtime `window.__env` injected via `env.js` per app (`frontend/projects/*/src/environments/`)
 - **Shared contracts:** `backend/libs/contracts/src/` (automatically available in frontend via TypeScript path alias)
 
 ## Available Scripts
@@ -112,6 +99,8 @@ A production-ready starter template for building full-stack web applications wit
 - `npm run dev:user` - Start backend + user UI
 - `npm run build-prod` - Build all for production
 - `npm run build-stage` - Build all for staging
+- `npm run test` - Run backend unit tests and e2e smoke test
+- `npm run lint` - Run backend ESLint
 
 **Backend:**
 

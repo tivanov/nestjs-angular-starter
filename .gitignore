@@ -1,1 +1,7 @@
 node_modules
+dist
+uploads
+backend/config/keys/
+*.log
+.DS_Store
+coverage

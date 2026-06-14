@@ -40,11 +40,19 @@ export class TasksService extends BaseService<Task> {
   }
 
   public async update(id: string, command: UpdateTaskCommand) {
-    if (command.runOnce && !command.timeout) {
+    const existing = await this.expectEntityExists(
+      id,
+      ErrorCode.TASK_NOT_FOUND,
+    );
+    const runOnce = command.runOnce ?? existing.runOnce;
+    const timeout = command.timeout ?? existing.timeout;
+    const cronString = command.cronString ?? existing.cronString;
+
+    if (runOnce && !timeout) {
       throw new AppBadRequestException(ErrorCode.TIMEOUT_REQUIRED);
     }
 
-    if (!command.runOnce && !command.cronString) {
+    if (!runOnce && !cronString) {
       throw new AppBadRequestException(ErrorCode.CRON_STRING_REQUIRED);
     }
 

@@ -5,8 +5,10 @@ const config: IConfig = {
   app: {
     isProduction: true,
     enableCors: true,
-    corsOrigins: ['http://localhost:5100', 'http://localhost:5200'],
+    // Set your deployed admin-ui and user-ui origins before going live
+    corsOrigins: [],
     port: 8200,
+    enableTasks: true,
     uploadsDir: join(process.cwd(), '/uploads'),
   },
   db: {
@@ -15,7 +17,6 @@ const config: IConfig = {
   auth: {
     jwtSecret: 'YOURJWTSECRETCHANGEIT55',
     jwtExpirationTime: '30m',
-
     jwtRefreshSecret: 'YOURJWTSECRETCHANGEIT',
     jwtRefreshExpirationTime: '2h',
     userBlockTime: 86400000,

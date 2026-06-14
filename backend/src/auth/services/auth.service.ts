@@ -193,10 +193,10 @@ export class AuthService {
   }
 
   private getBrowserInfo(req: Request): string {
-    return req.header['user-agent'] || 'XX';
+    return req.get('user-agent') || 'XX';
   }
 
   private getCountry(req: Request): string {
-    return req.header['cf-ipcountry'] ? req.header['cf-ipcountry'] : 'XX';
+    return req.get('cf-ipcountry') || 'XX';
   }
 }

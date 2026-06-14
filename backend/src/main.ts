@@ -91,7 +91,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // cut additional properties that do not have class-validator decorators
+      whitelist: true,
+      transform: true,
     }),
   );
 
