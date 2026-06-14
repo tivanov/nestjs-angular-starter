@@ -42,13 +42,37 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
     })
     export class MyComponent {}
     ```
-- **Signals for State Management:** Utilize Angular Signals for reactive state management within components and services.
+- **Signals for State Management:** Use Angular Signals for reactive state in all new components and services. Prefer signals over mutable class fields or RxJS subjects for component-local state.
 - **Lazy Loading:** Implement lazy loading for feature routes to improve initial load times of your application.
 - **NgOptimizedImage:** Use `NgOptimizedImage` for all static images to automatically optimize image loading and performance.
 - **Host bindings:** Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead.
 
 ## Components
 
+- **New components — required defaults:** Every new component MUST use `ChangeDetectionStrategy.OnPush` and signals for reactive state. Use `input()` / `output()` for component API, `signal()` / `computed()` for local and derived state, and avoid class fields mutated outside the signal API.
+  - **Bad:**
+    ```typescript
+    @Component({
+      changeDetection: ChangeDetectionStrategy.Default,
+      // ...
+    })
+    export class MyComponent {
+      count = 0;
+      @Input() userId!: string;
+    }
+    ```
+  - **Good:**
+    ```typescript
+    @Component({
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      // ...
+    })
+    export class MyComponent {
+      userId = input<string>("");
+      count = signal(0);
+      doubled = computed(() => this.count() * 2);
+    }
+    ```
 - **Single Responsibility:** Keep components small, focused, and responsible for a single piece of functionality.
 - **`input()` and `output()` Functions:** Prefer `input()` and `output()` functions over the `@Input()` and `@Output()` decorators for defining component inputs and outputs.
 
@@ -68,7 +92,7 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
     ```
 
 - **`computed()` for Derived State:** Use the `computed()` function from `@angular/core` for derived state based on signals.
-- **`ChangeDetectionStrategy.OnPush`:** Always set `changeDetection: ChangeDetectionStrategy.OnPush` in the `@Component` decorator for performance benefits by reducing unnecessary change detection cycles.
+- **`ChangeDetectionStrategy.OnPush`:** Required on all new components. Set `changeDetection: ChangeDetectionStrategy.OnPush` in the `@Component` decorator to reduce unnecessary change detection cycles.
 - **Inline Templates:** Prefer inline templates (template: `...`) for small components to keep related code together. For larger templates, use external HTML files.
 - **Reactive Forms:** Prefer Reactive forms over Template-driven forms for complex forms, validation, and dynamic controls due to their explicit, immutable, and synchronous nature.
 - **No `ngClass` / `NgClass`:** Do not use the `ngClass` directive. Instead, use native `class` bindings for conditional styling.
@@ -95,7 +119,7 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
 
 ## State Management
 
-- **Signals for Local State:** Use signals for managing local component state.
+- **Signals for Local State:** Required for all new components — use `signal()` for local state instead of plain class properties.
 - **`computed()` for Derived State:** Leverage `computed()` for any state that can be derived from other signals.
 - **Pure and Predictable Transformations:** Ensure state transformations are pure functions (no side effects) and predictable.
 - **Signal value updates:** Do NOT use `mutate` on signals, use `update` or `set` instead.
