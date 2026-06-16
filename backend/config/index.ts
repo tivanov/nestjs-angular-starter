@@ -5,6 +5,8 @@ if (process.env.NODE_ENV === 'production') {
   env = 'production';
 } else if (process.env.NODE_ENV === 'stage') {
   env = 'stage';
+} else if (process.env.NODE_ENV === 'test') {
+  env = 'test';
 }
 
 const path = `./${env}`;

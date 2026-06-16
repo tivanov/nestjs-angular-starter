@@ -10,6 +10,7 @@ Before building new features, consult the project catalog. After building, updat
 | [docs/features-backend.md](docs/features-backend.md) | Backend modules and API routes |
 | [docs/features-frontend.md](docs/features-frontend.md) | Admin/user UI features and API services |
 | [docs/shared-infrastructure.md](docs/shared-infrastructure.md) | **Check first** — reusable base classes, services, and "do not duplicate" list |
+| [docs/testing.md](docs/testing.md) | Backend test pyramid, conventions, templates, and run instructions |
 
 ## Workflow
 

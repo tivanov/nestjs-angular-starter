@@ -3,7 +3,6 @@ import { MaintenanceModule } from './maintenance.module';
 import { INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { CreateUserCommand, UserRoleEnum } from '@app/contracts';
-import { faker } from '@faker-js/faker';
 import { TasksService } from 'src/tasks/services/tasks.service';
 import { TasksDefinition } from 'src/tasks/definitions';
 
@@ -17,6 +16,7 @@ class DbInitializer {
   }
 
   public async initUsers() {
+    const { faker } = await import('@faker-js/faker');
     const roles = Object.values(UserRoleEnum);
 
     for (const role of roles) {
@@ -73,20 +73,25 @@ class DbInitializer {
   }
 }
 
-const bootstrap = async () => {
-  NestFactory.create(MaintenanceModule).then(async (context) => {
-    try {
-      await context.init();
-      console.log('Created maintenance module.');
-      const initializer = new DbInitializer(context);
-      await initializer.initDb();
-      console.log('Done');
-    } catch (e) {
-      console.error(e);
-    } finally {
-      context.close();
-    }
-  });
+export const seedDatabase = async (context: INestApplication): Promise<void> => {
+  const initializer = new DbInitializer(context);
+  await initializer.initDb();
 };
 
-bootstrap();
+const bootstrap = async (): Promise<void> => {
+  const context = await NestFactory.create(MaintenanceModule);
+  try {
+    await context.init();
+    console.log('Created maintenance module.');
+    await seedDatabase(context);
+    console.log('Done');
+  } catch (e) {
+    console.error(e);
+  } finally {
+    await context.close();
+  }
+};
+
+if (require.main === module) {
+  bootstrap();
+}

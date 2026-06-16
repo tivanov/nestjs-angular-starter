@@ -33,5 +33,8 @@ jobs:
       - name: Build frontend (admin-ui)
         run: cd frontend && npm run build-prod:admin
 
-      - name: E2E smoke test
+      - name: Unit tests
+        run: cd backend && npm test
+
+      - name: E2E tests
         run: cd backend && npm run test:e2e

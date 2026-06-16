@@ -19,8 +19,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
-    "init-db:dev": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/maintenance/db-setup.ts"
+    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json",
+    "init-db:dev": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/maintenance/db-setup.ts",
+    "init-db:test": "cross-env NODE_ENV=test ts-node -r tsconfig-paths/register src/maintenance/db-setup.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
@@ -92,7 +93,13 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.ts",
+      "!src/main.ts",
+      "!**/*.module.ts"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      ".model.ts"
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
@@ -101,7 +108,9 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/contracts(|/.*)$": "<rootDir>/libs/contracts/src/$1"
+      "^@app/contracts(|/.*)$": "<rootDir>/libs/contracts/src/$1",
+      "^src/(.*)$": "<rootDir>/src/$1",
+      "^config/(.*)$": "<rootDir>/config/$1"
     }
   }
 }
