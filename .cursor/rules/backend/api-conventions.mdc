@@ -1,0 +1,50 @@
+---
+description: URI versioning, ValidationPipe, throttling, and REST conventions
+globs:
+  - backend/src/main.ts
+  - backend/src/**/*.controller.ts
+  - backend/src/app.module.ts
+alwaysApply: false
+---
+
+# API Conventions
+
+## Versioning
+
+- URI versioning: all routes under **`/v1/`** (`VersioningType.URI`, default version `1` in `main.ts`).
+- Frontend `apiUrl` includes the prefix: `http://localhost:8200/v1`.
+- Controllers use bare paths (`@Controller('users')`) — Nest adds the version segment.
+
+## Validation
+
+Global `ValidationPipe` in `main.ts`:
+
+- `whitelist: true` — strips unknown properties from body/query.
+- `transform: true` — coerces query types (numbers, enums).
+
+Use contract **classes** for `@Body()` and `@Query()` so validation runs automatically.
+
+## Throttling
+
+- Global `ThrottlerGuard` in `AppModule` — 20 requests / 10 seconds default.
+- Heavy or public endpoints may need `@SkipThrottle()` — use sparingly.
+
+## REST patterns
+
+| Action | Method | Path |
+|--------|--------|------|
+| List (paged) | `GET` | `/v1/<entity>?page=&limit=&sortBy=` |
+| Get one | `GET` | `/v1/<entity>/:id` |
+| Create | `POST` | `/v1/<entity>` |
+| Update | `PUT` or `PATCH` | `/v1/<entity>/:id` |
+| Delete | `DELETE` | `/v1/<entity>/:id` |
+
+List endpoints return `PagedListDto<T>` via mapper `toDtosPaged`.
+
+## Static files
+
+Uploads served at `/v1/uploads` via `ServeStaticModule` — restrict in production if sensitive.
+
+## Cluster
+
+Production runs Node cluster; scheduled tasks and config init run on **`WORKER_NUMBER=0`** only.

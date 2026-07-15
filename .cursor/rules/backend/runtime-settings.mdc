@@ -1,0 +1,36 @@
+---
+description: Deployment config vs MongoDB runtime settings (SystemModule)
+globs:
+  - backend/config/**/*.ts
+  - backend/src/system/**/*.ts
+alwaysApply: false
+---
+
+# Runtime vs Deployment Settings
+
+## Deployment config (`backend/config/`)
+
+- Files: `development.ts`, `stage.ts`, `production.ts` — same `IConfig` shape.
+- Loaded via `registerAs` in `config/index.ts`; read through `ConfigService`.
+- **Use for:** ports, DB URI, JWT secrets/expiry, CORS origins, `enableTasks`, `uploadsDir`.
+- Changing these requires **restart** (or redeploy).
+- See `.cursor/rules/backend/configuration-lifecycle.mdc`.
+
+## Runtime settings (`SystemModule`)
+
+- MongoDB-backed `SystemConfig` — editable while the app runs.
+- `SystemConfigService` — read/update via admin API; worker `0` initializes defaults.
+- **Use for:** operational toggles and values admins change without redeploying.
+
+## Decision rule
+
+| Question | Layer |
+|----------|-------|
+| Changes only between deployments? | `backend/config/*.ts` |
+| Admins change it from the UI? | `SystemModule` / MongoDB |
+| Per-request or per-user data? | Entity collections — not config |
+
+## Reference
+
+- Config model: `backend/config/model.ts`
+- Runtime: `backend/src/system/services/system-config.service.ts`

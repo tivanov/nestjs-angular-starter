@@ -1,0 +1,55 @@
+---
+description: MongoDB-backed scheduled tasks — no Bull/Redis queues
+globs:
+  - backend/src/tasks/**/*.ts
+  - backend/libs/contracts/src/enums/task-type.enum.ts
+alwaysApply: false
+---
+
+# Background Tasks
+
+**No Bull, Redis, or separate job queue.** Background work uses `@nestjs/schedule` + MongoDB `Task` documents via `TasksModule`.
+
+## Add a new task type
+
+1. **Enum** — add value to `TaskTypeEnum` in `@app/contracts` (kebab-case string).
+2. **Implementation** — class with static `run(task: Task, moduleRef: ModuleRef)` in `backend/src/tasks/implementations/`.
+3. **Registry** — register in `TaskImplementations.implementations`.
+4. **Seed (optional)** — add default row in `backend/src/tasks/definitions.ts`.
+
+## Implementation template
+
+```ts
+export class MyTask {
+  private static isRunning = false;
+
+  static async run(task: Task, moduleRef: ModuleRef) {
+    const log = moduleRef.get(TaskLogsService, { strict: false });
+    if (MyTask.isRunning) return;
+    MyTask.isRunning = true;
+    try {
+      const svc = moduleRef.get(SomeService, { strict: false });
+      await svc.doWork();
+      log.debug(task.type, `Finished ${task.name}`);
+    } catch (error) {
+      log.error(task.type, `Error in ${task.name}`, error);
+    } finally {
+      MyTask.isRunning = false;
+    }
+  }
+}
+```
+
+## Rules
+
+- Resolve dependencies via `ModuleRef.get()` — task runners are static, not injectable.
+- Log through `TaskLogsService` (`debug`, `error`).
+- Guard concurrent runs with a static `isRunning` flag when needed.
+- Bulk admin actions that queue work — mark entity state in the service; let the scheduled task process rows (see `bulk-async-operations.mdc`).
+- Runtime gated by `app.enableTasks` in config and `WORKER_NUMBER=0` in cluster mode.
+
+## Reference
+
+- Registry: `backend/src/tasks/implementations/task-implementations.ts`
+- Example: `backend/src/tasks/implementations/clean-alerts.task.ts`
+- Runtime: `backend/src/tasks/services/tasks-runtime.service.ts`

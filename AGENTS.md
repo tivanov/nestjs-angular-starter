@@ -28,7 +28,7 @@ Follow domain Cursor rules for *how* to build:
 - [.cursor/rules/monorepo-tech-patterns.mdc](.cursor/rules/monorepo-tech-patterns.mdc)
 - [.cursor/rules/project-catalog.mdc](.cursor/rules/project-catalog.mdc)
 - Backend: [.cursor/rules/nestjs.mdc](.cursor/rules/nestjs.mdc), [.cursor/rules/backend/](.cursor/rules/backend/)
-- Frontend: [.cursor/rules/angular-20.mdc](.cursor/rules/angular-20.mdc), [.cursor/rules/frontend/admin-ui-entity-features.mdc](.cursor/rules/frontend/admin-ui-entity-features.mdc)
+- Frontend: [.cursor/rules/angular-20.mdc](.cursor/rules/angular-20.mdc), [.cursor/rules/frontend/](.cursor/rules/frontend/)
 
 ### 3. After building (required)
 

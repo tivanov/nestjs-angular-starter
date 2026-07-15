@@ -1,0 +1,43 @@
+---
+description: Public-facing user-ui app — Tailwind shell, layout, common-ui integration
+globs: frontend/projects/user-ui/**/*
+alwaysApply: false
+---
+
+# user-ui Application
+
+Public-facing Angular app at `frontend/projects/user-ui/` (port **5200**). Minimal starter — grow here, not in `admin-ui`.
+
+## Stack
+
+- **Styling:** Tailwind CSS 4 — not Angular Material.
+- **Layout:** `MainLayoutComponent` in `shared/layout/main/` wraps page routes.
+- **Components:** feature pages under `pages/`; shared widgets under `shared/components/`.
+
+## Structure
+
+```
+user-ui/src/app/
+  pages/           # Route-level feature components
+  shared/          # Layout, spinner, etc.
+  core/            # Environment factory
+  app.routes.ts    # Top-level routes
+```
+
+## Rules
+
+- Keep admin CRUD and Material tables in **admin-ui** — do not copy admin list/edit patterns here.
+- When adding API calls: create HTTP services in **common-ui/services/** (extend `BaseApiService`), inject `EnvironmentService.apiUrl`.
+- Reuse **common-ui** auth (`AuthSignal`, interceptors, guards) when login is needed — do not fork session storage.
+- Follow **angular-20.mdc**: standalone components, signals, `OnPush`, external `.html`/`.css` files.
+- Lazy-load feature routes as the app grows.
+- Environment via `window.__env` — see `.cursor/rules/frontend/environment.mdc`.
+
+## Dev
+
+```bash
+# From frontend/
+ng serve user-ui
+```
+
+API base: `http://localhost:8200/v1` (dev `env.js`).

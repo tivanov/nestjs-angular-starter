@@ -1,0 +1,63 @@
+---
+description: Model-to-DTO mapping with BaseMapper static classes
+globs: backend/src/**/mappers/**/*.ts
+alwaysApply: false
+---
+
+# Backend Mappers
+
+Controllers return contract DTOs — never raw Mongoose documents or lean objects without mapping.
+
+## Pattern
+
+- Static class extending `BaseMapper` (e.g. `UserMappers`).
+- `toDto(source)` — single document or ObjectId (IdName fallback via `BaseMapper.objectIdToString`).
+- `toDtos(source)` — array mapping.
+- `toDtosPaged(source: PaginateResult<T>)` — `PagedListDto<T>` for list endpoints.
+
+```ts
+export class UserMappers extends BaseMapper {
+  static toDtosPaged(source: PaginateResult<User>): PagedListDto<UserDto> {
+    return {
+      docs: UserMappers.toDtos(source.docs) as UserDto[],
+      totalDocs: source.totalDocs,
+      limit: source.limit,
+      page: source.page,
+      totalPages: source.totalPages,
+    };
+  }
+
+  static toDto(source: User | Types.ObjectId): UserDto | string {
+    if (!this.isValidDocument(source)) {
+      return BaseMapper.objectIdToString(source);
+    }
+    const user = source as User;
+    return { id: user._id.toHexString(), /* ... */ };
+  }
+}
+```
+
+## Controller usage
+
+```ts
+@Get()
+list(@Query() query: GetUsersQuery) {
+  return UserMappers.toDtosPaged(await this.usersService.get(query));
+}
+
+@Get(':id')
+get(@Param('id') id: string) {
+  return UserMappers.toDto(await this.usersService.getById(id));
+}
+```
+
+## Rules
+
+- Dates → ISO strings in DTOs (`toISOString()`).
+- `_id` → `id` as hex string.
+- Nested entities — map sub-documents or use `IdNameDto` helpers from `BaseMapper`.
+- No mapping logic in controllers or services — keep in `mappers/`.
+
+## Reference
+
+`backend/src/users/mappers/user.mappers.ts`

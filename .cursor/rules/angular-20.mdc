@@ -49,7 +49,8 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
 
 ## Components
 
-- **New components — required defaults:** Every new component MUST use `ChangeDetectionStrategy.OnPush` and signals for reactive state. Use `input()` / `output()` for component API, `signal()` / `computed()` for local and derived state, and avoid class fields mutated outside the signal API.
+- **New components — required defaults:** Every new component MUST use `ChangeDetectionStrategy.OnPush` and signals for reactive state to ensure zoneless change detection works correctly. Use `input()` / `output()` for component API, `signal()` / `computed()` for local and derived state, and avoid class fields mutated outside the signal API.
+- **Exception policy:** If a component cannot use signals or `OnPush` due to a hard technical constraint, keep the exception minimal and add a short code comment explaining why.
   - **Bad:**
     ```typescript
     @Component({
@@ -92,8 +93,27 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
     ```
 
 - **`computed()` for Derived State:** Use the `computed()` function from `@angular/core` for derived state based on signals.
-- **`ChangeDetectionStrategy.OnPush`:** Required on all new components. Set `changeDetection: ChangeDetectionStrategy.OnPush` in the `@Component` decorator to reduce unnecessary change detection cycles.
-- **Inline Templates:** Prefer inline templates (template: `...`) for small components to keep related code together. For larger templates, use external HTML files.
+- **`ChangeDetectionStrategy.OnPush`:** Required on all new components to maintain zoneless compatibility and reduce unnecessary change detection cycles.
+- **External files (required for new components):** Every new component MUST use separate `.ts`, `.html`, and `.css` files. Do not use inline `template:` or `styles:` in the `@Component` decorator.
+  - **Bad:**
+    ```typescript
+    @Component({
+      selector: "app-my-widget",
+      template: `<p>{{ title() }}</p>`,
+      styles: [`:host { display: block; }`],
+    })
+    export class MyWidgetComponent {}
+    ```
+  - **Good:**
+    ```typescript
+    @Component({
+      selector: "app-my-widget",
+      templateUrl: "./my-widget.component.html",
+      styleUrl: "./my-widget.component.css",
+    })
+    export class MyWidgetComponent {}
+    ```
+  - Colocate files in the same folder: `my-widget.component.ts`, `my-widget.component.html`, `my-widget.component.css`.
 - **Reactive Forms:** Prefer Reactive forms over Template-driven forms for complex forms, validation, and dynamic controls due to their explicit, immutable, and synchronous nature.
 - **No `ngClass` / `NgClass`:** Do not use the `ngClass` directive. Instead, use native `class` bindings for conditional styling.
   - **Bad:**

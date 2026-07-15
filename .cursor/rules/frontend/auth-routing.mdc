@@ -1,0 +1,50 @@
+---
+description: AuthSignal, interceptors, guards, and role-based routing
+globs:
+  - frontend/projects/admin-ui/**/*.ts
+  - frontend/projects/user-ui/**/*.ts
+  - frontend/projects/common-ui/auth/**/*.ts
+alwaysApply: false
+---
+
+# Frontend Auth & Routing
+
+## Session (`common-ui`)
+
+| Piece | Path | Role |
+|-------|------|------|
+| `AuthSignal` | `auth/auth.signal.ts` | Readonly signal + localStorage session |
+| `logIn` / `logOut` / `updateAuth` | same file | Mutate session |
+| `authInterceptor` | `auth/http-auth.interceptor.ts` | Bearer token; refresh on 401 |
+| `isLoggedIn` | `auth/is-logged-in.guard.ts` | Redirect unauthenticated users |
+| `hasRole` | `auth/has-role.guard.ts` | Check `route.data.roles` |
+
+Register `authInterceptor` in each app's `app.config.ts`.
+
+## Admin UI route pattern
+
+Parent feature routes in `app.routes.ts`:
+
+```ts
+{
+  path: 'users',
+  component: LayoutComponent,
+  data: { roles: [UserRoleEnum.Admin] },
+  canActivate: [isLoggedIn, hasRole],
+  canActivateChild: [isLoggedIn, hasRole],
+  loadChildren: () => import('./features/users/users.routes').then(m => m.routes),
+}
+```
+
+Child routes repeat `data.roles` and `title` per screen. Public auth routes under `/auth` — no guards.
+
+## Rules
+
+- Role values from `UserRoleEnum` in `@app/contracts` — not string literals.
+- After login, redirect by role (see `LoginComponent` — default `/dashboard`).
+- Use `AuthSignal()` in components for current user; extend `BaseComponent` for shared auth helpers.
+- Do not add a second token store or HTTP interceptor — extend the existing auth layer.
+
+## user-ui
+
+Minimal shell today — when adding auth, reuse `common-ui` guards/interceptor; do not fork auth state.

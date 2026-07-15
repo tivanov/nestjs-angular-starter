@@ -1,0 +1,37 @@
+---
+description: Domain HTTP exceptions with shared ErrorCode constants
+globs: backend/src/**/*.ts
+alwaysApply: false
+---
+
+# Backend Error Handling
+
+## Use project exceptions
+
+Throw subclasses in `backend/src/shared/exceptions/` with a code from `ErrorCode` (`@app/contracts`):
+
+| Exception | HTTP status | When |
+|-----------|-------------|------|
+| `AppBadRequestException` | 400 | Invalid input, business rule violation |
+| `AppUnauthorizedException` | 401 | Missing/invalid auth |
+| `AppForbiddenException` | 403 | Authenticated but not allowed |
+| `AppNotFoundException` | 404 | Entity not found |
+
+```ts
+throw new AppBadRequestException(ErrorCode.TIMEOUT_REQUIRED);
+throw new AppNotFoundException(ErrorCode.USER_NOT_FOUND);
+```
+
+Response shape: `{ code: string, message?: string }` — matches `BaseComponent.extractErrorMessage()` on the frontend.
+
+## Rules
+
+- **Do not** throw raw `HttpException`, `BadRequestException`, or plain `Error` at API boundaries.
+- Add new codes to `backend/libs/contracts/src/codes/error-codes.ts` when the frontend must branch on them.
+- Re-throw or wrap only to add context; unexpected errors bubble to the global handler.
+- External HTTP failures in outbound clients — use `BaseApiService` (backend) which logs and raises rate-limit alerts.
+
+## Reference
+
+- Exceptions: `backend/src/shared/exceptions/`
+- Usage: `backend/src/tasks/services/tasks.service.ts`

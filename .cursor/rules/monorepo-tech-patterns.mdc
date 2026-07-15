@@ -29,6 +29,28 @@ Use this as the default project context before implementing features or refactor
 - Do not duplicate shared enums/constants in frontend apps when they exist in contracts.
 - Keep admin-specific UI logic in `admin-ui`; move reusable logic to `common-ui`.
 
+## Enum Conventions
+
+- Put cross-layer enums in `backend/libs/contracts/src/enums/` as string enums.
+- Enum type names: PascalCase with `Enum` suffix (e.g. `TaskTypeEnum`).
+- Enum member names: PascalCase (e.g. `RunScript`).
+- **Enum string values must be kebab-case** — lowercase words separated by hyphens. Single-word values use lowercase (e.g. `'admin'`).
+  - **Bad:**
+    ```typescript
+    export enum TaskTypeEnum {
+      RunScript = 'runScript',
+      CleanAlerts = 'clean_alerts',
+    }
+    ```
+  - **Good:**
+    ```typescript
+    export enum TaskTypeEnum {
+      RunScript = 'run-script',
+      CleanAlerts = 'clean-alerts',
+    }
+    ```
+- App-local enums (not in contracts) follow the same kebab-case value rule.
+
 ## Implementation Priorities
 
 - Follow existing project conventions from starter code; extend patterns instead of introducing parallel architectures.

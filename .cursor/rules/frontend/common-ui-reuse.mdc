@@ -1,0 +1,44 @@
+---
+description: Reuse common-ui base classes, pipes, dialogs before building new infra
+globs: frontend/projects/**/*.ts
+alwaysApply: false
+---
+
+# common-ui Reuse
+
+Shared frontend code lives in `frontend/projects/common-ui/`. **Search here before creating parallel utilities.**
+
+## Base classes
+
+| Class | Extend for |
+|-------|------------|
+| `BaseComponent` | All components — auth signal, `extractErrorMessage()`, date formats, mobile breakpoint |
+| `BaseApiService` | HTTP API clients — `HttpClient`, `EnvironmentService`, `queryToParams()` |
+| `BaseListComponent<T>` | Admin list pages — paging, filters, selection, responsive columns |
+| `BaseEditComponent<T>` | Admin create/edit/detail — route param load, form lifecycle |
+
+Admin components extend bases; HTTP services go in `common-ui/services/`, not inside `admin-ui`.
+
+## Before building new…
+
+| Need | Use |
+|------|-----|
+| Modal/dialog | `DialogService` + `DialogRef` in `common-ui/dialog/` |
+| Enum label in template | `StatusEnumPipe` or contract enum + pipe |
+| Relative time | `TimeAgoPipe` |
+| JSON display | `PrettyJsonPipe` |
+| String/date/number helpers | `common-ui/utils/` |
+| DTOs, enums, queries | `@app/contracts` |
+
+## Errors in UI
+
+Use `this.extractErrorMessage(error)` from `BaseComponent` in snackbars — matches backend `{ code, message }` shape.
+
+## Import style
+
+Relative imports across projects, e.g. `../../../common-ui/services/users.service` — `common-ui` is not a separate npm package.
+
+## Rules
+
+- Reusable logic → `common-ui`; admin-only UI → `admin-ui/features/`.
+- Do not duplicate contract types or enum maps in app code.

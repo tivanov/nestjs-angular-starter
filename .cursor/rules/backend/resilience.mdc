@@ -1,0 +1,34 @@
+---
+description: Mutex, transactions, and circuit breakers from UtilsModule
+globs: backend/src/**/*.ts
+alwaysApply: false
+---
+
+# Backend Resilience Services
+
+Import from `UtilsModule` — do not build parallel locking, transaction, or circuit-breaker logic.
+
+| Service | Method | Use when |
+|---------|--------|----------|
+| `MutexService` | `execWithMutex(resourceId, fn)` | Only one worker/process should run a critical section (e.g. per-entity pipeline step) |
+| `DbTransactionsService` | `exec(fn)` | Multiple MongoDB writes must commit or roll back together |
+| `CircuitBreakersService` | `executeWithCircuitBreaker(name, fn)` | External HTTP/API calls that should trip open after repeated failures |
+
+## Rules
+
+- **Mutex** — pass a stable `resourceId` (entity ID, job key). Callback runs exclusively for that key.
+- **Transactions** — pass async function receiving a session; keep scope small.
+- **Circuit breaker** — use a consistent breaker name per integration; admin can reset via `CircuitBreakersController`.
+- Outbound HTTP — extend `BaseApiService` (backend) for Axios logging and rate-limit `ErrorCode` handling.
+
+## Do not build
+
+- Custom lock collections or in-memory mutexes
+- Manual MongoDB session plumbing
+- Ad-hoc retry/circuit logic per call site
+
+## Reference
+
+- `backend/src/utils/services/mutex.service.ts`
+- `backend/src/utils/services/db-transactions.service.ts`
+- `backend/src/utils/services/circuit-breakers.service.ts`

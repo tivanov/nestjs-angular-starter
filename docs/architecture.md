@@ -157,14 +157,30 @@ These Cursor rules cover *how* to implement; the docs in this folder cover *what
 | Rule | Path |
 |------|------|
 | Monorepo patterns | `.cursor/rules/monorepo-tech-patterns.mdc` |
+| Feature catalog workflow | `.cursor/rules/project-catalog.mdc` |
 | NestJS coding | `.cursor/rules/nestjs.mdc` |
+| Contracts library | `.cursor/rules/backend/contracts.mdc` |
 | Entity module layout | `.cursor/rules/backend/module-entity-encapsulation.mdc` |
 | Database / paging | `.cursor/rules/backend/database-model.mdc` |
+| Mappers | `.cursor/rules/backend/mappers.mdc` |
+| Auth & authorization | `.cursor/rules/backend/auth-authorization.mdc` |
+| Error handling | `.cursor/rules/backend/error-handling.mdc` |
+| Background tasks | `.cursor/rules/backend/background-tasks.mdc` |
+| Bulk async operations | `.cursor/rules/backend/bulk-async-operations.mdc` |
+| Resilience (mutex, transactions, circuit breakers) | `.cursor/rules/backend/resilience.mdc` |
 | Config lifecycle | `.cursor/rules/backend/configuration-lifecycle.mdc` |
-| Admin CRUD template | `.cursor/rules/frontend/admin-ui-entity-features.mdc` |
+| Runtime vs deployment settings | `.cursor/rules/backend/runtime-settings.mdc` |
+| API conventions | `.cursor/rules/backend/api-conventions.mdc` |
+| Backend testing | `.cursor/rules/backend/testing.mdc` |
 | Angular standards | `.cursor/rules/angular-20.mdc` |
-| Feature catalog workflow | `.cursor/rules/project-catalog.mdc` |
+| Admin CRUD template | `.cursor/rules/frontend/admin-ui-entity-features.mdc` |
+| Admin UI core components | `.cursor/rules/frontend/admin-ui-core-components.mdc` |
+| Admin UI styling | `.cursor/rules/frontend/admin-ui-styling.mdc` |
+| common-ui reuse | `.cursor/rules/frontend/common-ui-reuse.mdc` |
+| Auth & routing | `.cursor/rules/frontend/auth-routing.mdc` |
+| Environment config | `.cursor/rules/frontend/environment.mdc` |
+| user-ui app | `.cursor/rules/frontend/user-ui.mdc` |
 
 ## Last updated
 
-2026-06-15
+2026-06-22

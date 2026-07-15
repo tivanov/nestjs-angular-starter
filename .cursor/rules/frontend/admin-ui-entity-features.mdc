@@ -22,7 +22,8 @@ The Nest helper `backend/src/shared/base/base-api.service.ts` is backend-only; t
 
 - Add a **list component** with filters and table actions under `frontend/projects/admin-ui/src/app/features/<feature>/`. Table actions should include at minimum a view action that routes to a view/edit component.
 - Extend **`BaseListComponent<T>`** from `frontend/projects/common-ui/base/base-list.component.ts` — shared paging, filters, selection, responsive columns pattern.
-- For entities that can be included as IdName or DTO, look for display-cell components that can check the type of data (ID, DTO or IdNameDto) and show it appropriately. If no such component exists, create new one.
+- For related-entity columns (ID vs `IdNameDto` vs full DTO), add a small display component under `admin-ui/src/app/core/components/` before inlining template logic.
+- On view/detail screens use `app-text` for read-only fields; use `app-card` instead of `mat-card` — see `.cursor/rules/frontend/admin-ui-core-components.mdc`.
 
 ## Create / view / edit (`admin-ui`)
 
@@ -46,4 +47,4 @@ The Nest helper `backend/src/shared/base/base-api.service.ts` is backend-only; t
 | List UI        | `frontend/projects/admin-ui/src/app/features/users/users-list/users-list.component.ts` |
 | Edit/create UI | `frontend/projects/admin-ui/src/app/features/users/user/user.component.ts`             |
 | Routes         | `frontend/projects/admin-ui/src/app/features/users/users.routes.ts`                    |
-| Display Cell   | `frontend/projects/admin-ui/src/app/core/components/legal-publication-display-cell     |
+| Core widgets   | `frontend/projects/admin-ui/src/app/core/components/` (spinner, card, validation-error) |

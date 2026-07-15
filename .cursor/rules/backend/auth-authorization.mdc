@@ -1,0 +1,48 @@
+---
+description: JWT auth, role guards, and admin vs self-service endpoints
+globs: backend/src/**/*.ts
+alwaysApply: false
+---
+
+# Auth & Authorization
+
+## Guards and decorators
+
+| Piece | Path | Use |
+|-------|------|-----|
+| `JwtGuard` | `auth/guards/jwt.guard.ts` | Require valid JWT |
+| `RolesGuard` | `auth/guards/roles-guard.ts` | Enforce `@Roles()` metadata |
+| `@Roles(...)` | `auth/decorators/roles.decorator.ts` | Allowed `UserRoleEnum` values |
+| `@LoggedInUser()` | `shared/decorators/logged-in-user.decorator.ts` | Inject authenticated `User` |
+
+## Endpoint patterns
+
+**Admin CRUD** — class or method level:
+
+```ts
+@UseGuards(JwtGuard, RolesGuard)
+@Roles(UserRoleEnum.Admin)
+```
+
+**Self-service (`/me`)** — authenticated user only, no role check:
+
+```ts
+@Controller('me')
+@UseGuards(JwtGuard)
+export class MeController {
+  @Get()
+  get(@LoggedInUser() user: User) { ... }
+}
+```
+
+## Rules
+
+- Admin list/create/update/delete on entity controllers (`users`, `tasks`, …) — `JwtGuard` + `RolesGuard` + `@Roles`.
+- Current-user profile and settings — `MeController` or `me`-scoped routes; use `@LoggedInUser()`, not URL `:id` from client input alone.
+- Role values from `UserRoleEnum` in `@app/contracts` only.
+- Public routes (login, contact form) — no JWT guard; still validate body with contract commands.
+
+## Reference
+
+- Admin: `backend/src/users/controllers/users.controller.ts`
+- Self: `backend/src/me/controllers/me.controller.ts`

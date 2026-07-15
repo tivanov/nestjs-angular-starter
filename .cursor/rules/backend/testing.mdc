@@ -1,0 +1,43 @@
+---
+description: Backend Jest unit and e2e test conventions
+globs:
+  - backend/**/*.spec.ts
+  - backend/test/**/*.ts
+alwaysApply: false
+---
+
+# Backend Testing
+
+Full guide: `docs/testing.md`. Summary for agents:
+
+## Pyramid
+
+| Type | File | Location |
+|------|------|----------|
+| Unit | `*.spec.ts` | Co-located next to source |
+| E2E | `*.e2e-spec.ts` | `backend/test/` |
+
+Run: `npm test` (repo root) or `cd backend && npm run test:e2e` (needs MongoDB).
+
+## Conventions
+
+- Arrange → Act → Assert; one behavior per `it()`.
+- Variables: `inputX`, `mockX`, `actualX`, `expectedX`.
+- Assert **service behavior** (filters, exceptions, return shapes) — not that Mongoose works.
+- **No** `admin/test` smoke endpoints on controllers.
+
+## Unit tests (services)
+
+Mock Mongoose model via `getModelToken(Entity.name)`; mock sibling services; use `createMockConfigService()` from `backend/test/support/mocks/config.mock.ts`.
+
+## E2E tests
+
+Use helpers in `backend/test/support/`:
+
+- `createTestApp` / `closeTestApp` — bootstrap with versioning + `ValidationPipe`
+- `clearDatabase` — between tests
+- `seedAdminUser`, `loginAsAdmin` — protected routes
+
+## When to add tests
+
+Add or extend tests when touching a module — prioritize changed behavior over blanket coverage.

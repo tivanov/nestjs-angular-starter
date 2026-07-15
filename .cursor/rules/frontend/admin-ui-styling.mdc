@@ -1,0 +1,67 @@
+---
+description: Angular Material patterns for admin-ui list and edit screens
+globs: frontend/projects/admin-ui/**/*
+alwaysApply: false
+---
+
+# admin-ui Styling & UX
+
+Admin dashboard uses **Angular Material** for components and **Tailwind CSS** for layout and styling. Do not introduce a second component library for admin screens.
+
+## List pages (`BaseListComponent`)
+
+- `MatTable` + `MatPaginator` + `MatSort` for data grids.
+- Filter form: `ReactiveFormsModule` + `MatFormField` / `MatInput` / `MatSelect`.
+- Responsive columns: set `defaultColumns` and `mobileColumns` in `setColumns()`.
+- Loading: `SpinnerComponent` from `core/components/spinner/`.
+- Row actions: `MatButton` + `MatIcon` + `routerLink` to detail/edit routes.
+
+## Edit pages (`BaseEditComponent`)
+
+- Reactive form built in `buildForm()`; load entity in `load(id)`.
+- Validation errors: `ValidationErrorComponent` from `core/components/validation-error/`.
+- Section layout: `app-card`, `app-text`, `app-section-divider` — see `.cursor/rules/frontend/admin-ui-core-components.mdc`.
+
+## Feedback
+
+- Success/error: `MatSnackBar` — use `extractErrorMessage(error)` for API failures.
+- Confirm destructive actions: `MatDialog` or `DialogService` from common-ui.
+
+## Styling — Tailwind first
+
+**Default to Tailwind utility classes in templates.** The project already loads Tailwind 4 in `styles.scss`; use it for layout, spacing, typography, colors, and responsive behavior.
+
+```html
+<!-- Good: Tailwind in template -->
+<div class="flex justify-between items-center gap-4 pb-4">
+  <mat-form-field class="w-full md:w-64">
+```
+
+### Prefer Tailwind for
+
+- Flex/grid layout, spacing, sizing, alignment
+- Responsive breakpoints (`md:`, `lg:`, …)
+- Conditional classes via `[class.xxx]` bindings (see angular-20.mdc)
+- Simple one-off visual tweaks on wrappers around Material components
+
+### Use component `.scss` only when necessary
+
+Reach for a co-located `.scss` file **only** when Tailwind cannot solve it cleanly:
+
+- Overriding Material component internals (`::ng-deep`, host-context) where utilities do not apply
+- Global theme tokens in `styles.scss` (Material palette, elevation)
+- Complex animations, pseudo-elements, or selectors Tailwind does not express well
+- Shared custom tokens reused across many components (e.g. `.bg-card`)
+
+If you add `.scss`, keep it minimal and leave a short comment explaining why Tailwind was insufficient. Prefer an empty or omitted `styleUrl` when all styling lives in the template.
+
+### Other rules
+
+- Do not use inline `styles:` in `@Component` — use template classes or `.scss`.
+- Use native `[class.active]` bindings — no `ngClass` / `ngStyle` (see angular-20.mdc).
+- Register new Font Awesome icons in `AppComponent` FaIconLibrary when adding menu icons.
+
+## Shell
+
+- Side navigation: register features in `layout/side-menu/side-menu.service.ts`.
+- Page title from route `data.title`.

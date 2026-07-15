@@ -1,0 +1,84 @@
+---
+description: Use admin-ui core components — app-card, app-text, spinner, section-divider
+globs: frontend/projects/admin-ui/**/*
+alwaysApply: false
+---
+
+# admin-ui Core Components
+
+Reusable UI lives in `frontend/projects/admin-ui/src/app/core/components/`. **Use these before `mat-card`, raw `<p>`/`<span>`, or new wrapper components.**
+
+## `app-card` — not `mat-card`
+
+**Path:** `core/components/card/card.component.ts`  
+**Selector:** `app-card`
+
+Grouped content panels with optional collapsible header. Project-standard card — do **not** use `MatCardModule` / `<mat-card>`.
+
+```html
+<app-card titleText="User Info">
+  <div class="flex flex-row w-full flex-wrap gap-4">
+    <!-- content via ng-content -->
+  </div>
+</app-card>
+```
+
+| Input | Default | Purpose |
+|-------|---------|---------|
+| `titleText` | — | Header label; omit for headerless card |
+| `collapsible` | `true` | Click header to collapse body |
+
+Import `CardComponent` in the parent `imports` array.
+
+## `app-text` — read-only fields
+
+**Path:** `core/components/text/text.component.ts`  
+**Selector:** `app-text`  
+**Class:** `AppTextComponent`
+
+Label + formatted value for **display-only** data. Use on detail/view screens and read-only sections — not for editable inputs (`mat-form-field` stays for forms).
+
+```html
+<app-text
+  class="w-full lg:px-2 lg:w-1/4"
+  label="Email"
+  [value]="entity.email" />
+
+<app-text
+  label="Created"
+  type="datetime"
+  [value]="entity.createdAt" />
+
+<app-text
+  label="Status"
+  type="enum"
+  [value]="entity.status" />
+```
+
+| Input | Purpose |
+|-------|---------|
+| `label` | Field label above value |
+| `value` | Raw value to format |
+| `type` | `date`, `datetime`, `number`, `small-number`, `currency`, `boolean`, `link`, `time-ago`, `enum`, `cardano-tx`, `cardano-address` |
+| `showCopy` | Copy-to-clipboard button |
+| `currency` | ISO code when `type="currency"` |
+| `link` | `routerLink` target when `type="link"` |
+
+Omit `type` for plain strings. Shows `N/A` when value is null/undefined.
+
+**Bad:** `<p>{{ entity.email }}</p>` or `<mat-label>Email</mat-label><span>…</span>` on a view screen.  
+**Good:** `<app-text label="Email" [value]="entity.email" />`
+
+## Other core components
+
+| Component | Selector | Use for |
+|-----------|----------|---------|
+| `SpinnerComponent` | `app-spinner` | Loading overlay |
+| `SectionDividerComponent` | `app-section-divider` | Titled subsection inside a card |
+| `ValidationErrorComponent` | `app-validation-error` | Form validation messages |
+
+## Reference screens
+
+- Card + text: `features/contact-requests/contact-request/`
+- Card + form (editable fields stay `mat-form-field`): `features/users/user/`
+- Card + typed text: `features/system-health/`

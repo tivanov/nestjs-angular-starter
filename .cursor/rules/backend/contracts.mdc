@@ -1,0 +1,41 @@
+---
+description: Shared contracts library — DTOs, commands, queries, enums, error codes
+globs: backend/libs/contracts/**/*.ts
+alwaysApply: false
+---
+
+# Contracts Library (`@app/contracts`)
+
+Cross-layer types live in `backend/libs/contracts/`. Backend and frontend both import via `@app/contracts`.
+
+## Layout
+
+| Folder | Type | Validation |
+|--------|------|------------|
+| `dto/` | `interface` extending `BaseEntityDto` | None (output shapes) |
+| `commands/` | `class` | `class-validator` decorators |
+| `queries/` | `class` extending `ShapeableQuery` | `class-validator` on filters |
+| `enums/` | string `enum` | kebab-case values |
+| `codes/` | `ErrorCode` constants | — |
+
+## Rules
+
+- **Contract-first:** add or change types here before backend implementation, then frontend usage.
+- List queries **must** extend `ShapeableQuery` — never a standalone paging DTO.
+- DTOs use `interface`, not `class`. Commands/queries use `class` for validation.
+- Shared enums only in `enums/` — do not duplicate in `backend/src` or frontend apps.
+- Enum: PascalCase type + `Enum` suffix; members PascalCase; values **kebab-case** (`'run-script'`).
+- Export new types from the folder's `index.ts` barrel.
+
+## Workflow
+
+1. Add enum/DTO/command/query + barrel export
+2. Implement backend model/service/controller/mapper
+3. Add or update `common-ui` HTTP service and admin-ui feature
+
+## Reference
+
+- Query: `backend/libs/contracts/src/queries/get-users.query.ts`
+- Command: `backend/libs/contracts/src/commands/create-user.command.ts`
+- DTO: `backend/libs/contracts/src/dto/user.dto.ts`
+- Errors: `backend/libs/contracts/src/codes/error-codes.ts`

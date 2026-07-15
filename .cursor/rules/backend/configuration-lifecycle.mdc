@@ -40,4 +40,5 @@ Use `backend/config/*.ts` for values that are stable at runtime and only change 
 - Add new settings to all three env files and keep keys aligned.
 - Extend `IConfig` before consuming new keys.
 - Access values through `ConfigService` / registered namespaces, not direct imports of env files.
-- never use env vars.
+- Do **not** read `process.env` in application code — add keys to `IConfig` and the env config files instead.
+- Runtime settings that change without redeploy belong in MongoDB (`SystemModule`), not here. See `.cursor/rules/backend/runtime-settings.mdc`.

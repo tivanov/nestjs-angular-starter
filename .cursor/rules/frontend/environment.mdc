@@ -1,0 +1,50 @@
+---
+description: window.__env runtime config and EnvironmentService
+globs:
+  - frontend/projects/**/environments/**/*
+  - frontend/projects/**/environment*.ts
+  - frontend/projects/common-ui/services/environment.service.ts
+alwaysApply: false
+---
+
+# Frontend Environment
+
+Runtime config is injected at build/deploy time — not hardcoded in TypeScript.
+
+## Mechanism
+
+Each app ships `environments/{dev,stage,production}/env.js` defining `window.__env`:
+
+```js
+window.__env.apiUrl = 'http://localhost:8200/v1';
+window.__env.environment = 'development';
+```
+
+`index.html` loads `env.js` before the app bundle. `EnvironmentService` reads these values at bootstrap.
+
+## Key fields
+
+| Field | Purpose |
+|-------|---------|
+| `apiUrl` | Backend base including `/v1` prefix |
+| `environment` | `development` / `stage` / `production` |
+| `enableDebug` | Console debug toggle |
+
+## Ports (local dev)
+
+| App | Port | Default apiUrl |
+|-----|------|----------------|
+| Backend | 8200 | — |
+| admin-ui | 5100 | `http://localhost:8200/v1` |
+| user-ui | 5200 | `http://localhost:8200/v1` |
+
+## Rules
+
+- HTTP services use `this.env.apiUrl` from `BaseApiService` — never literal `localhost` in service code.
+- Update all three `env.js` files when adding a new `window.__env` key.
+- CORS: backend `app.corsOrigins` must include deployed frontend URLs (see `backend/config/`).
+
+## Reference
+
+- Service: `frontend/projects/common-ui/services/environment.service.ts`
+- Factory: `frontend/projects/admin-ui/src/app/core/environment/environment-factory.service.ts`
