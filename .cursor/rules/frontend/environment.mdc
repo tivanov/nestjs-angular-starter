@@ -41,10 +41,10 @@ window.__env.environment = 'development';
 ## Rules
 
 - HTTP services use `this.env.apiUrl` from `BaseApiService` — never literal `localhost` in service code.
-- Update all three `env.js` files when adding a new `window.__env` key.
+- Update every app's `env.js` (admin-ui and user-ui, each with `dev` / `stage` / `production`) when adding a new `window.__env` key.
 - CORS: backend `app.corsOrigins` must include deployed frontend URLs (see `backend/config/`).
 
 ## Reference
 
 - Service: `frontend/projects/common-ui/services/environment.service.ts`
-- Factory: `frontend/projects/admin-ui/src/app/core/environment/environment-factory.service.ts`
+- Factories: `frontend/projects/admin-ui/src/app/core/environment/environment-factory.service.ts`, `frontend/projects/user-ui/src/app/core/environment/environment-factory.service.ts`

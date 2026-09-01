@@ -1,12 +1,12 @@
 ---
 description: This rule provides comprehensive best practices and coding standards for Angular development, focusing on modern TypeScript, standalone components, signals, and performance optimizations.
-globs: frontend/projects/**/*.ts,frontend/projects/**/*.css,frontend/projects/**/*.scss,frontend/projects/**/*.html
-alwaysApply: true
+globs: frontend/projects/**/*.ts,frontend/projects/**/*.scss,frontend/projects/**/*.html
+alwaysApply: false
 ---
 
 # Angular Best Practices
 
-This project adheres to modern Angular best practices, emphasizing maintainability, performance, accessibility, and scalability.
+This repo uses **Angular 21**. Follow these Angular 20+ practices (standalone, signals, `OnPush`, zoneless-friendly components).
 
 ## TypeScript Best Practices
 
@@ -94,7 +94,7 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
 
 - **`computed()` for Derived State:** Use the `computed()` function from `@angular/core` for derived state based on signals.
 - **`ChangeDetectionStrategy.OnPush`:** Required on all new components to maintain zoneless compatibility and reduce unnecessary change detection cycles.
-- **External files (required for new components):** Every new component MUST use separate `.ts`, `.html`, and `.css` files. Do not use inline `template:` or `styles:` in the `@Component` decorator.
+- **External files (required for new components):** Every new component MUST use separate `.ts` and `.html` files. Do not use inline `template:` or `styles:` in the `@Component` decorator. Component styles are **`.scss`** (not `.css`). Omit `styleUrl` when Tailwind in the template is enough — see `.cursor/rules/frontend/admin-ui-styling.mdc`.
   - **Bad:**
     ```typescript
     @Component({
@@ -109,11 +109,11 @@ This project adheres to modern Angular best practices, emphasizing maintainabili
     @Component({
       selector: "app-my-widget",
       templateUrl: "./my-widget.component.html",
-      styleUrl: "./my-widget.component.css",
+      styleUrl: "./my-widget.component.scss",
     })
     export class MyWidgetComponent {}
     ```
-  - Colocate files in the same folder: `my-widget.component.ts`, `my-widget.component.html`, `my-widget.component.css`.
+  - Colocate files in the same folder: `my-widget.component.ts`, `my-widget.component.html`, `my-widget.component.scss`.
 - **Reactive Forms:** Prefer Reactive forms over Template-driven forms for complex forms, validation, and dynamic controls due to their explicit, immutable, and synchronous nature.
 - **No `ngClass` / `NgClass`:** Do not use the `ngClass` directive. Instead, use native `class` bindings for conditional styling.
   - **Bad:**

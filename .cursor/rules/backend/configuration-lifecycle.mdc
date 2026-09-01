@@ -14,6 +14,7 @@ Use `backend/config/*.ts` for values that are stable at runtime and only change 
   - `backend/config/development.ts`
   - `backend/config/stage.ts`
   - `backend/config/production.ts`
+  - `backend/config/test.ts` (Jest / e2e)
 - Each file exports one typed `config` object (`IConfig`) with the same shape.
 
 ## How loading works
@@ -21,6 +22,7 @@ Use `backend/config/*.ts` for values that are stable at runtime and only change 
 - `backend/config/index.ts` selects the file by `NODE_ENV`:
   - `production` -> `production.ts`
   - `stage` -> `stage.ts`
+  - `test` -> `test.ts`
   - default -> `development.ts`
 - It registers each top-level section (`app`, `db`, `auth`, etc.) via `registerAs(...)` so values are available through NestJS `ConfigService`.
 
@@ -37,7 +39,7 @@ Use `backend/config/*.ts` for values that are stable at runtime and only change 
 
 ## Implementation guidance
 
-- Add new settings to all three env files and keep keys aligned.
+- Add new settings to all env files (`development`, `stage`, `production`, `test`) and keep keys aligned.
 - Extend `IConfig` before consuming new keys.
 - Access values through `ConfigService` / registered namespaces, not direct imports of env files.
 - Do **not** read `process.env` in application code — add keys to `IConfig` and the env config files instead.

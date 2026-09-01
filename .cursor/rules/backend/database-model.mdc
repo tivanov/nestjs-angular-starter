@@ -34,14 +34,14 @@ Every list/read path goes through **one** `get(query: GetXQuery)` that uses `mon
 | Need | Use |
 |------|-----|
 | List/filter/sort/paginate | `service.get(query)` with fields on `GetXQuery` |
-| One row by filters (e.g. “base law”) | `get({ lawKey, documentType, versionKind, sortBy, page: 1, limit: 1 })` → `docs[0]` |
+| One row by filters | `get({ role, page: 1, limit: 1 })` → `docs[0]` |
 | All rows matching filters (no paging) | `get({ ...filters })` without `page` — `getPaginationOptions` sets `pagination: false` |
 | Many rows by ID | `service.getByIdsLean(ids)` from `BaseService` |
-| Single row by ID | `service.getByIdLean(id)` |
+| Single row by ID | `service.getById(id)` or `getByIdLean(id)` |
 
-**Avoid** adding methods like `findAllByPublicationId`, `findAllByLawKey`, `findBaseLawPublication`, or `findByIds` on entity services — they fragment the query surface and bypass shared paging/sort/include behavior.
+**Avoid** adding methods like `findAllByRole`, `findByUserName`, or `findByIds` on entity services — they fragment the query surface and bypass shared paging/sort/include behavior.
 
-**Do** add narrow methods only when they encode real domain transitions or writes (e.g. `markForReparse`, `onParsed`, `deleteByPublicationId`), not read-only lookups.
+**Do** add narrow methods only when they encode real domain transitions or writes (e.g. `updatePassword`, `updateBasicData`), not read-only lookups.
 
 Standard `get()` shape:
 
@@ -60,7 +60,7 @@ async get(query: GetXQuery): Promise<PaginateResult<X>> {
 
 - `@Get()` accepts `@Query() query: GetXQuery`.
 - Return mapper paged DTO (`toDtosPaged(await service.get(query))`).
-- `@Get(':id')` uses `service.getById(id)` and mapper `toDto`.
+- `@Get(':id')` uses `service.getById(id)` or `getByIdLean(id)` and mapper `toDto`.
 - Keep auth/roles guards consistent with module conventions.
 
 ## 4) Contracts (library)
@@ -68,7 +68,7 @@ async get(query: GetXQuery): Promise<PaginateResult<X>> {
 Every entity list query **must**:
 
 1. **Extend `ShapeableQuery`** from [`backend/libs/contracts/src/queries/shapeable-query.ts`](backend/libs/contracts/src/queries/shapeable-query.ts) — never define a standalone query DTO without pagination/sort/include support.
-2. **Add entity-specific filters** on the subclass (e.g. `GetLegalPublicationsQuery extends ShapeableQuery`).
+2. **Add entity-specific filters** on the subclass (e.g. `GetUsersQuery extends ShapeableQuery`).
 3. **Be consumed by `service.get(query)`** which returns `PaginateResult<T>` via `paginate(..., this.getPaginationOptions(query))`.
 
 Inherited from `ShapeableQuery`: `page`, `limit`, `include`, `select`, `sortBy`, `sortDirection`.

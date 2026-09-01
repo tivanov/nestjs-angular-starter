@@ -1,14 +1,29 @@
 ---
-description: Domain HTTP exceptions with shared ErrorCode constants
+description: Domain HTTP exceptions with ErrorCode and optional message
 globs: backend/src/**/*.ts
 alwaysApply: false
 ---
 
 # Backend Error Handling
 
-## Use project exceptions
+Use the same pattern everywhere you throw an intentional failure — HTTP controllers, services, utilities, and outbound clients.
 
-Throw subclasses in `backend/src/shared/exceptions/` with a code from `ErrorCode` (`@app/contracts`):
+## Standard pattern
+
+1. **`ErrorCode`** from `@app/contracts` (`backend/libs/contracts/src/codes/error-codes.ts`) — stable identifier the frontend and logs can rely on.
+2. **`message`** (optional) — short human-readable detail when the code alone is not enough for UI or support.
+
+Throw subclasses in `backend/src/shared/exceptions/` — not raw `HttpException`, Nest built-ins, or plain `Error` at boundaries.
+
+Constructors are `(code, message?)`. Response shape is `{ code: string, message?: string }` — matches `BaseComponent.extractErrorMessage()` on the frontend (UI reads `code` first, then `message`).
+
+```ts
+throw new AppBadRequestException(ErrorCode.TIMEOUT_REQUIRED);
+throw new AppNotFoundException(ErrorCode.USER_NOT_FOUND);
+throw new AppBadRequestException(ErrorCode.MUTEX_LOCKED, 'Mutex locked');
+```
+
+## HTTP exceptions
 
 | Exception | HTTP status | When |
 |-----------|-------------|------|
@@ -16,22 +31,40 @@ Throw subclasses in `backend/src/shared/exceptions/` with a code from `ErrorCode
 | `AppUnauthorizedException` | 401 | Missing/invalid auth |
 | `AppForbiddenException` | 403 | Authenticated but not allowed |
 | `AppNotFoundException` | 404 | Entity not found |
+| `AppInternalServerErrorException` | 500 | Unexpected failure surfaced to client |
+| `AppServiceUnavailableException` | 503 | Dependency temporarily unavailable |
 
-```ts
-throw new AppBadRequestException(ErrorCode.TIMEOUT_REQUIRED);
-throw new AppNotFoundException(ErrorCode.USER_NOT_FOUND);
-```
+Pick the exception class from HTTP semantics. Always pass an `ErrorCode` — use the optional `message` for extra context, not a different exception type.
 
-Response shape: `{ code: string, message?: string }` — matches `BaseComponent.extractErrorMessage()` on the frontend.
+## When to add an `ErrorCode`
+
+Add a constant to `error-codes.ts` when:
+
+- The frontend must branch on the failure (show a specific message, redirect, disable a control).
+- The case is a distinct domain outcome operators need to search for in logs.
+
+Do **not** add a new code for one-off wording — pass a `message` on an existing code instead.
+
+## Beyond HTTP request handlers
+
+| Context | Pattern |
+|---------|---------|
+| **Services** (called from controllers) | Throw `App*` + `ErrorCode`; let Nest map to HTTP. Use `expectEntityExists(id, ErrorCode.X)` from `BaseService`. |
+| **Outbound HTTP** (`BaseApiService`) | Log and map external failures; raise `AppBadRequestException(ErrorCode.RATE_LIMIT_EXCEEDED)` when appropriate. |
+| **Background tasks** | Do not crash the scheduler — catch, log via `TaskLogsService` with structured `jsonData`. See `.cursor/rules/backend/background-tasks.mdc`. Use `App*` + `ErrorCode` only when task code calls shared services that throw domain errors. |
+| **Catch blocks** | Re-throw `App*` as-is. Wrap unexpected errors with the matching `App*` (usually `AppInternalServerErrorException`) and a useful `message`. Do not swallow. |
 
 ## Rules
 
 - **Do not** throw raw `HttpException`, `BadRequestException`, or plain `Error` at API boundaries.
-- Add new codes to `backend/libs/contracts/src/codes/error-codes.ts` when the frontend must branch on them.
-- Re-throw or wrap only to add context; unexpected errors bubble to the global handler.
-- External HTTP failures in outbound clients — use `BaseApiService` (backend) which logs and raises rate-limit alerts.
+- Every intentional failure uses an `ErrorCode` from `@app/contracts`.
+- Add optional `message` when the code alone is insufficient to diagnose or display the failure.
+- Unexpected errors bubble to the global handler unless you wrap them with `AppInternalServerErrorException`.
+- External HTTP failures — use `BaseApiService` (backend), which logs and raises rate-limit alerts.
 
 ## Reference
 
+- Codes: `backend/libs/contracts/src/codes/error-codes.ts`
 - Exceptions: `backend/src/shared/exceptions/`
-- Usage: `backend/src/tasks/services/tasks.service.ts`
+- Usage: `backend/src/tasks/services/tasks.service.ts`, `backend/src/utils/services/mutex.service.ts`
+- Task logging (non-HTTP): `.cursor/rules/backend/background-tasks.mdc`

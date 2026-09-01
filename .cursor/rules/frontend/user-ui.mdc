@@ -29,7 +29,7 @@ user-ui/src/app/
 - Keep admin CRUD and Material tables in **admin-ui** — do not copy admin list/edit patterns here.
 - When adding API calls: create HTTP services in **common-ui/services/** (extend `BaseApiService`), inject `EnvironmentService.apiUrl`.
 - Reuse **common-ui** auth (`AuthSignal`, interceptors, guards) when login is needed — do not fork session storage.
-- Follow **angular-20.mdc**: standalone components, signals, `OnPush`, external `.html`/`.css` files.
+- Follow **angular-20.mdc**: standalone components, signals, `OnPush`, external `.html` (and `.scss` when styles are needed).
 - Lazy-load feature routes as the app grows.
 - Environment via `window.__env` — see `.cursor/rules/frontend/environment.mdc`.
 

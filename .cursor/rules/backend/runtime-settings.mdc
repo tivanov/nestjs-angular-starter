@@ -10,7 +10,7 @@ alwaysApply: false
 
 ## Deployment config (`backend/config/`)
 
-- Files: `development.ts`, `stage.ts`, `production.ts` — same `IConfig` shape.
+- Files: `development.ts`, `stage.ts`, `production.ts`, `test.ts` — same `IConfig` shape.
 - Loaded via `registerAs` in `config/index.ts`; read through `ConfigService`.
 - **Use for:** ports, DB URI, JWT secrets/expiry, CORS origins, `enableTasks`, `uploadsDir`.
 - Changing these requires **restart** (or redeploy).

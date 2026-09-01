@@ -9,7 +9,7 @@ alwaysApply: false
 
 # Bulk async operations
 
-Use when admin list actions mark many rows for **background processing** — not synchronous pipeline runs.
+Use when admin list actions mark many rows for **background processing** — not a long-running loop inside the HTTP request.
 
 ## Backend
 

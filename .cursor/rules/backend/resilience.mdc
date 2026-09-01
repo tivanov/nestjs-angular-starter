@@ -10,7 +10,7 @@ Import from `UtilsModule` — do not build parallel locking, transaction, or cir
 
 | Service | Method | Use when |
 |---------|--------|----------|
-| `MutexService` | `execWithMutex(resourceId, fn)` | Only one worker/process should run a critical section (e.g. per-entity pipeline step) |
+| `MutexService` | `execWithMutex(resourceId, fn)` | Only one worker/process should run a critical section (e.g. per-entity exclusive work) |
 | `DbTransactionsService` | `exec(fn)` | Multiple MongoDB writes must commit or roll back together |
 | `CircuitBreakersService` | `executeWithCircuitBreaker(name, fn)` | External HTTP/API calls that should trip open after repeated failures |
 

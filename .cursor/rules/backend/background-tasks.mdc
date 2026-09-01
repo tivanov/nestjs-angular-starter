@@ -25,25 +25,96 @@ export class MyTask {
 
   static async run(task: Task, moduleRef: ModuleRef) {
     const log = moduleRef.get(TaskLogsService, { strict: false });
+    const taskId = task._id.toHexString();
     if (MyTask.isRunning) return;
     MyTask.isRunning = true;
     try {
       const svc = moduleRef.get(SomeService, { strict: false });
       await svc.doWork();
-      log.debug(task.type, `Finished ${task.name}`);
+      log.debug(task.type, `Finished ${task.name}`, undefined, taskId);
     } catch (error) {
-      log.error(task.type, `Error in ${task.name}`, error);
+      await log.error(
+        task.type,
+        `Error in ${task.name}`,
+        MyTask.toDebugPayload(error, { step: 'doWork' }),
+        taskId,
+      );
     } finally {
       MyTask.isRunning = false;
     }
   }
+
+  /** Serialize errors for TaskLog.jsonData — raw Error does not JSON.stringify well. */
+  private static toDebugPayload(error: unknown, context: Record<string, unknown> = {}) {
+    return {
+      ...context,
+      error:
+        error instanceof Error
+          ? { name: error.name, message: error.message, stack: error.stack }
+          : error,
+    };
+  }
 }
 ```
+
+## Error handling
+
+Tasks must **never crash the scheduler**. Uncaught exceptions in `run()` are caught by `TasksRuntimeService`, but implementations should handle errors themselves and keep running on the next tick.
+
+### Graceful handling
+
+- Wrap the whole `run()` body in `try/catch/finally` (see template). Always reset `isRunning` in `finally`.
+- **Do not rethrow** from task implementations — log and return so the task stays scheduled.
+- For batch/loop work, catch **per item** so one failure does not abort the rest:
+
+```ts
+for (const row of rows) {
+  try {
+    await svc.process(row._id.toHexString());
+  } catch (error) {
+    await log.error(
+      task.type,
+      `Failed to process row ${row._id}`,
+      MyTask.toDebugPayload(error, {
+        step: 'processRow',
+        rowId: row._id.toHexString(),
+      }),
+      taskId,
+    );
+  }
+}
+```
+
+- Recoverable cases (skip row, retry next run, use default) — handle inline; use `log.debug` or `log.info` when useful.
+- Unexpected or unrecoverable failures — persist via `log.error`.
+
+### TaskLog persistence
+
+Use `TaskLogsService.error()` (or `.log(TaskLogTypeEnum.Error, ...)`) so failures are stored in `TaskLog` (`backend/src/tasks/model/task-log.model.ts`):
+
+| Field | Use |
+|-------|-----|
+| `message` | Short human-readable summary (max 1000 chars) |
+| `jsonData` | JSON string of a **debug object** (max 15000 chars) — pass as the 3rd argument |
+| `task` | Link to the `Task` document — pass `task._id.toHexString()` as the 4th argument |
+
+The 3rd argument is serialized into `jsonData`. Do **not** pass a raw `Error` alone — it often becomes `{}`. Pass a plain object with context needed to debug later:
+
+```ts
+{
+  step: 'fetchExternalData',       // where in the task it failed
+  entityId: '...',                 // related document / external key
+  attempt: 2,                      // retry count, batch index, etc.
+  error: { name, message, stack }, // from toDebugPayload()
+}
+```
+
+Omit secrets and large payloads from `jsonData`. Truncate or summarize if the object may exceed 15000 chars.
 
 ## Rules
 
 - Resolve dependencies via `ModuleRef.get()` — task runners are static, not injectable.
-- Log through `TaskLogsService` (`debug`, `error`).
+- Log through `TaskLogsService` (`debug`, `info`, `error`) — not `Logger` alone for failures you need to inspect in admin.
 - Guard concurrent runs with a static `isRunning` flag when needed.
 - Bulk admin actions that queue work — mark entity state in the service; let the scheduled task process rows (see `bulk-async-operations.mdc`).
 - Runtime gated by `app.enableTasks` in config and `WORKER_NUMBER=0` in cluster mode.
@@ -53,3 +124,4 @@ export class MyTask {
 - Registry: `backend/src/tasks/implementations/task-implementations.ts`
 - Example: `backend/src/tasks/implementations/clean-alerts.task.ts`
 - Runtime: `backend/src/tasks/services/tasks-runtime.service.ts`
+- Task logs: `backend/src/tasks/services/task-logs.service.ts`, `backend/src/tasks/model/task-log.model.ts`

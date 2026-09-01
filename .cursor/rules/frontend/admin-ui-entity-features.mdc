@@ -3,7 +3,7 @@ description: Admin-ui CRUD/list pattern — HTTP services in common-ui, list/edi
 globs:
   - frontend/projects/admin-ui/**/*.ts
   - frontend/projects/common-ui/services/**/*.ts
-alwaysApply: true
+alwaysApply: false
 ---
 
 # Admin UI: list / filter / edit / delete entities
@@ -32,7 +32,7 @@ The Nest helper `backend/src/shared/base/base-api.service.ts` is backend-only; t
 
 ## Routing
 
-- Define routes in a dedicated file per entity or logical group, e.g. `frontend/projects/admin-ui/src/app/features/users/users.routes.ts` — list, create, `:id`, guards (`isLoggedIn`), **roles** and **title** in `data`.
+- Define routes in a dedicated file per entity or logical group, e.g. `frontend/projects/admin-ui/src/app/features/users/users.routes.ts` — list, create, `:id`, with **roles** and **title** in `data`. Parent feature entry in `app.routes.ts` owns `isLoggedIn` / `hasRole` (see `.cursor/rules/frontend/auth-routing.mdc`).
 
 ## Navigation
 
