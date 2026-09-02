@@ -1,7 +1,23 @@
-.bg-card {
-  background-color: var(--mat-sys-surface-container);
+// Grid-row collapse keeps ng-content mounted (forms keep state). Tailwind cannot
+// animate grid-template-rows between 1fr and 0fr.
+.card-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 200ms ease;
 }
 
-.bg-card-header {
-  background-color: var(--mat-sys-surface-container-high);
+.card-body-collapsed {
+  grid-template-rows: 0fr;
+  overflow: hidden;
+}
+
+.card-body-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-body {
+    transition: none;
+  }
 }

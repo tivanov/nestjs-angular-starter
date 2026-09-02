@@ -15,6 +15,8 @@ Reusable UI lives in `frontend/projects/admin-ui/src/app/core/components/`. **Us
 
 Grouped content panels with optional collapsible header. Project-standard card — do **not** use `MatCardModule` / `<mat-card>`.
 
+When `collapsible` is true (default), the header is a **button** (`aria-expanded`, keyboard). The body stays in the DOM when collapsed so nested forms keep state.
+
 ```html
 <app-card titleText="User Info">
   <div class="flex flex-row w-full flex-wrap gap-4">
@@ -26,7 +28,7 @@ Grouped content panels with optional collapsible header. Project-standard card �
 | Input | Default | Purpose |
 |-------|---------|---------|
 | `titleText` | — | Header label; omit for headerless card |
-| `collapsible` | `true` | Click header to collapse body |
+| `collapsible` | `true` | Header button toggles body visibility |
 
 Import `CardComponent` in the parent `imports` array.
 

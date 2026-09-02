@@ -1,23 +1,49 @@
-<div
-  class="my-2 w-full overflow-hidden rounded-xl border border-[color:var(--mat-sys-outline-variant)]">
+<section
+  class="w-full my-3 overflow-hidden rounded-[var(--mat-sys-corner-medium,12px)] bg-[var(--mat-sys-surface-container-low)] shadow-[var(--mat-sys-level1)] ring-1 ring-inset ring-[color-mix(in_srgb,var(--mat-sys-outline-variant)_40%,transparent)]">
   @if (this.titleText()) {
-    <div
-      class="bg-card-header p-4 w-full flex items-center justify-between gap-2"
-      [class.cursor-pointer]="this.collapsible()"
-      (click)="this.toggleCollapsed()">
-      <p class="text-lg font-medium">{{ this.titleText() }}</p>
-      @if (this.collapsible()) {
-        <mat-icon
-          class="transition-transform duration-200"
-          [class.rotate-180]="this.collapsed()">
-          expand_more
-        </mat-icon>
-      }
-    </div>
+    @if (this.collapsible()) {
+      <button
+        type="button"
+        class="group flex items-center justify-between gap-3 w-full px-5 py-3.5 text-left cursor-pointer bg-transparent border-0 hover:bg-[color-mix(in_srgb,var(--mat-sys-on-surface)_6%,transparent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--mat-sys-primary)]"
+        [attr.aria-expanded]="!this.collapsed()"
+        [attr.aria-controls]="this.panelId"
+        (click)="this.toggleCollapsed()">
+        <h2
+          [id]="this.titleId"
+          class="m-0 [font:var(--mat-sys-title-large)] text-[var(--mat-sys-on-surface)]">
+          {{ this.titleText() }}
+        </h2>
+        <span
+          class="inline-flex items-center justify-center size-8 shrink-0 rounded-full bg-[var(--mat-sys-surface-container-highest)] text-[var(--mat-sys-on-surface-variant)] transition-colors group-hover:bg-[var(--mat-sys-secondary-container)] group-hover:text-[var(--mat-sys-on-secondary-container)]">
+          <mat-icon
+            aria-hidden="true"
+            class="!w-5 !h-5 text-[20px] leading-none transition-transform duration-200"
+            [class.rotate-180]="!this.collapsed()">
+            expand_more
+          </mat-icon>
+        </span>
+      </button>
+    } @else {
+      <header class="flex items-center w-full px-5 py-3.5">
+        <h2
+          [id]="this.titleId"
+          class="m-0 [font:var(--mat-sys-title-large)] text-[var(--mat-sys-on-surface)]">
+          {{ this.titleText() }}
+        </h2>
+      </header>
+    }
   }
-  @if (!this.collapsible() || !this.collapsed()) {
-    <div class="bg-card flex flex-col w-full flex-wrap p-4">
-      <ng-content />
+  <div
+    [id]="this.panelId"
+    role="region"
+    [attr.aria-labelledby]="this.titleText() ? this.titleId : null"
+    class="card-body"
+    [class.card-body-collapsed]="this.collapsible() && this.collapsed()"
+    [inert]="this.collapsible() && this.collapsed()">
+    <div class="card-body-inner">
+      <div class="px-5 pb-5" [class.pt-1]="this.titleText()">
+        <ng-content />
+      </div>
     </div>
-  }
-</div>
+  </div>
+</section>
