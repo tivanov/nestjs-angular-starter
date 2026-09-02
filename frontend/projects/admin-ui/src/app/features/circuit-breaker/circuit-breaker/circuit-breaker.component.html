@@ -6,7 +6,7 @@
     <div class="flex flex-row w-full flex-wrap items-center">
       <button
         type="button"
-        mat-raised-button
+        matButton="filled"
         color="primary"
         (click)="this.resetCb()">
         Reset
@@ -14,7 +14,7 @@
       <button
         class="ml-4"
         type="button"
-        mat-raised-button
+        matButton="filled"
         color="primary"
         (click)="this.open()">
         Open
@@ -33,7 +33,7 @@
       </mat-form-field>
       <button
         type="button"
-        mat-raised-button
+        matButton="filled"
         color="primary"
         (click)="this.setNextAttemptTime()">
         Set
@@ -107,7 +107,7 @@
     <div class="w-full flex flex-row-reverse">
       <button
         type="button"
-        mat-button
+        matButton
         color="warn"
         class="ml-2 font-bold rounded"
         (click)="exit()">

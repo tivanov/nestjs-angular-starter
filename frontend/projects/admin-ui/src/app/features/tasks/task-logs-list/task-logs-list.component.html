@@ -37,14 +37,14 @@
     </mat-form-field>
     <button
       type="button"
-      mat-button
+      matButton
       class="ml-auto"
       (click)="this.filterForm.reset()">
       Clear
     </button>
     <button
       type="submit"
-      mat-raised-button
+      matButton="filled"
       color="primary"
       class="ml-2"
       (click)="load({ pageIndex: 0 })">
@@ -97,7 +97,7 @@
         <div class="flex justify-end">
           <button
             type="button"
-            mat-icon-button
+            matIconButton
             [routerLink]="['/tasks/logs', row.id]">
             <mat-icon>visibility</mat-icon>
           </button>

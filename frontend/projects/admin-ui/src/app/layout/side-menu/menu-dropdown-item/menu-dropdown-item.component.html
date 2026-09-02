@@ -1,6 +1,7 @@
 <button
+  type="button"
   (click)="this.item.expanded = !(this.item.expanded || false)"
-  class="p-4 flex hover:bg-gray-500 w-full md:min-w-60">
+  class="p-4 flex w-full md:min-w-60">
   <div class="flex flex-row items-center w-full">
     <fa-icon [icon]="item.icon" class="mr-2 w-8"></fa-icon>
     <span>{{ item.label }}</span>
@@ -15,7 +16,7 @@ child.type === MenuItemType.Link) {
 <app-menu-link-item
   [level]="this.level + 1"
   [item]="child"
-  [ngClass]="{ hidden: !this.item.expanded }"></app-menu-link-item>
+  [class.hidden]="!this.item.expanded"></app-menu-link-item>
 } @else if (child.type === MenuItemType.Divider) {
-<mat-divider [ngClass]="{ hidden: !this.item.expanded }"></mat-divider>
+<mat-divider [class.hidden]="!this.item.expanded"></mat-divider>
 } }

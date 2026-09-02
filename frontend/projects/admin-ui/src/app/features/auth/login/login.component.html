@@ -6,7 +6,7 @@
 <div
   class="flex w-full h-full justify-center items-center overflow-hidden text-white">
   <form
-    class="bg-neutral-800 p-8 rounded-lg shadow-md flex flex-col w-96 border"
+    class="bg-[var(--mat-sys-surface-container)] p-8 rounded-lg flex flex-col w-96 border border-[color:var(--mat-sys-outline-variant)]"
     [formGroup]="form">
     <div class="font-bold text-xl w-full text-center">Your Project Name</div>
     <div class="text-base w-full text-center">Control Center</div>
@@ -28,11 +28,11 @@
     </mat-form-field>
 
     <button
-      mat-raised-button
+      matButton="filled"
       color="primary"
       [disabled]="!form.valid"
       (click)="onSubmit()"
-      class="bg-blue-500 text-white">
+      >
       Login
     </button>
   </form>

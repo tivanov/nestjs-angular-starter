@@ -1,7 +1,7 @@
 <div class="w-full mb-4">
   <button
     type="button"
-    mat-raised-button
+    matButton="filled"
     color="primary"
     [routerLink]="'/tasks/create'">
     <mat-icon>add</mat-icon>
@@ -36,14 +36,14 @@
 
   <button
     type="button"
-    mat-button
+    matButton
     class="ml-auto"
     (click)="this.filterForm.reset()">
     Clear
   </button>
   <button
     type="button"
-    mat-raised-button
+    matButton="filled"
     color="primary"
     class="ml-2"
     (click)="load({ pageIndex: 0 })">
@@ -152,10 +152,10 @@
     <th *matHeaderCellDef mat-header-cell>Actions</th>
     <td *matCellDef="let row" mat-cell class="text-end">
       <div class="flex justify-end">
-        <button type="button" mat-icon-button [routerLink]="['/tasks', row.id]">
+        <button type="button" matIconButton [routerLink]="['/tasks', row.id]">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button type="button" mat-icon-button (click)="onDelete(row)">
+        <button type="button" matIconButton (click)="onDelete(row)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

@@ -1,3 +1,19 @@
-.active {
-  text-decoration: underline;
+a {
+  color: var(--mat-sys-on-surface-variant);
+  border-radius: var(--mat-sys-corner-full, 9999px);
+  margin-inline: 12px;
+  width: calc(100% - 24px);
+}
+
+a:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--mat-sys-on-surface) 8%,
+    transparent
+  );
+}
+
+a.active {
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
 }

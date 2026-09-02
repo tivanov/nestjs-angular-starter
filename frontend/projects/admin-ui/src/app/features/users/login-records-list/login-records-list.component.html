@@ -5,14 +5,14 @@
   </mat-form-field>
 
   <button
-    mat-button
+    matButton
     (click)="this.filterForm.reset()"
     class="ml-auto"
     type="button">
     Clear
   </button>
   <button
-    mat-raised-button
+    matButton="filled"
     class="ml-2"
     color="accent"
     (click)="this.load({ pageIndex: 0 })">

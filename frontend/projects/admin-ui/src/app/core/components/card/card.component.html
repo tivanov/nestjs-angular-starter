@@ -1,10 +1,9 @@
-<div class="my-2 w-full">
+<div
+  class="my-2 w-full overflow-hidden rounded-xl border border-[color:var(--mat-sys-outline-variant)]">
   @if (this.titleText()) {
     <div
-      class="bg-black p-4 w-full flex items-center justify-between gap-2"
+      class="bg-card-header p-4 w-full flex items-center justify-between gap-2"
       [class.cursor-pointer]="this.collapsible()"
-      [class.rounded-t-xl]="!this.collapsible() || !this.collapsed()"
-      [class.rounded-xl]="this.collapsible() && this.collapsed()"
       (click)="this.toggleCollapsed()">
       <p class="text-lg font-medium">{{ this.titleText() }}</p>
       @if (this.collapsible()) {
@@ -17,10 +16,7 @@
     </div>
   }
   @if (!this.collapsible() || !this.collapsed()) {
-    <div
-      class="bg-card flex flex-col w-full flex-wrap p-4"
-      [class.rounded-xl]="this.collapsible() && this.collapsed()"
-      [class.rounded-b-xl]="!this.collapsible() || !this.collapsed()">
+    <div class="bg-card flex flex-col w-full flex-wrap p-4">
       <ng-content />
     </div>
   }

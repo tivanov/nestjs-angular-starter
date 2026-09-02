@@ -14,7 +14,7 @@
             <mat-icon>info</mat-icon>
           }
           @if (alert.type === 'error') {
-            <mat-icon style="color: red"
+            <mat-icon class="text-[color:var(--mat-sys-error)]"
               >warning</mat-icon
               >
             }
@@ -35,10 +35,10 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
           <td mat-cell *matCellDef="let alert; let i = index">
             <div class="flex justify-end">
-              <button mat-icon-button (click)="this.view(alert)">
+              <button matIconButton (click)="this.view(alert)">
                 <mat-icon>visibility</mat-icon>
               </button>
-              <button mat-icon-button (click)="this.dismiss(alert)">
+              <button matIconButton (click)="this.dismiss(alert)">
                 <mat-icon>close</mat-icon>
               </button>
             </div>

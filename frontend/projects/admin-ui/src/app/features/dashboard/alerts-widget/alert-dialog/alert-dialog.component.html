@@ -4,7 +4,7 @@
       <mat-icon>info</mat-icon>
     }
     @if (alert().type === 'error') {
-      <mat-icon style="color: red"
+      <mat-icon class="text-[color:var(--mat-sys-error)]"
         >warning</mat-icon
         >
       }
@@ -19,10 +19,10 @@
       <pre class="json-data">{{ alert().jsonData | json }}</pre>
     </mat-dialog-content>
     <mat-dialog-actions class="flex justify-end">
-      <button mat-raised-button color="accent" (click)="dismiss()">
+      <button matButton="filled" color="accent" (click)="dismiss()">
         DISMISS
       </button>
-      <button type="button" mat-raised-button color="warn" (click)="exit()">
+      <button type="button" matButton="filled" color="warn" (click)="exit()">
         EXIT
       </button>
     </mat-dialog-actions>

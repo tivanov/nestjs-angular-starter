@@ -6,7 +6,7 @@ Catalog of Angular apps, admin feature areas, and common-ui API services. Before
 
 | App | Path | Port | Description | Status |
 |-----|------|------|-------------|--------|
-| **admin-ui** | `frontend/projects/admin-ui/` | 5100 | Role-gated admin dashboard (Material UI) | Active |
+| **admin-ui** | `frontend/projects/admin-ui/` | 5100 | Role-gated admin dashboard (Material 3) | Active |
 | **user-ui** | `frontend/projects/user-ui/` | 5200 | Public-facing app shell | Minimal starter |
 | **common-ui** | `frontend/projects/common-ui/` | — | Shared services, base classes, auth, pipes | Shared layer |
 
@@ -164,4 +164,4 @@ See `.cursor/rules/frontend/admin-ui-entity-features.mdc` for detailed patterns.
 
 ## Last updated
 
-2026-06-15
+2026-09-02

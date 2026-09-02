@@ -34,14 +34,14 @@
 
   <button
     type="button"
-    mat-button
+    matButton
     class="ml-auto"
     (click)="this.filterForm.reset()">
     Clear
   </button>
   <button
     type="submit"
-    mat-raised-button
+    matButton="filled"
     class="mx-2"
     color="primary"
     (click)="this.load({ pageIndex: 0 })">
@@ -83,7 +83,7 @@
       <div class="flex items-center justify-end">
         <button
           type="button"
-          mat-icon-button
+          matIconButton
           title="View"
           [routerLink]="['/', 'contact-requests', row.id]">
           <mat-icon>visibility</mat-icon>

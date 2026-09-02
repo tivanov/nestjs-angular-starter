@@ -7,7 +7,7 @@ High-level system design for the NestJS + Angular monorepo. For feature inventor
 | Layer | Technology |
 |-------|------------|
 | Backend | NestJS, MongoDB (Mongoose), `@nestjs/schedule` |
-| Frontend | Angular 21, Tailwind CSS 4, Angular Material (admin-ui) |
+| Frontend | Angular 21, Tailwind CSS 4, Angular Material 3 (admin-ui) |
 | Shared types | `@app/contracts` library (`backend/libs/contracts`) |
 | Auth | JWT + refresh tokens, Passport strategies, role guards |
 
@@ -130,6 +130,10 @@ Component → common-ui/*Service (extends BaseApiService)
 
 Both apps read runtime config from `window.__env` (injected via `env.js` at build time). Key field: `apiUrl` pointing to backend `/v1` prefix.
 
+### Admin UI Theming
+
+admin-ui uses **Material 3** via `mat.theme()` in `frontend/projects/admin-ui/src/styles.scss` (dark-only, palettes in `_theme-colors.scss`). Custom surfaces and outlines use `--mat-sys-*` tokens (`surface-container-low`, `outline-variant`). Permanent sidenav divider/background are set with `mat.sidenav-overrides` because M3 defaults make the drawer edge invisible. Buttons use `matButton` / `matIconButton` / `matMiniFab`.
+
 ### Admin UI Routing Pattern
 
 Top-level routes in `app.routes.ts` wrap authenticated features in `LayoutComponent` with `isLoggedIn` + `hasRole` guards. Each feature has its own `*.routes.ts` lazy-loaded via `loadChildren`.
@@ -183,4 +187,4 @@ These Cursor rules cover *how* to implement; the docs in this folder cover *what
 
 ## Last updated
 
-2026-06-22
+2026-09-02

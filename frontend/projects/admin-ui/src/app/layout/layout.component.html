@@ -7,14 +7,14 @@
       <button
         type="button"
         aria-label="Toggle sidenav"
-        mat-icon-button
+        matIconButton
         (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>{{ this.title() }}</span>
       <div class="flex items-center ml-auto text-white">
         <span class="mr-2">{{ AuthSignal().user?.displayName }}</span>
-        <button mat-icon-button title="Logout" (click)="logout()">
+        <button matIconButton title="Logout" (click)="logout()">
           <mat-icon>logout</mat-icon>
         </button>
       </div>

@@ -1,3 +1,7 @@
 .bg-card {
-  background-color: #262626;
+  background-color: var(--mat-sys-surface-container);
+}
+
+.bg-card-header {
+  background-color: var(--mat-sys-surface-container-high);
 }

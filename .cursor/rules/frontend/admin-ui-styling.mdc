@@ -6,7 +6,17 @@ alwaysApply: false
 
 # admin-ui Styling & UX
 
-Admin dashboard uses **Angular Material** for components and **Tailwind CSS** for layout and styling. Do not introduce a second component library for admin screens.
+Admin dashboard uses **Angular Material 3** for components and **Tailwind CSS** for layout and styling. Do not introduce a second component library for admin screens.
+
+Theme is defined in `src/styles.scss` with `mat.theme()` (dark-only). Palettes live in `src/_theme-colors.scss`. Do not use M2 APIs (`mat.m2-define-palette`, `mat.all-component-themes`, `mat-raised-button`).
+
+## Material 3 component APIs
+
+- Prominent actions: `matButton="filled"` (`color="primary"` | `"accent"` | `"warn"`).
+- Text actions: `matButton`.
+- Icon-only: `matIconButton`.
+- Mini FAB: `matMiniFab`.
+- Form fields: default fill appearance — do not set `appearance="outline"` globally.
 
 ## List pages (`BaseListComponent`)
 
@@ -14,7 +24,7 @@ Admin dashboard uses **Angular Material** for components and **Tailwind CSS** fo
 - Filter form: `ReactiveFormsModule` + `MatFormField` / `MatInput` / `MatSelect`.
 - Responsive columns: set `defaultColumns` and `mobileColumns` in `setColumns()`.
 - Loading: `SpinnerComponent` from `core/components/spinner/`.
-- Row actions: `MatButton` + `MatIcon` + `routerLink` to detail/edit routes.
+- Row actions: `matIconButton` + `MatIcon` + `routerLink` to detail/edit routes.
 
 ## Edit pages (`BaseEditComponent`)
 
@@ -48,10 +58,12 @@ Admin dashboard uses **Angular Material** for components and **Tailwind CSS** fo
 
 Reach for a co-located `.scss` file **only** when Tailwind cannot solve it cleanly:
 
-- Overriding Material component internals (`::ng-deep`, host-context) where utilities do not apply
-- Global theme tokens in `styles.scss` (Material palette, elevation)
+- Overriding Material internals via `mat.*-overrides` mixins — not `::ng-deep`
+- Global theme tokens in `styles.scss` (`mat.theme()`, `--mat-sys-*`)
 - Complex animations, pseudo-elements, or selectors Tailwind does not express well
-- Shared custom tokens reused across many components (e.g. `.bg-card`)
+- Shared custom tokens reused across many components (e.g. `.bg-card` using `--mat-sys-surface-container`)
+
+Use `--mat-sys-*` (surface, surface-container-low, on-surface, outline-variant, error, primary, …) instead of hardcoded hex for colors that should follow the theme. Permanent sidenav edges must use `mat.sidenav-overrides` (`container-divider-color: outline-variant`) — M3 defaults that token to transparent.
 
 If you add `.scss`, keep it minimal and leave a short comment explaining why Tailwind was insufficient. Prefer an empty or omitted `styleUrl` when all styling lives in the template.
 

@@ -19,14 +19,14 @@
 
   <button
     type="button"
-    mat-button
+    matButton
     class="ml-auto"
     (click)="this.filterForm.reset()">
     Clear
   </button>
   <button
     type="button"
-    mat-raised-button
+    matButton="filled"
     color="primary"
     class="ml-2"
     (click)="load({ pageIndex: 0 })">
@@ -92,7 +92,7 @@
       <div class="flex justify-end">
         <button
           type="button"
-          mat-icon-button
+          matIconButton
           [routerLink]="['/circuit-breakers', row.id]">
           <mat-icon>visibility</mat-icon>
         </button>

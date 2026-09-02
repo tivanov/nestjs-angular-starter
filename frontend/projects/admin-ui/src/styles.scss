@@ -1,64 +1,75 @@
 @use '@angular/material' as mat;
+@use './theme-colors' as theme-colors;
 
 @import 'tailwindcss' layer(tailwindcss);
 // layer(tailwindcss) to avoid Sass warnings.
 
-@include mat.elevation-classes();
-@include mat.app-background();
-
-$my-accent: mat.m2-define-palette(mat.$m2-red-palette, A200);
-
-$my-primary-palette: (
-  50: #e8eaf6,
-  100: #c5cae9,
-  200: #9fa8da,
-  300: #7986cb,
-  400: #5c6bc0,
-  500: #3f51b5,
-  600: #3949ab,
-  700: #303f9f,
-  800: #283593,
-  900: #1a237e,
-  A100: #8c9eff,
-  A200: #536dfe,
-  A400: #3d5afe,
-  A700: #304ffe,
-  contrast: (
-    50: rgba(black, 0.87),
-    100: rgba(black, 0.87),
-    200: rgba(black, 0.87),
-    300: white,
-    400: white,
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-  ),
-);
-
-$my-primary: mat.m2-define-palette($my-primary-palette, 500);
-
-$my-theme: mat.m2-define-dark-theme(
+$theme: mat.define-theme(
   (
     color: (
-      primary: $my-primary,
-      accent: $my-accent,
+      theme-type: dark,
+      primary: theme-colors.$primary-palette,
+      tertiary: theme-colors.$tertiary-palette,
     ),
-    typography: mat.m2-define-typography-config(),
-    density: 0,
   )
 );
 
-@include mat.all-component-themes($my-theme);
+html {
+  color-scheme: dark;
+  @include mat.theme(
+    (
+      color: (
+        primary: theme-colors.$primary-palette,
+        tertiary: theme-colors.$tertiary-palette,
+        theme-type: dark,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+  @include mat.color-variants-backwards-compatibility($theme);
+
+  // Permanent side drawer: M3 defaults to a transparent divider and the same
+  // surface as content, so the nav edge disappears. Spec uses surface-container-low
+  // + a 1px outline-variant divider, square corners (not the modal drawer radius).
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: var(--mat-sys-surface-container-low),
+      container-text-color: var(--mat-sys-on-surface-variant),
+      container-divider-color: var(--mat-sys-outline-variant),
+      container-shape: 0,
+      content-background-color: var(--mat-sys-surface),
+    )
+  );
+
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-primary),
+      container-text-color: var(--mat-sys-on-primary),
+    )
+  );
+
+  @include mat.table-overrides(
+    (
+      row-item-outline-color: var(--mat-sys-outline-variant),
+    )
+  );
+
+  @include mat.divider-overrides(
+    (
+      color: var(--mat-sys-outline-variant),
+    )
+  );
+}
 
 html,
 body {
-  background-color: black;
   height: 100%;
 }
 
 body {
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
@@ -69,7 +80,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: color-mix(in srgb, var(--mat-sys-scrim) 50%, transparent);
   z-index: 1000;
   display: flex;
   justify-content: center;

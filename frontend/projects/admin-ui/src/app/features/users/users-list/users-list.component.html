@@ -4,7 +4,7 @@
   </div>
 }
 <div class="flex justify-between pb-4">
-  <button mat-raised-button color="accent" [routerLink]="'/users/create'">
+  <button matButton="filled" color="accent" [routerLink]="'/users/create'">
     <mat-icon>add</mat-icon>Create
   </button>
 </div>
@@ -33,13 +33,13 @@
 
   <button
     type="button"
-    mat-button
+    matButton
     (click)="this.filterForm.reset()"
     class="ml-auto">
     Clear
   </button>
   <button
-    mat-raised-button
+    matButton="filled"
     class="mx-2"
     color="accent"
     (click)="this.load({ pageIndex: 0 })">
@@ -78,10 +78,10 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
     <td mat-cell *matCellDef="let row">
       <div class="flex justify-end">
-        <button mat-icon-button [routerLink]="'/users/' + row.id">
+        <button matIconButton [routerLink]="'/users/' + row.id">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-icon-button (click)="onDelete(row)">
+        <button matIconButton (click)="onDelete(row)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

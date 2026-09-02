@@ -145,7 +145,6 @@
               "projects/admin-ui/src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/pink-bluegrey.css",
               "projects/admin-ui/src/styles.scss"
             ],
             "scripts": []
