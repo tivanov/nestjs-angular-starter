@@ -14,8 +14,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 const logger = new Logger('HTTP');
 
-const os = require('os');
-const cluster = require('cluster');
+import * as os from 'os';
+import * as cluster from 'cluster';
 
 const getDurationInMilliseconds = (start: [number, number]) => {
   const NS_PER_SEC = 1e9;
@@ -119,19 +119,39 @@ async function bootstrap() {
 let numCPUs = os.cpus().length;
 
 if (process.env.NODE_ENV === 'development') {
-  numCPUs = 1;
+  numCPUs = 2;
 }
 
 if (cluster.isPrimary) {
   Logger.log(`Master server started on ${process.pid}`);
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork({
-      WORKER_NUMBER: i,
+  const workerNumbers = new Map<number, number>();
+
+  const forkWorker = (workerNumber: number) => {
+    const worker = cluster.fork({
+      WORKER_NUMBER: workerNumber,
     });
+    workerNumbers.set(worker.id, workerNumber);
+  };
+
+  for (let i = 0; i < numCPUs; i++) {
+    forkWorker(i);
   }
+
   cluster.on('exit', (worker) => {
-    Logger.log(`Worker ${worker.process.pid} died. Restarting`);
-    cluster.fork();
+    const workerNumber = workerNumbers.get(worker.id);
+    workerNumbers.delete(worker.id);
+
+    if (workerNumber === undefined) {
+      Logger.error(
+        `Worker ${worker.process.pid} died with unknown WORKER_NUMBER. Not restarting.`,
+      );
+      return;
+    }
+
+    Logger.log(
+      `Worker ${worker.process.pid} (WORKER_NUMBER=${workerNumber}) died. Restarting`,
+    );
+    forkWorker(workerNumber);
   });
 } else {
   Logger.log(`Cluster server started on ${process.pid}`);
