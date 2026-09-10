@@ -1,6 +1,6 @@
 # Testing
 
-**Last updated:** 2026-06-14
+**Last updated:** 2026-09-10
 
 Backend-first testing guide for this monorepo. Frontend testing is planned for a later phase.
 
@@ -23,10 +23,10 @@ npm test
 cd backend && npm test              # unit
 cd backend && npm run test:watch    # unit, watch mode
 cd backend && npm run test:cov      # unit + coverage report
-cd backend && npm run test:e2e      # e2e (requires MongoDB)
+cd backend && npm run test:e2e      # e2e (requires MongoDB replica set rs0)
 ```
 
-E2E tests use the MongoDB URI from `backend/config/development.ts` (`mongodb://localhost/nest-angular-starter`). CI starts MongoDB 7 as a service.
+E2E tests use the MongoDB URI from `backend/config/test.ts` (`NODE_ENV=test`): `mongodb://localhost/nest-angular-starter-test?replicaSet=rs0&retryWrites=true`. CI starts MongoDB 8.0 as replica set `rs0`. Local e2e needs the same — see [mongodb-replica-set.md](./mongodb-replica-set.md).
 
 ## Conventions
 
@@ -169,4 +169,4 @@ Enable `coverageThreshold` at ~30% lines once the suite has ~10 unit spec files,
 
 ## CI
 
-[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs backend unit tests, then e2e tests, on every push/PR to `main`/`master`.
+[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) runs backend unit tests, then e2e tests, on every push/PR to `main`/`master`. CI uses Node 24 and starts MongoDB 8.0 as replica set `rs0`.

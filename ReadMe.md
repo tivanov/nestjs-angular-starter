@@ -26,8 +26,8 @@ A production-ready starter template for building full-stack web applications wit
 
 ## Prerequisites
 
-- Node.js (v18 or higher)
-- MongoDB (running locally or connection string)
+- Node.js (v24 or higher)
+- MongoDB running as a **single-node replica set** (`rs0`) — required for transactions. See [MongoDB replica set](docs/mongodb-replica-set.md).
 - npm or yarn
 
 ## Quick Start
@@ -41,10 +41,12 @@ A production-ready starter template for building full-stack web applications wit
    ```
 
 2. **Configure MongoDB:**
-   Update `backend/config/development.ts` with your MongoDB connection string:
+   MongoDB must be a replica set (`rs0`). If you have a standalone instance, convert it first: [MongoDB replica set](docs/mongodb-replica-set.md).
+
+   Default URI in `backend/config/development.ts`:
 
    ```typescript
-   mongoUri: "mongodb://localhost/nest-angular-starter";
+   mongoUri: "mongodb://localhost/nest-angular-starter?replicaSet=rs0&retryWrites=true";
    ```
 
 3. **Initialize database:**
@@ -121,6 +123,7 @@ A production-ready starter template for building full-stack web applications wit
 - [Backend features](docs/features-backend.md) — modules and API routes
 - [Frontend features](docs/features-frontend.md) — admin/user UI catalog
 - [Shared infrastructure](docs/shared-infrastructure.md) — reusable building blocks (check before adding new utils/modules)
+- [MongoDB replica set](docs/mongodb-replica-set.md) — convert a standalone node to `rs0` for transactions
 - [AGENTS.md](AGENTS.md) — agent workflow for consulting and updating the catalog
 
 ## License

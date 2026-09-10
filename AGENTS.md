@@ -11,6 +11,7 @@ Before building new features, consult the project catalog. After building, updat
 | [docs/features-frontend.md](docs/features-frontend.md) | Admin/user UI features and API services |
 | [docs/shared-infrastructure.md](docs/shared-infrastructure.md) | **Check first** — reusable base classes, services, and "do not duplicate" list |
 | [docs/testing.md](docs/testing.md) | Backend test pyramid, conventions, templates, and run instructions |
+| [docs/mongodb-replica-set.md](docs/mongodb-replica-set.md) | Convert standalone MongoDB to single-node replica set `rs0` (required for transactions) |
 
 ## Workflow
 

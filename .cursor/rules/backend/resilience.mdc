@@ -17,7 +17,7 @@ Import from `UtilsModule` — do not build parallel locking, transaction, or cir
 ## Rules
 
 - **Mutex** — pass a stable `resourceId` (entity ID, job key). Callback runs exclusively for that key.
-- **Transactions** — pass async function receiving a session; keep scope small.
+- **Transactions** — pass async function receiving a session; keep scope small. Requires a MongoDB replica set (`rs0`); see `docs/mongodb-replica-set.md`.
 - **Circuit breaker** — use a consistent breaker name per integration; admin can reset via `CircuitBreakersController`.
 - Outbound HTTP — extend `BaseApiService` (backend) for Axios logging and rate-limit `ErrorCode` handling.
 

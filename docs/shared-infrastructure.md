@@ -9,7 +9,7 @@
 | Background / scheduled jobs | `TasksModule` + `TaskTypeEnum` + task implementation | Bull queue, Redis queue, separate cron module |
 | Distributed locking | `MutexService.execWithMutex()` | Custom lock collection or in-memory mutex |
 | Failure isolation for external calls | `CircuitBreakersService.executeWithCircuitBreaker()` | Ad-hoc retry/circuit logic |
-| MongoDB transactions | `DbTransactionsService.exec()` | Manual session management |
+| MongoDB transactions | `DbTransactionsService.exec()` (requires replica set `rs0`) | Manual session management |
 | String/date/number/crypto helpers | `UtilsModule` services | Duplicate util classes |
 | Pagination / list queries | `ShapeableQuery` + `BaseService.get()` | Custom paging helpers or raw `find()` |
 | CRUD service base | `BaseService<T>` | New generic repository layer |
@@ -48,7 +48,7 @@
 |---------|------|------------|
 | `MutexService` | `backend/src/utils/services/mutex.service.ts` | `execWithMutex()` |
 | `CircuitBreakersService` | `backend/src/utils/services/circuit-breakers.service.ts` | `executeWithCircuitBreaker()`, `reset()` |
-| `DbTransactionsService` | `backend/src/utils/services/db-transactions.service.ts` | `exec(fn)` |
+| `DbTransactionsService` | `backend/src/utils/services/db-transactions.service.ts` | `exec(fn)` — needs replica set; see [mongodb-replica-set.md](./mongodb-replica-set.md) |
 
 ## Backend — Utility Services (`UtilsModule`)
 
@@ -146,4 +146,4 @@ When you introduce infrastructure others should reuse, append a row to the relev
 
 ## Last updated
 
-2026-06-15
+2026-09-10
