@@ -64,7 +64,7 @@ export class UsersService extends BaseService<User> {
       filter.$text = { $search: query.searchQuery };
     }
 
-    return await (this.objectModel as PaginateModel<UserDocument>).paginate(
+    return await (this.objectModel as PaginateModel<User>).paginate(
       filter,
       this.getPaginationOptions(query),
     );

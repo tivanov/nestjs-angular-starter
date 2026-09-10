@@ -1,13 +1,6 @@
 import { UserRoleEnum } from '../enums';
 import { ShapeableQuery } from './shapeable-query';
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumberString,
-  IsOptional,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsEnum, IsOptional, MaxLength, MinLength } from 'class-validator';
 
 export class GetUsersQuery extends ShapeableQuery {
   @IsOptional()
@@ -17,7 +10,7 @@ export class GetUsersQuery extends ShapeableQuery {
 
   @IsOptional()
   @IsEnum(UserRoleEnum)
-  role: string;
+  role?: UserRoleEnum;
 
   @IsOptional()
   @MaxLength(200)

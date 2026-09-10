@@ -12,7 +12,7 @@ export class IdentitiesService extends BaseService<Identity> {
   }
 
   async get(query: GetIdentitiesQuery) {
-    const filter: QueryFilter<IdentityDocument> = {};
+    const filter: QueryFilter<Identity> = {};
 
     if (query.uid) {
       filter.uid = query.uid;
@@ -26,7 +26,7 @@ export class IdentitiesService extends BaseService<Identity> {
       filter.provider = query.provider;
     }
 
-    return await (this.objectModel as PaginateModel<IdentityDocument>).paginate(
+    return await (this.objectModel as PaginateModel<Identity>).paginate(
       filter,
       this.getPaginationOptions(query),
     );
