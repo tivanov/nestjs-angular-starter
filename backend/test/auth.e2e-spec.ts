@@ -1,9 +1,6 @@
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import {
-  closeTestApp,
-  createTestApp,
-} from './support/create-test-app';
+import request from 'supertest';
+import { closeTestApp, createTestApp } from './support/create-test-app';
 import { clearDatabase, seedFullDatabase } from './support/e2e-db';
 import { loginAsAdmin } from './support/auth.helper';
 import { TEST_ADMIN } from './support/constants';
