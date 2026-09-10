@@ -18,10 +18,10 @@ import {
   IdNameDto,
   UserDto,
 } from '@app/contracts';
-import * as ms from 'ms';
+import ms from 'ms';
 import { IdentitiesService } from './identities.service';
 import { Identity } from '../model/identity.model';
-import { UserMappers } from 'src/users/mappers/user.mappers';
+import { UserMappers } from '../../users/mappers/user.mappers';
 
 @Injectable()
 export class AuthService {

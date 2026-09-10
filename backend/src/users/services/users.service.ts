@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { BaseService } from 'src/shared/base/base-service';
+import { BaseService } from '../../shared/base/base-service';
 import { User, UserDocument } from '../model/user.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { IAppConfig, IAuthConfig } from 'config/model';
+import { IAppConfig, IAuthConfig } from '../../../config/model';
 import {
   PaginateModel,
   PaginateResult,
@@ -24,11 +24,11 @@ import {
 } from '@app/contracts';
 import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthorized-exception';
 import * as bcrypt from 'bcrypt';
-import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
+import { AppBadRequestException } from '../../shared/exceptions/app-bad-request-exception';
 import { LoginRecordsService } from './login-records.service';
 import { Request } from 'express';
-import { AppNotFoundException } from 'src/shared/exceptions/app-not-found-exception';
-import { IdentitiesService } from 'src/auth/services/identities.service';
+import { AppNotFoundException } from '../../shared/exceptions/app-not-found-exception';
+import { IdentitiesService } from '../../auth/services/identities.service';
 import path from 'path';
 import * as fs from 'fs/promises';
 

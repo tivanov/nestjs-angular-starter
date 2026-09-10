@@ -32,9 +32,9 @@ import { RolesGuard } from 'src/auth/guards/roles-guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as fs from 'fs/promises';
-import { IAppConfig } from 'config/model';
+import { IAppConfig } from '../../../config/model';
 import { ConfigService } from '@nestjs/config';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 import { UserMappers } from '../mappers/user.mappers';
 
 @Controller('users')

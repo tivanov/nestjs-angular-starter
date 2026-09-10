@@ -1,10 +1,10 @@
 import { Controller, UseGuards, Query, Get } from '@nestjs/common';
 import { JwtGuard } from '../../auth/guards/jwt.guard';
 import { GetIdentitiesQuery, UserRoleEnum } from '@app/contracts';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { RolesGuard } from '../../auth/guards/roles-guard';
+import { Roles } from '../../auth/decorators/roles.decorator';
 import { IdentitiesService } from '../services/identities.service';
-import { UsersService } from 'src/users/services/users.service';
+import { UsersService } from '../../users/services/users.service';
 import { IdentityMappers } from '../mappers/identity.mappers';
 
 @Controller('identities')

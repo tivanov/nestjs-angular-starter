@@ -2,20 +2,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { IAppConfig } from 'config/model';
+import { IAppConfig } from '../config/model';
 import {
   INestApplication,
   Logger,
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
-import * as fs from 'fs/promises';
+import fs from 'fs/promises';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 const logger = new Logger('HTTP');
 
-import * as os from 'os';
-import * as cluster from 'cluster';
+import os from 'os';
+import cluster from 'cluster';
 
 const getDurationInMilliseconds = (start: [number, number]) => {
   const NS_PER_SEC = 1e9;

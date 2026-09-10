@@ -1,6 +1,6 @@
 import { Controller, Request, Post, UseGuards } from '@nestjs/common';
 import { Request as ReqObj } from 'express';
-import { AppUnauthorizedException } from 'src/shared/exceptions/app-unauthorized-exception';
+import { AppUnauthorizedException } from '../../../src/shared/exceptions/app-unauthorized-exception';
 import { ErrorCode, IdentityProviderEnum } from '@app/contracts';
 import { AuthService } from '../services/auth.service';
 import { LocalUsernamePasswordAuthGuard } from '../guards/local-username-password.guard';
