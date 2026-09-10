@@ -11,7 +11,8 @@ const config: IConfig = {
     uploadsDir: join(process.cwd(), '/uploads'),
   },
   db: {
-    mongoUri: 'mongodb://localhost/nest-angular-starter',
+    mongoUri:
+      'mongodb://localhost/nest-angular-starter?replicaSet=rs0&retryWrites=true',
   },
   auth: {
     jwtSecret: 'YOURJWTSECRETCHANGEIT55',

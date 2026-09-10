@@ -10,12 +10,6 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    services:
-      mongodb:
-        image: mongo:8
-        ports:
-          - 27017:27017
-
     steps:
       - uses: actions/checkout@v4
 
@@ -35,6 +29,15 @@ jobs:
 
       - name: Unit tests
         run: cd backend && npm test
+
+      - name: Start MongoDB Replica Set
+        uses: supercharge/mongodb-github-action@1.12.1
+        with:
+          mongodb-version: 8.0
+          mongodb-replica-set: rs0
+
+      - name: Seed database
+        run: cd backend && npm run init-db:test
 
       - name: E2E tests
         run: cd backend && npm run test:e2e
