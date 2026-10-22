@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { IAuthConfig, IAppConfig, IDbConfig } from 'config/model';
+import { IAuthConfig, IAppConfig, IDbConfig } from '../../../config/model';
 import { TEST_MONGO_URI } from '../constants';
 
 const defaultAuthConfig: IAuthConfig = {

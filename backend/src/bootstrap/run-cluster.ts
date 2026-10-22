@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
-import * as cluster from 'cluster';
-import * as os from 'os';
+import cluster from 'cluster';
+import os from 'os';
 
 // Preserve environment-based sizing and worker numbers across restarts.
 export function runCluster(startWorker: () => Promise<void>) {

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { ConfigService } from '@nestjs/config';
-import { IAppConfig } from 'config/model';
+import { IAppConfig } from '../../../config/model';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { ModuleRef } from '@nestjs/core';
 import { Task } from '../model/task.model';

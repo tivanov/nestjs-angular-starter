@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { IAppConfig } from 'config/model';
+import { IAppConfig } from '../../config/model';
 
 export const setupCors = (app: INestApplication, appConfig: IAppConfig) => {
   if (!appConfig.enableCors) {

@@ -1,10 +1,10 @@
 import { UserRoleEnum } from '@app/contracts';
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
-import { UsersService } from 'src/users/services/users.service';
-import { LoginRecordsService } from 'src/users/services/login-records.service';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles-guard';
+import { UsersService } from '../users/services/users.service';
+import { LoginRecordsService } from '../users/services/login-records.service';
 
 @Controller('dashboard')
 @UseGuards(JwtGuard, RolesGuard)

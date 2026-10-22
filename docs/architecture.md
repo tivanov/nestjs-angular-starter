@@ -6,12 +6,15 @@ High-level system design for the NestJS + Angular monorepo. For feature inventor
 
 | Layer | Technology |
 |-------|------------|
+| Runtime | Node.js 24+ |
 | Backend | NestJS, MongoDB (Mongoose), `@nestjs/schedule` |
 | Frontend | Angular 21, Tailwind CSS 4, Angular Material 3 (admin-ui) |
 | Shared types | `@app/contracts` library (`backend/libs/contracts`) |
 | Auth | JWT + refresh tokens, Passport strategies, role guards |
 
 **Dev ports:** Backend `8200`, Admin UI `5100`, User UI `5200`. All API routes use URI versioning under `/v1/`.
+
+MongoDB must run as replica set `rs0` (a single node is enough) so `DbTransactionsService` can use transactions. See [mongodb-replica-set.md](./mongodb-replica-set.md).
 
 ## Monorepo Layout
 
@@ -89,7 +92,7 @@ To add new background work, extend `TaskTypeEnum` and register an implementation
 
 ### Configuration
 
-Deployment-time config in `backend/config/{development,stage,production}.ts`, loaded via `registerAs` and accessed through NestJS `ConfigService`. Values that change at runtime belong in MongoDB (e.g. `SystemModule`), not config files.
+Deployment-time config in `backend/config/{development,stage,production}.ts`, loaded via `registerAs` and accessed through NestJS `ConfigService`. Values that change at runtime belong in MongoDB (e.g. `SystemModule`), not config files. MongoDB URIs include `replicaSet=rs0` — see [mongodb-replica-set.md](./mongodb-replica-set.md).
 
 ## Contracts Library
 
@@ -187,4 +190,4 @@ These Cursor rules cover *how* to implement; the docs in this folder cover *what
 
 ## Last updated
 
-2026-09-02
+2026-09-10

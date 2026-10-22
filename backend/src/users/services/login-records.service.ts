@@ -5,7 +5,7 @@ import { BaseService } from '../../shared/base/base-service';
 import { LoginRecord, LoginRecordDocument } from '../model/login-record.model';
 import { User } from '../model/user.model';
 import * as requestIp from 'request-ip';
-import * as DeviceDetector from 'device-detector-js';
+import DeviceDetector from 'device-detector-js';
 import { GetLoginRecordsQuery, UserRoleEnum } from '@app/contracts';
 import { Request } from 'express';
 import { IpLocationService } from './iplocation.service';

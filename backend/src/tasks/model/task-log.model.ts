@@ -2,7 +2,7 @@ import { HydratedDocument, SchemaTypes, Types } from 'mongoose';
 import { BaseEntity } from '../../shared/base/base-entity';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { TaskLogTypeEnum, TaskTypeEnum } from '@app/contracts';
-import * as mongoosePaginate from 'mongoose-paginate-v2';
+import mongoosePaginate from 'mongoose-paginate-v2';
 import { Task } from './task.model';
 
 export type TaskLogDocument = HydratedDocument<TaskLog>;

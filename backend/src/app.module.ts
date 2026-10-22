@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as config from '../config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { IAppConfig, IDbConfig } from 'config/model';
+import { IAppConfig, IDbConfig } from '../config/model';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';

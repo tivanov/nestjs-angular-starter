@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IAppConfig } from 'config/model';
+import { IAppConfig } from '../../../config/model';
 import * as fs from 'fs/promises';
 
 @Injectable()

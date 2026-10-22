@@ -1,7 +1,7 @@
 import { Module, forwardRef } from '@nestjs/common';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../users/users.module';
 import { DashboardController } from './dashboard.controller';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [forwardRef(() => UsersModule), forwardRef(() => AuthModule)],

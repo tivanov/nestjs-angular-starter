@@ -1,6 +1,6 @@
 import { CircuitBreakerDto } from '@app/contracts/dto/circuit-breaker.dto';
 import { PaginateResult, Types } from 'mongoose';
-import { BaseMapper } from 'src/shared/base/base-mapper';
+import { BaseMapper } from '../../shared/base/base-mapper';
 import { CircuitBreaker } from '../model/circuit-breaker.model';
 import { PagedListDto } from '@app/contracts';
 

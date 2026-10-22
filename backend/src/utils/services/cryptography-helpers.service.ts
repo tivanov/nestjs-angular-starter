@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { IAuthConfig } from 'config/model';
+import { IAuthConfig } from '../../../config/model';
 import {
   createCipheriv,
   createDecipheriv,

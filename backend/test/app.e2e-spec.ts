@@ -1,9 +1,6 @@
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import {
-  closeTestApp,
-  createTestApp,
-} from './support/create-test-app';
+import request from 'supertest';
+import { closeTestApp, createTestApp } from './support/create-test-app';
 
 describe('App (e2e)', () => {
   let app: INestApplication;

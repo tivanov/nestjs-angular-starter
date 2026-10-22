@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from 'src/shared/base/base-entity';
 import { HydratedDocument } from 'mongoose';
-import * as mongoosePaginate from 'mongoose-paginate-v2';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 export type MutexDocument = HydratedDocument<Mutex>;
 

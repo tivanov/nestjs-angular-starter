@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { UserRoleEnum } from '@app/contracts';
 import { UsersService } from '../../src/users/services/users.service';
 import { TEST_ADMIN } from './constants';

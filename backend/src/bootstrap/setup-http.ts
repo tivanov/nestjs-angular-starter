@@ -1,6 +1,6 @@
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { IAppConfig } from 'config/model';
+import { IAppConfig } from '../../config/model';
 import { setupCors } from './setup-cors';
 import { setupLogging } from './setup-logging';
 

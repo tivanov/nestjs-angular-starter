@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { BaseEntity } from '../../shared/base/base-entity';
 import { CircuitBreakerOperation } from '@app/contracts';
-import * as mongoosePaginate from 'mongoose-paginate-v2';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 // Default values
 const DEFAULT_TIMEOUT_MS = 60000;
