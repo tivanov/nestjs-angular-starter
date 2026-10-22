@@ -13,7 +13,7 @@ Catalog of NestJS modules and API surface. Before adding a new module, check [sh
 | **System**        | `backend/src/system/`        | Singleton runtime system config document in MongoDB                                  | Active |
 | **Utils**         | `backend/src/utils/`         | Mutex locks, circuit breakers, crypto/string/date helpers, DB transactions           | Active |
 | **Dashboard**     | `backend/src/dashboard/`     | Admin dashboard aggregate stats (users, login analytics)                             | Active |
-| **Shared**        | `backend/src/shared/`        | Empty placeholder module; base classes imported directly                             | Active |
+| **Shared**        | `backend/src/shared/`        | Uploads directory lifecycle initialization; base classes imported directly                             | Active |
 | **Me**            | `backend/src/me/`            | Current-user profile and activity tracking (`GET /v1/me`)                            | Active |
 
 ## Standalone / Unregistered Modules
@@ -131,6 +131,17 @@ When you add a backend module or endpoint, append a row to the tables above:
 
 Include API routes in the routes section and contracts in the contracts table. If the module exports reusable services, also update [shared-infrastructure.md](./shared-infrastructure.md).
 
+## Startup
+
+`backend/src/main.ts` delegates to focused helpers in `backend/src/bootstrap/`.
+`run-cluster.ts` manages worker counts, stable worker numbers, and restarts.
+`bootstrap-server.ts` creates the Nest app, sets the extended query parser,
+configures HTTP, and listens on the configured port (default `8200`).
+`SharedModule` prepares the uploads directory through `UploadsDirectoryService.onModuleInit()`
+on worker `0` before listening, retaining non-fatal error logging.
+HTTP setup preserves the 10 MB JSON limit, CORS, global validation, no-store
+responses, request logging, and URI versioning.
+
 ## Last updated
 
-2026-06-15
+2026-10-23

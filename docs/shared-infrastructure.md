@@ -144,6 +144,28 @@ When you introduce infrastructure others should reuse, append a row to the relev
 | `MyHelperService` | `backend/src/utils/services/my-helper.service.ts` | One-line role |
 ```
 
+## Backend — Uploads Directory
+
+`UploadsDirectoryService` in `backend/src/shared/services/uploads-directory.service.ts`
+is a private `SharedModule` provider. Its `onModuleInit` hook recursively creates
+the configured uploads directory on worker `0` only. Missing paths are skipped;
+creation failures are logged without preventing startup. It runs during Nest
+initialization before listening, including applications initialized outside `main.ts`.
+Avatar subdirectory creation remains in the existing upload handler.
+
+## Backend — Bootstrap Helpers
+
+Startup functions in `backend/src/bootstrap/` are orchestrated through `main.ts`:
+
+- `setup-cors.ts`: configured origins, methods, headers, and credentials, gated by `enableCors`.
+- `setup-http.ts`: JSON body limit, CORS, validation, cache headers, logging, and versioning.
+- `setup-logging.ts`: request timing and completion logging, excluding OPTIONS.
+- `bootstrap-server.ts`: creates the app, sets the extended query parser, runs setup, and starts listening.
+- `run-cluster.ts`: forks workers and restarts them with their original worker numbers.
+
+Extend these functions for bootstrap concerns; they are not injectable utilities.
+See [features-backend.md](./features-backend.md#startup).
+
 ## Last updated
 
-2026-06-15
+2026-10-23

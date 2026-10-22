@@ -1,5 +1,7 @@
 # Agent Instructions
 
+**Last updated:** 2026-09-03
+
 Before building new features, consult the project catalog. After building, update it.
 
 ## Documentation Map
@@ -23,12 +25,16 @@ Before building new features, consult the project catalog. After building, updat
 
 ### 2. When implementing
 
-Follow domain Cursor rules for *how* to build:
+The canonical coding rules for Cursor, Codex, and Claude Code live in [.cursor/rules/](.cursor/rules/). Read the `.mdc` files directly as Markdown with YAML frontmatter; do not maintain separate copies.
 
-- [.cursor/rules/monorepo-tech-patterns.mdc](.cursor/rules/monorepo-tech-patterns.mdc)
-- [.cursor/rules/project-catalog.mdc](.cursor/rules/project-catalog.mdc)
-- Backend: [.cursor/rules/nestjs.mdc](.cursor/rules/nestjs.mdc), [.cursor/rules/backend/](.cursor/rules/backend/)
-- Frontend: [.cursor/rules/angular-20.mdc](.cursor/rules/angular-20.mdc), [.cursor/rules/frontend/](.cursor/rules/frontend/)
+Before implementing changes:
+
+1. Discover all rules recursively with `rg --files --hidden .cursor/rules -g '*.mdc'` and inspect their frontmatter. Repeat discovery when the task scope changes so newly added rules are included.
+2. Read and follow every rule with `alwaysApply: true` for all tasks.
+3. For other rules, read and follow those whose `globs` match files you will read, create, or modify. Patterns are relative to the repository root; `globs` may be a comma-separated string or a YAML list. Check all rule directories because some rules span both backend and frontend.
+4. Also read rules whose `description` or subject applies to the task, including rules without globs, and follow relevant rule references.
+
+Add or update coding rules only in `.cursor/rules/`; new `.mdc` files are discovered through this workflow without updating an index. Codex uses this `AGENTS.md`; Claude Code loads the same instructions through the root `CLAUDE.md`.
 
 ### 3. After building (required)
 
