@@ -1,8 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -12,10 +9,10 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TaskDto, TaskTypeEnum } from '@app/contracts';
-import { BaseComponent } from '../../../../../../common-ui/base/base.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CreateTaskCommand, TaskDto, TaskTypeEnum, UpdateTaskCommand } from '@app/contracts';
+import { BaseEditComponent } from '../../../../../../common-ui/base/base-edit.component';
+import { takeUntil } from 'rxjs';
 import { StatusEnumPipe } from '../../../../../../common-ui/pipes/status-enum.pipe';
 import { TasksService } from '../../../../../../common-ui/services/tasks.service';
 import { StringUtils } from '../../../../../../common-ui/utils/string-utils';
@@ -26,7 +23,6 @@ import { TaskLogsListComponent } from '../task-logs-list/task-logs-list.componen
   selector: 'app-task',
   imports: [
     MatFormFieldModule,
-    FormsModule,
     ReactiveFormsModule,
     MatOptionModule,
     MatSelectModule,
@@ -40,57 +36,24 @@ import { TaskLogsListComponent } from '../task-logs-list/task-logs-list.componen
   ],
   templateUrl: './task.component.html',
 })
-export class TaskComponent extends BaseComponent implements OnInit {
-  taskId: string | null = null;
+export class TaskComponent extends BaseEditComponent<TaskDto> {
+  readonly types = Object.values(TaskTypeEnum).sort((a, b) => a.localeCompare(b));
 
-  form: FormGroup;
-  task: TaskDto;
+  private readonly tasksService = inject(TasksService);
 
-  types = Object.values(TaskTypeEnum).sort((a, b) => a.localeCompare(b));
-
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private tasksService: TasksService,
-    private snackBar: MatSnackBar,
-    private activatedRoute: ActivatedRoute
-  ) {
-    super();
-  }
-
-  ngOnInit(): void {
-    this.form = this.initForm();
-    this.activatedRoute.paramMap.pipe().subscribe({
-      next: (data) => {
-        if (data.get('id')) {
-          this.taskId = data.get('id');
-          this.load();
-        }
+  load(id: string) {
+    this.tasksService.getOne(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe({
+      next: (task) => {
+        this.entity = task;
+        this.form.patchValue(task);
+        this.dataLoaded.set(true);
       },
+      error: (error) => this.onFetchError(error),
     });
   }
 
-  load() {
-    this.tasksService
-      .getOne(this.taskId)
-      .pipe()
-      .subscribe({
-        next: (task) => {
-          this.task = task;
-          this.form.patchValue(task);
-        },
-        error: (err) => {
-          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-            duration: 5000,
-          });
-          console.error(err);
-        },
-      });
-  }
-
-  initForm() {
-    return this.fb.group({
-      id: [{ value: '', disabled: true }],
+  buildForm() {
+    this.form = this.formBuilder.group({
       active: [false],
       type: [null, Validators.required],
       name: [null, Validators.required],
@@ -108,57 +71,27 @@ export class TaskComponent extends BaseComponent implements OnInit {
       return;
     }
 
-    const val = this.form.getRawValue();
+    const command: CreateTaskCommand = this.form.getRawValue();
+    const isUpdate = !!this.entity;
+    // Identity belongs in the URL; type is only part of the create contract.
+    const { type, ...updateCommand }: CreateTaskCommand = command;
+    const request = this.entity
+      ? this.tasksService.update(this.entity.id, updateCommand satisfies UpdateTaskCommand)
+      : this.tasksService.create(command);
 
-    if (val.id) {
-      this.tasksService.update(val.id, val).subscribe({
-        next: () => {
-          this.snackBar.open('Task updated', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/tasks/list']);
-        },
-
-        error: (err) => {
-          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-            duration: 5000,
-          });
-          console.error(err);
-        },
-      });
-    } else {
-      this.tasksService.create(val).subscribe({
-        next: () => {
-          this.snackBar.open('Task created', 'Close', {
-            duration: 3000,
-          });
-          this.router.navigate(['/tasks/list']);
-        },
-
-        error: (err) => {
-          this.snackBar.open(this.extractErrorMessage(err), 'Close', {
-            duration: 5000,
-          });
-          console.error(err);
-        },
-      });
-    }
-  }
-
-  clear() {
-    if (this.task) {
-      this.form.patchValue(this.task);
-    } else {
-      this.form.reset();
-    }
-  }
-
-  exit() {
-    this.router.navigate(['/tasks/list']);
+    request.pipe(takeUntil(this.ngUnsubscribe)).subscribe({
+      next: () => {
+        this.snackBar.open(isUpdate ? 'Task updated' : 'Task created', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/tasks/list']);
+      },
+      error: (error) => this.onFetchError(error),
+    });
   }
 
   onTypeChange(type: string) {
-    if (this.task) {
+    if (this.entity) {
       return;
     }
 

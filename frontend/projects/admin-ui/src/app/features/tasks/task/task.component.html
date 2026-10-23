@@ -1,5 +1,5 @@
 <app-card titleText="Task Info">
-  <form class="w-full" [formGroup]="form">
+  <form class="w-full" [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field class="w-full sm:px-2 sm:w-1/2">
       <mat-label>Type</mat-label>
       <mat-select
@@ -90,16 +90,17 @@
         matButton="filled"
         color="primary"
         class="ml-2 font-bold rounded"
-        [disabled]="!form.valid"
-        (click)="onSubmit()">
-        {{ this.taskId ? 'Save' : 'Create' }}
+        type="submit"
+        [disabled]="!form.valid || !dataLoaded()">
+        {{ entity ? 'Save' : 'Create' }}
       </button>
 
       <button
         matButton
         color="warn"
         class="ml-2 font-bold rounded"
-        (click)="clear()">
+        type="button"
+        (click)="reset()">
         Cancel
       </button>
 
@@ -107,14 +108,15 @@
         matButton
         color="warn"
         class="ml-2 font-bold rounded"
+        type="button"
         (click)="exit()">
         Exit
       </button>
     </div>
   </form>
 </app-card>
-@if (taskId) {
+@if (entity) {
 <app-card titleText="Task Logs">
-  <app-task-logs-list [taskId]="taskId" />
+  <app-task-logs-list [taskId]="entity.id" />
 </app-card>
 }

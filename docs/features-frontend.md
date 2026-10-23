@@ -50,8 +50,8 @@ Widgets: `UserTilesWidgetComponent`, `LoginRecordsByDeviceWidgetComponent`, `Log
 | Route | Component | Description |
 |-------|-----------|-------------|
 | `/tasks/list` | `TasksListComponent` | Task list with start/stop toggles |
-| `/tasks/create` | `TaskComponent` | Create task |
-| `/tasks/:id` | `TaskComponent` | Edit task, embedded task logs |
+| `/tasks/create` | `TaskComponent` | Create task using `BaseEditComponent`; request body omits entity ID |
+| `/tasks/:id` | `TaskComponent` | Edit task using `BaseEditComponent`, shared reset/error/navigation behavior, embedded task logs; update ID is sent in the URL |
 | `/tasks/logs` | `TaskLogsListComponent` | Global task log list |
 | `/tasks/logs/:id` | `TaskLogComponent` | Task log detail |
 
@@ -164,4 +164,4 @@ See `.cursor/rules/frontend/admin-ui-entity-features.mdc` for detailed patterns.
 
 ## Last updated
 
-2026-09-02
+2026-10-23
