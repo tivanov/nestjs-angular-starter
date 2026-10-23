@@ -6,10 +6,10 @@ import {
   PaginateOptions,
   QueryFilter,
 } from 'mongoose';
-import { AppBadRequestException } from '../exceptions/app-bad-request-exception';
+import { AppBadRequestException } from '../exceptions/app-bad-request-exception.js';
 import { ErrorCode, ShapeableQuery } from '@app/contracts';
 import { Logger } from '@nestjs/common';
-import { ApiResponseException } from '../exceptions/app-api-response-exception';
+import { ApiResponseException } from '../exceptions/app-api-response-exception.js';
 
 export class BaseService<T> {
   protected objectModel: Model<T>;

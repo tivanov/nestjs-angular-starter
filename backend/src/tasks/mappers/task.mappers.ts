@@ -1,7 +1,7 @@
 import { PaginateResult, Types } from 'mongoose';
-import { BaseMapper } from '../../shared/base/base-mapper';
+import { BaseMapper } from '../../shared/base/base-mapper.js';
 import { PagedListDto, TaskDto } from '@app/contracts';
-import { Task } from '../model/task.model';
+import { Task } from '../model/task.model.js';
 
 export class TaskMappers extends BaseMapper {
   public static toDtosPaged(

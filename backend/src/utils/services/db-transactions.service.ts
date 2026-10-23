@@ -1,5 +1,5 @@
 import { InjectConnection } from '@nestjs/mongoose';
-import { ClientSession, Connection } from 'mongoose';
+import type { ClientSession, Connection } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

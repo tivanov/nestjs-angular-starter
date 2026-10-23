@@ -1,6 +1,6 @@
 import { IsOptional, IsEnum } from 'class-validator';
-import { CircuitBreakerOperation } from '../enums';
-import { ShapeableQuery } from './shapeable-query';
+import { CircuitBreakerOperation } from '../enums/index.js';
+import { ShapeableQuery } from './shapeable-query.js';
 
 export class GetCircuitBreakersQuery extends ShapeableQuery {
   @IsOptional()

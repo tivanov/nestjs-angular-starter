@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UploadsDirectoryService } from './services/uploads-directory.service';
+import { UploadsDirectoryService } from './services/uploads-directory.service.js';
 
 @Module({
   imports: [],

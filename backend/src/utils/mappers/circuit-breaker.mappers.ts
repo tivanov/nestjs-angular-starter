@@ -1,7 +1,7 @@
-import { CircuitBreakerDto } from '@app/contracts/dto/circuit-breaker.dto';
+import { CircuitBreakerDto } from '@app/contracts/dto/circuit-breaker.dto.js';
 import { PaginateResult, Types } from 'mongoose';
-import { BaseMapper } from '../../shared/base/base-mapper';
-import { CircuitBreaker } from '../model/circuit-breaker.model';
+import { BaseMapper } from '../../shared/base/base-mapper.js';
+import { CircuitBreaker } from '../model/circuit-breaker.model.js';
 import { PagedListDto } from '@app/contracts';
 
 export class CircuitBreakerMappers extends BaseMapper {

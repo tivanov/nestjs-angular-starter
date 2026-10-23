@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { BaseService } from '../../shared/base/base-service';
-import { Task } from '../model/task.model';
+import { BaseService } from '../../shared/base/base-service.js';
+import { Task } from '../model/task.model.js';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   ClientSession,
@@ -10,14 +10,14 @@ import {
   QueryFilter,
   Types,
 } from 'mongoose';
-import { TasksDefinition } from '../definitions';
+import { TasksDefinition } from '../definitions.js';
 import {
   CreateTaskCommand,
   ErrorCode,
   GetTasksQuery,
   UpdateTaskCommand,
 } from '@app/contracts';
-import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
+import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception.js';
 
 @Injectable()
 export class TasksService extends BaseService<Task> {

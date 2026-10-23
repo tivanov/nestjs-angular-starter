@@ -1,14 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult, Model, QueryFilter } from 'mongoose';
-import { BaseService } from '../../shared/base/base-service';
-import { LoginRecord, LoginRecordDocument } from '../model/login-record.model';
-import { User } from '../model/user.model';
-import * as requestIp from 'request-ip';
+import type { PaginateModel, PaginateResult, QueryFilter } from 'mongoose';
+import { BaseService } from '../../shared/base/base-service.js';
+import {
+  LoginRecord,
+  LoginRecordDocument,
+} from '../model/login-record.model.js';
+import { User } from '../model/user.model.js';
+import { getClientIp } from 'request-ip';
 import DeviceDetector from 'device-detector-js';
 import { GetLoginRecordsQuery, UserRoleEnum } from '@app/contracts';
 import { Request } from 'express';
-import { IpLocationService } from './iplocation.service';
+import { IpLocationService } from './iplocation.service.js';
 
 @Injectable()
 export class LoginRecordsService extends BaseService<LoginRecordDocument> {
@@ -88,7 +91,7 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
         return null;
       }
 
-      const ip = requestIp.getClientIp(request).replace(/^.*:/, '');
+      const ip = getClientIp(request).replace(/^.*:/, '');
       const geoData = await this.ipLocation.getLocation(ip);
 
       const userAgent = request.headers['user-agent'];

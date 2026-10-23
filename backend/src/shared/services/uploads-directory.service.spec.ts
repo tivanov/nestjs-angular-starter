@@ -1,11 +1,15 @@
+import { jest } from '@jest/globals';
 import { Logger } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import * as fs from 'fs/promises';
-import { createMockConfigService } from '../../../test/support/mocks/config.mock';
-import { SharedModule } from '../shared.module';
+import { createMockConfigService } from '../../../test/support/mocks/config.mock.js';
 
-jest.mock('fs/promises', () => ({ mkdir: jest.fn() }));
+jest.unstable_mockModule('fs/promises', () => ({
+  mkdir: jest.fn(),
+}));
+
+const fs = await import('fs/promises');
+const { SharedModule } = await import('../shared.module.js');
 
 describe('Uploads directory initialization', () => {
   const originalWorkerNumber = process.env.WORKER_NUMBER;

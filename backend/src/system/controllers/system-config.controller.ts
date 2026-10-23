@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
-import { SystemConfigService } from '../services/system-config.service';
+import { SystemConfigService } from '../services/system-config.service.js';
 import { UserRoleEnum } from '@app/contracts';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
-import { SystemConfigMappers } from '../mappers/system-config.mappers';
+import { Roles } from 'src/auth/decorators/roles.decorator.js';
+import { JwtGuard } from 'src/auth/guards/jwt.guard.js';
+import { RolesGuard } from 'src/auth/guards/roles-guard.js';
+import { SystemConfigMappers } from '../mappers/system-config.mappers.js';
 
 @Controller('system-config')
 @Roles(UserRoleEnum.Admin)

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult, Model, QueryFilter } from 'mongoose';
-import { BaseService } from '../../shared/base/base-service';
+import type { PaginateModel, PaginateResult, QueryFilter } from 'mongoose';
+import { BaseService } from '../../shared/base/base-service.js';
 import { AlertTypeEnum, GetAlertsQuery } from '@app/contracts';
-import { Alert } from '../model/alert.model';
+import { Alert } from '../model/alert.model.js';
 
 @Injectable()
 export class AlertsService extends BaseService<Alert> {

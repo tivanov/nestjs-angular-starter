@@ -1,9 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Document, Types } from 'mongoose';
-import { User } from '../../users/model/user.model';
-import * as bcrypt from 'bcrypt';
-import { Identity } from './identity.model';
-import { BaseEntity } from '../../shared/base/base-entity';
+import { User } from '../../users/model/user.model.js';
+import { Identity } from './identity.model.js';
+import { BaseEntity } from '../../shared/base/base-entity.js';
 
 @Schema({
   timestamps: true,

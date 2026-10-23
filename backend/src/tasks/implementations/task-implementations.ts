@@ -1,10 +1,10 @@
-import { Task } from '../model/task.model';
+import { Task } from '../model/task.model.js';
 import { ModuleRef } from '@nestjs/core';
 import { TaskTypeEnum } from '@app/contracts';
 
 // Import all task implementations
-import { RunScriptTask } from './run-script.task';
-import { CleanAlertsTask } from './clean-alerts.task';
+import { RunScriptTask } from './run-script.task.js';
+import { CleanAlertsTask } from './clean-alerts.task.js';
 
 type TaskRunner = (task: Task, moduleRef: ModuleRef) => Promise<void>;
 

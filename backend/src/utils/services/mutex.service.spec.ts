@@ -1,21 +1,22 @@
+import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
-import { MutexService } from './mutex.service';
-import { Mutex } from '../model/mutex.model';
-import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
+import { MutexService } from './mutex.service.js';
+import { Mutex } from '../model/mutex.model.js';
+import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception.js';
 import { ErrorCode } from '@app/contracts';
 
 describe('MutexService', () => {
   let service: MutexService;
 
-  const mockFindOneLean = jest.fn();
+  const mockFindOneLean = jest.fn<(...args: any[]) => any>();
 
   const mockMutexModel = {
-    findOneAndUpdate: jest.fn(),
+    findOneAndUpdate: jest.fn<(...args: any[]) => any>(),
     findOne: jest.fn(() => ({ lean: mockFindOneLean })),
-    create: jest.fn(),
-    updateOne: jest.fn(),
-    deleteOne: jest.fn(),
+    create: jest.fn<(...args: any[]) => any>(),
+    updateOne: jest.fn<(...args: any[]) => any>(),
+    deleteOne: jest.fn<(...args: any[]) => any>(),
   };
 
   beforeEach(async () => {

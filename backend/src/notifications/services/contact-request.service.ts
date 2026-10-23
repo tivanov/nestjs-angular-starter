@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult, Model, QueryFilter } from 'mongoose';
-import { BaseService } from '../../shared/base/base-service';
+import type { PaginateModel, PaginateResult, QueryFilter } from 'mongoose';
+import { BaseService } from '../../shared/base/base-service.js';
 import {
   ContactRequestCommand,
   ContactRequestStatusEnum,
   GetContactRequestQuery,
 } from '@app/contracts';
-import { ContactRequest } from '../model/contact-request.model';
+import { ContactRequest } from '../model/contact-request.model.js';
 
 @Injectable()
 export class ContactRequestService extends BaseService<ContactRequest> {

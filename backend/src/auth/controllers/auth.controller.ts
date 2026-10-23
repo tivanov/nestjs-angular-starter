@@ -1,9 +1,9 @@
 import { Controller, Request, Post, UseGuards } from '@nestjs/common';
-import { Request as ReqObj } from 'express';
-import { AppUnauthorizedException } from '../../../src/shared/exceptions/app-unauthorized-exception';
+import type { Request as ReqObj } from 'express';
+import { AppUnauthorizedException } from '../../../src/shared/exceptions/app-unauthorized-exception.js';
 import { ErrorCode, IdentityProviderEnum } from '@app/contracts';
-import { AuthService } from '../services/auth.service';
-import { LocalUsernamePasswordAuthGuard } from '../guards/local-username-password.guard';
+import { AuthService } from '../services/auth.service.js';
+import { LocalUsernamePasswordAuthGuard } from '../guards/local-username-password.guard.js';
 
 @Controller('auth')
 export class AuthController {

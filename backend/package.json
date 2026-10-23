@@ -1,6 +1,7 @@
 {
   "name": "backend",
   "version": "0.0.1",
+  "type": "module",
   "description": "",
   "author": "",
   "private": true,
@@ -11,17 +12,17 @@
     "start": "nest start",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main.js",
     "build-prod": "cross-env NODE_ENV=production nest build",
     "build-stage": "cross-env NODE_ENV=stage nest build",
     "lint": "ESLINT_USE_FLAT_CONFIG=false eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json",
-    "init-db:dev": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/maintenance/db-setup.ts",
-    "init-db:test": "cross-env NODE_ENV=test ts-node -r tsconfig-paths/register src/maintenance/db-setup.ts"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:cov": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "test:debug": "node --experimental-vm-modules --inspect-brk node_modules/jest/bin/jest.js --runInBand",
+    "test:e2e": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./test/jest-e2e.json",
+    "init-db:dev": "cross-env NODE_ENV=development nest start --entryFile maintenance/db-setup",
+    "init-db:test": "cross-env NODE_ENV=test nest start --entryFile maintenance/db-setup"
   },
   "dependencies": {
     "@nestjs/axios": "12.0.1",
@@ -89,8 +90,14 @@
     ],
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
+    "extensionsToTreatAsEsm": [".ts"],
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
+      ]
     },
     "collectCoverageFrom": [
       "src/**/*.ts",
@@ -108,9 +115,10 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/contracts(|/.*)$": "<rootDir>/libs/contracts/src/$1",
-      "^src/(.*)$": "<rootDir>/src/$1",
-      "^config/(.*)$": "<rootDir>/config/$1"
+      "^@app/contracts$": "<rootDir>/libs/contracts/src/index.ts",
+      "^@app/contracts/(.*)\\.js$": "<rootDir>/libs/contracts/src/$1",
+      "^src/(.*)\\.js$": "<rootDir>/src/$1",
+      "^(\\.{1,2}/.*)\\.js$": "$1"
     }
   }
 }

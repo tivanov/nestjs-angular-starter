@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { UserRoleEnum } from '@app/contracts';
-import { UsersService } from '../../src/users/services/users.service';
-import { TEST_ADMIN } from './constants';
+import { UsersService } from '../../src/users/services/users.service.js';
+import { TEST_ADMIN } from './constants.js';
 
 export async function seedAdminUser(app: INestApplication): Promise<void> {
   const usersService = app.get(UsersService);

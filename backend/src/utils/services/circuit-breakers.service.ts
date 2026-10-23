@@ -5,8 +5,8 @@ import { Model, PaginateModel, QueryFilter } from 'mongoose';
 import {
   CircuitBreaker,
   CircuitBreakerState,
-} from '../model/circuit-breaker.model';
-import { BaseService } from 'src/shared/base/base-service';
+} from '../model/circuit-breaker.model.js';
+import { BaseService } from 'src/shared/base/base-service.js';
 import {
   CircuitBreakerOperation,
   GetCircuitBreakersQuery,

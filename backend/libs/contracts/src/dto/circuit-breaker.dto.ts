@@ -1,5 +1,5 @@
-import { CircuitBreakerOperation } from '../enums';
-import { BaseEntityDto } from './base-entity.dto';
+import { CircuitBreakerOperation } from '../enums/index.js';
+import { BaseEntityDto } from './base-entity.dto.js';
 
 export interface CircuitBreakerDto extends BaseEntityDto {
   operation: CircuitBreakerOperation;

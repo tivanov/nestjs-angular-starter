@@ -1,4 +1,4 @@
-import { UsersService } from '../services/users.service';
+import { UsersService } from '../services/users.service.js';
 import {
   Controller,
   Get,
@@ -18,7 +18,7 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
 } from '@nestjs/common';
-import { JwtGuard } from '../../auth/guards/jwt.guard';
+import { JwtGuard } from '../../auth/guards/jwt.guard.js';
 import {
   CreateUserCommand,
   ErrorCode,
@@ -27,15 +27,15 @@ import {
   UpdateUserPasswordCommand,
   UserRoleEnum,
 } from '@app/contracts';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
+import { Roles } from 'src/auth/decorators/roles.decorator.js';
+import { RolesGuard } from 'src/auth/guards/roles-guard.js';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { join } from 'path';
 import * as fs from 'fs/promises';
-import { IAppConfig } from '../../../config/model';
+import { IAppConfig } from '../../../config/model.js';
 import { ConfigService } from '@nestjs/config';
 import sharp from 'sharp';
-import { UserMappers } from '../mappers/user.mappers';
+import { UserMappers } from '../mappers/user.mappers.js';
 
 @Controller('users')
 export class UsersController {

@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Alert, AlertSchema } from './model/alert.model';
-import { AlertsService } from './services/alerts.service';
-import { AlertsController } from './controllers/alerts.controller';
+import { Alert, AlertSchema } from './model/alert.model.js';
+import { AlertsService } from './services/alerts.service.js';
+import { AlertsController } from './controllers/alerts.controller.js';
 import {
   ContactRequest,
   ContactRequestSchema,
-} from './model/contact-request.model';
-import { ContactRequestController } from './controllers/contact-request.controller';
-import { ContactRequestService } from './services/contact-request.service';
+} from './model/contact-request.model.js';
+import { ContactRequestController } from './controllers/contact-request.controller.js';
+import { ContactRequestService } from './services/contact-request.service.js';
 
 @Module({
   imports: [

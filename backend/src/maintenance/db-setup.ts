@@ -1,10 +1,10 @@
-import { UsersService } from '../users/services/users.service';
-import { MaintenanceModule } from './maintenance.module';
+import { UsersService } from '../users/services/users.service.js';
+import { MaintenanceModule } from './maintenance.module.js';
 import { INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { CreateUserCommand, UserRoleEnum } from '@app/contracts';
-import { TasksService } from 'src/tasks/services/tasks.service';
-import { TasksDefinition } from 'src/tasks/definitions';
+import { TasksService } from 'src/tasks/services/tasks.service.js';
+import { TasksDefinition } from 'src/tasks/definitions.js';
 
 class DbInitializer {
   private users: UsersService;
@@ -73,7 +73,9 @@ class DbInitializer {
   }
 }
 
-export const seedDatabase = async (context: INestApplication): Promise<void> => {
+export const seedDatabase = async (
+  context: INestApplication,
+): Promise<void> => {
   const initializer = new DbInitializer(context);
   await initializer.initDb();
 };

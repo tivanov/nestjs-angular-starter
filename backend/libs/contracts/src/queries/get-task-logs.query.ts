@@ -1,6 +1,6 @@
 import { IsDateString, IsEnum, IsMongoId, IsOptional } from 'class-validator';
-import { TaskLogTypeEnum, TaskTypeEnum } from '../enums';
-import { ShapeableQuery } from './shapeable-query';
+import { TaskLogTypeEnum, TaskTypeEnum } from '../enums/index.js';
+import { ShapeableQuery } from './shapeable-query.js';
 
 export class GetTaskLogsQuery extends ShapeableQuery {
   @IsOptional()

@@ -1,13 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { TasksService } from './tasks.service';
+import { TasksService } from './tasks.service.js';
 import { ConfigService } from '@nestjs/config';
-import { IAppConfig } from '../../../config/model';
+import { IAppConfig } from '../../../config/model.js';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { ModuleRef } from '@nestjs/core';
-import { Task } from '../model/task.model';
+import { Task } from '../model/task.model.js';
 import { CronJob } from 'cron';
-import { TaskImplementations } from '../implementations/task-implementations';
-import { TaskLogsService } from './task-logs.service';
+import { TaskImplementations } from '../implementations/task-implementations.js';
+import { TaskLogsService } from './task-logs.service.js';
 
 @Injectable()
 export class TasksRuntimeService {

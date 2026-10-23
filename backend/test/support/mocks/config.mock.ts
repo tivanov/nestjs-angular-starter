@@ -1,6 +1,7 @@
+import { jest } from '@jest/globals';
 import { ConfigService } from '@nestjs/config';
-import { IAuthConfig, IAppConfig, IDbConfig } from '../../../config/model';
-import { TEST_MONGO_URI } from '../constants';
+import { IAuthConfig, IAppConfig, IDbConfig } from '../../../config/model.js';
+import { TEST_MONGO_URI } from '../constants.js';
 
 const defaultAuthConfig: IAuthConfig = {
   jwtSecret: 'test-jwt-secret',

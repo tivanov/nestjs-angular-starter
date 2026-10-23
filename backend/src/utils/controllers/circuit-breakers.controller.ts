@@ -1,10 +1,10 @@
 import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
-import { CircuitBreakersService } from '../services/circuit-breakers.service';
+import { CircuitBreakersService } from '../services/circuit-breakers.service.js';
 import { GetCircuitBreakersQuery, UserRoleEnum } from '@app/contracts';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
-import { CircuitBreakerMappers } from '../mappers/circuit-breaker.mappers';
+import { Roles } from 'src/auth/decorators/roles.decorator.js';
+import { JwtGuard } from 'src/auth/guards/jwt.guard.js';
+import { RolesGuard } from 'src/auth/guards/roles-guard.js';
+import { CircuitBreakerMappers } from '../mappers/circuit-breaker.mappers.js';
 
 @Controller('circuit-breakers')
 @UseGuards(JwtGuard, RolesGuard)

@@ -6,12 +6,12 @@ import {
   Patch,
   Param,
 } from '@nestjs/common';
-import { JwtGuard } from '../../auth/guards/jwt.guard';
+import { JwtGuard } from '../../auth/guards/jwt.guard.js';
 import { GetAlertsQuery, UserRoleEnum } from '@app/contracts';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { AlertsService } from '../services/alerts.service';
-import { AlertMappers } from '../mappers/alert.mappers';
+import { RolesGuard } from 'src/auth/guards/roles-guard.js';
+import { Roles } from 'src/auth/decorators/roles.decorator.js';
+import { AlertsService } from '../services/alerts.service.js';
+import { AlertMappers } from '../mappers/alert.mappers.js';
 
 @Controller('alerts')
 @UseGuards(JwtGuard, RolesGuard)

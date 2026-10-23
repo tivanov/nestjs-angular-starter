@@ -2,9 +2,9 @@ import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { IAppConfig } from '../../config/model';
-import { AppModule } from '../app.module';
-import { setupHttp } from './setup-http';
+import { IAppConfig } from '../../config/model.js';
+import { AppModule } from '../app.module.js';
+import { setupHttp } from './setup-http.js';
 
 export async function bootstrapServer() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

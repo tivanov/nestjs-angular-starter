@@ -1,5 +1,5 @@
-import { BaseMapper } from 'src/shared/base/base-mapper';
-import { SystemConfig } from '../model/system-config.model';
+import { BaseMapper } from 'src/shared/base/base-mapper.js';
+import { SystemConfig } from '../model/system-config.model.js';
 import { Types } from 'mongoose';
 import { SystemConfigDto } from '@app/contracts';
 

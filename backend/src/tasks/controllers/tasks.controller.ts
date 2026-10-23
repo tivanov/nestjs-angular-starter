@@ -1,4 +1,4 @@
-import { TaskMappers } from '../mappers/task.mappers';
+import { TaskMappers } from '../mappers/task.mappers.js';
 import {
   Controller,
   Get,
@@ -10,17 +10,17 @@ import {
   UseGuards,
   Query,
 } from '@nestjs/common';
-import { TasksService } from '../services/tasks.service';
-import { JwtGuard } from '../../auth/guards/jwt.guard';
+import { TasksService } from '../services/tasks.service.js';
+import { JwtGuard } from '../../auth/guards/jwt.guard.js';
 import { SchedulerRegistry } from '@nestjs/schedule';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator.js';
 import {
   CreateTaskCommand,
   GetTasksQuery,
   UpdateTaskCommand,
   UserRoleEnum,
 } from '@app/contracts';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
+import { RolesGuard } from 'src/auth/guards/roles-guard.js';
 
 @Controller('tasks')
 @Roles(UserRoleEnum.Admin)

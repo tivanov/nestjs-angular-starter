@@ -1,18 +1,18 @@
-import { UsersModule } from './../users/users.module';
+import { UsersModule } from './../users/users.module.js';
 import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { AuthModule } from '../auth/auth.module';
-import * as config from '../../config';
-import { IDbConfig } from '../../config/model';
-import { TasksModule } from 'src/tasks/tasks.module';
+import { AuthModule } from '../auth/auth.module.js';
+import config from '../../config/index.js';
+import { IDbConfig } from '../../config/model.js';
+import { TasksModule } from 'src/tasks/tasks.module.js';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: config.default,
+      load: config,
     }),
     MongooseModule.forRootAsync({
       imports: [],

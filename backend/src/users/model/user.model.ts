@@ -1,10 +1,9 @@
 import { Document, SchemaTypes, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import * as bcrypt from 'bcrypt';
 import mongoosePaginate from 'mongoose-paginate-v2';
-import { UserSettings, UserSettingsSchema } from './userSettings.model';
+import { UserSettings, UserSettingsSchema } from './userSettings.model.js';
 import { UserRoleEnum } from '@app/contracts';
-import { BaseEntity } from '../../shared/base/base-entity';
+import { BaseEntity } from '../../shared/base/base-entity.js';
 
 export type UserDocument = User & Document;
 

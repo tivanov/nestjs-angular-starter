@@ -1,7 +1,7 @@
 import { ContactRequestDto, PagedListDto } from '@app/contracts';
-import { BaseMapper } from 'src/shared/base/base-mapper';
+import { BaseMapper } from 'src/shared/base/base-mapper.js';
 import { PaginateResult, Types } from 'mongoose';
-import { ContactRequest } from '../model/contact-request.model';
+import { ContactRequest } from '../model/contact-request.model.js';
 
 export class ContactRequestMappers extends BaseMapper {
   public static toDto(

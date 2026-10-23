@@ -1,7 +1,7 @@
 // backend/src/system/model/circuit-breaker.model.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { BaseEntity } from '../../shared/base/base-entity';
+import { BaseEntity } from '../../shared/base/base-entity.js';
 import { CircuitBreakerOperation } from '@app/contracts';
 import mongoosePaginate from 'mongoose-paginate-v2';
 

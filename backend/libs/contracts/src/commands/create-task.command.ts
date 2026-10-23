@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
-import { TaskTypeEnum } from '../enums';
+import { TaskTypeEnum } from '../enums/index.js';
 
 export class CreateTaskCommand {
   @IsOptional()

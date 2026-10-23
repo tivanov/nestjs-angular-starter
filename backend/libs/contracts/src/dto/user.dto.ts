@@ -1,6 +1,6 @@
-import { UserRoleEnum } from '../enums';
-import { BaseEntityDto } from './base-entity.dto';
-import { UserSettingsDto } from './user-settings.dto';
+import { UserRoleEnum } from '../enums/index.js';
+import { BaseEntityDto } from './base-entity.dto.js';
+import { UserSettingsDto } from './user-settings.dto.js';
 
 export interface UserDto extends BaseEntityDto {
   avatar?: string;

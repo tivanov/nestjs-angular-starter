@@ -1,8 +1,8 @@
 import { ModuleRef } from '@nestjs/core';
-import { Task } from '../model/task.model';
+import { Task } from '../model/task.model.js';
 import { Logger } from '@nestjs/common';
-import { TaskLogsService } from '../services/task-logs.service';
-import { AlertsService } from 'src/notifications/services/alerts.service';
+import { TaskLogsService } from '../services/task-logs.service.js';
+import { AlertsService } from 'src/notifications/services/alerts.service.js';
 
 export class CleanAlertsTask {
   private static readonly logger = new Logger(CleanAlertsTask.name);

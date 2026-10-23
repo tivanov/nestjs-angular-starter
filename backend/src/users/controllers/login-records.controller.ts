@@ -1,10 +1,10 @@
 import { Controller, UseGuards, Query, Get } from '@nestjs/common';
-import { JwtGuard } from '../../auth/guards/jwt.guard';
+import { JwtGuard } from '../../auth/guards/jwt.guard.js';
 import { GetLoginRecordsQuery, UserRoleEnum } from '@app/contracts';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { LoginRecordsService } from '../services/login-records.service';
-import { LoginRecordMappers } from '../mappers/login-record.mappers';
+import { RolesGuard } from 'src/auth/guards/roles-guard.js';
+import { Roles } from 'src/auth/decorators/roles.decorator.js';
+import { LoginRecordsService } from '../services/login-records.service.js';
+import { LoginRecordMappers } from '../mappers/login-record.mappers.js';
 
 @Controller('login-records')
 export class LoginRecordsController {

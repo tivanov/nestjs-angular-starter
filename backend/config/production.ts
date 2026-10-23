@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { IConfig } from './model';
+import { IConfig } from './model.js';
 
 const config: IConfig = {
   app: {

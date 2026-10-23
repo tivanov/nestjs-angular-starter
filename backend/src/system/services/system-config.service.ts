@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { SystemConfig } from '../model/system-config.model';
-import { BaseService } from 'src/shared/base/base-service';
+import { SystemConfig } from '../model/system-config.model.js';
+import { BaseService } from 'src/shared/base/base-service.js';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { getConnectionToken } from '@nestjs/mongoose';
-import { Connection } from 'mongoose';
+import type { Connection } from 'mongoose';
 import { execSync } from 'child_process';
 import { resolve } from 'path';
 
@@ -14,7 +14,7 @@ export async function clearDatabase(app: INestApplication): Promise<void> {
 }
 
 export async function seedFullDatabase(app: INestApplication): Promise<void> {
-  const backendRoot = resolve(__dirname, '../..');
+  const backendRoot = resolve(import.meta.dirname, '../..');
   execSync('npm run init-db:test', {
     cwd: backendRoot,
     stdio: 'inherit',

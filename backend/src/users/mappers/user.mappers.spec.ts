@@ -1,7 +1,7 @@
 import { Types, PaginateResult } from 'mongoose';
 import { UserRoleEnum } from '@app/contracts';
-import { UserMappers } from './user.mappers';
-import { User } from '../model/user.model';
+import { UserMappers } from './user.mappers.js';
+import { User } from '../model/user.model.js';
 
 describe('UserMappers', () => {
   const userId = new Types.ObjectId();

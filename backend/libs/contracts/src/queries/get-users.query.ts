@@ -1,5 +1,5 @@
-import { UserRoleEnum } from '../enums';
-import { ShapeableQuery } from './shapeable-query';
+import { UserRoleEnum } from '../enums/index.js';
+import { ShapeableQuery } from './shapeable-query.js';
 import { IsEnum, IsOptional, MaxLength, MinLength } from 'class-validator';
 
 export class GetUsersQuery extends ShapeableQuery {

@@ -1,8 +1,8 @@
 import { ModuleRef } from '@nestjs/core';
-import { Task } from './../model/task.model';
+import { Task } from './../model/task.model.js';
 import { Logger } from '@nestjs/common';
 import * as vm from 'vm';
-import { TaskLogsService } from '../services/task-logs.service';
+import { TaskLogsService } from '../services/task-logs.service.js';
 
 export class RunScriptTask {
   private static readonly logger = new Logger(RunScriptTask.name);

@@ -1,4 +1,4 @@
-import * as ms from 'ms';
+import ms from 'ms';
 
 export interface IAppConfig {
   isProduction: boolean;

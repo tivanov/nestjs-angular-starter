@@ -1,6 +1,6 @@
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
-import { IpLocation } from '../model/iplocation.model';
+import { IpLocation } from '../model/iplocation.model.js';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()

@@ -1,4 +1,4 @@
-import { IdentityProviderEnum } from '../enums';
+import { IdentityProviderEnum } from '../enums/index.js';
 
 export class CreateIdentityCommand {
   token?: string;

@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 
-import { Mutex } from '../model/mutex.model';
+import { Mutex } from '../model/mutex.model.js';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception';
+import { AppBadRequestException } from 'src/shared/exceptions/app-bad-request-exception.js';
 import { ErrorCode } from '@app/contracts';
-import { BaseService } from 'src/shared/base/base-service';
+import { BaseService } from 'src/shared/base/base-service.js';
 
 @Injectable()
 export class MutexService extends BaseService<Mutex> {

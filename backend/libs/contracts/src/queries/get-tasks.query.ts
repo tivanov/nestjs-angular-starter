@@ -1,6 +1,6 @@
 import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
-import { ShapeableQuery } from './shapeable-query';
-import { TaskTypeEnum } from '../enums';
+import { ShapeableQuery } from './shapeable-query.js';
+import { TaskTypeEnum } from '../enums/index.js';
 import { Transform } from 'class-transformer';
 
 export class GetTasksQuery extends ShapeableQuery {

@@ -1,5 +1,5 @@
-import { TaskTypeEnum } from '../enums';
-import { BaseEntityDto } from './base-entity.dto';
+import { TaskTypeEnum } from '../enums/index.js';
+import { BaseEntityDto } from './base-entity.dto.js';
 
 export interface TaskDto extends BaseEntityDto {
   active: boolean;

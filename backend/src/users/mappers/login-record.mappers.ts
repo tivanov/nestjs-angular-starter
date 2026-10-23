@@ -1,8 +1,8 @@
 import { PagedListDto, LoginRecordDto } from '@app/contracts';
 import { PaginateResult, Types } from 'mongoose';
-import { BaseMapper } from 'src/shared/base/base-mapper';
-import { LoginRecord } from '../model/login-record.model';
-import { UserMappers } from './user.mappers';
+import { BaseMapper } from 'src/shared/base/base-mapper.js';
+import { LoginRecord } from '../model/login-record.model.js';
+import { UserMappers } from './user.mappers.js';
 
 export class LoginRecordMappers extends BaseMapper {
   public static toDtosPaged(

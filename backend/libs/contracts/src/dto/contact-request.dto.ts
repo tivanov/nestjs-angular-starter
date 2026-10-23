@@ -1,5 +1,5 @@
-import { ContactRequestStatusEnum, ContactTypeEnum } from '../enums';
-import { BaseEntityDto } from './base-entity.dto';
+import { ContactRequestStatusEnum, ContactTypeEnum } from '../enums/index.js';
+import { BaseEntityDto } from './base-entity.dto.js';
 
 export interface ContactRequestDto extends BaseEntityDto {
   type: ContactTypeEnum;

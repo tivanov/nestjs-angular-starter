@@ -1,10 +1,10 @@
 import { GetTaskLogsQuery, UserRoleEnum } from '@app/contracts';
-import { TaskLogsService } from '../services/task-logs.service';
+import { TaskLogsService } from '../services/task-logs.service.js';
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
-import { TaskLogMappers } from '../mappers/task-log.mappers';
+import { Roles } from 'src/auth/decorators/roles.decorator.js';
+import { JwtGuard } from 'src/auth/guards/jwt.guard.js';
+import { RolesGuard } from 'src/auth/guards/roles-guard.js';
+import { TaskLogMappers } from '../mappers/task-log.mappers.js';
 
 @Controller('task-logs')
 @Roles(UserRoleEnum.Admin)

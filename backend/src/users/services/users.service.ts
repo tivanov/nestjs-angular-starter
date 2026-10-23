@@ -1,15 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { BaseService } from '../../shared/base/base-service';
-import { User, UserDocument } from '../model/user.model';
+import { BaseService } from '../../shared/base/base-service.js';
+import { User, UserDocument } from '../model/user.model.js';
 import { InjectModel } from '@nestjs/mongoose';
-import { IAppConfig, IAuthConfig } from '../../../config/model';
-import {
-  PaginateModel,
-  PaginateResult,
-  Types,
-  Model,
-  QueryFilter,
-} from 'mongoose';
+import { IAppConfig, IAuthConfig } from '../../../config/model.js';
+import type { PaginateModel, PaginateResult, QueryFilter } from 'mongoose';
+import { Types } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
 import {
   Constants,
@@ -22,13 +17,13 @@ import {
   UpdateUserPasswordCommand,
   UserRoleEnum,
 } from '@app/contracts';
-import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthorized-exception';
-import * as bcrypt from 'bcrypt';
-import { AppBadRequestException } from '../../shared/exceptions/app-bad-request-exception';
-import { LoginRecordsService } from './login-records.service';
+import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthorized-exception.js';
+import bcrypt from 'bcrypt';
+import { AppBadRequestException } from '../../shared/exceptions/app-bad-request-exception.js';
+import { LoginRecordsService } from './login-records.service.js';
 import { Request } from 'express';
-import { AppNotFoundException } from '../../shared/exceptions/app-not-found-exception';
-import { IdentitiesService } from '../../auth/services/identities.service';
+import { AppNotFoundException } from '../../shared/exceptions/app-not-found-exception.js';
+import { IdentitiesService } from '../../auth/services/identities.service.js';
 import path from 'path';
 import * as fs from 'fs/promises';
 

@@ -1,5 +1,5 @@
-import { TaskLogTypeEnum, TaskTypeEnum } from '../enums';
-import { BaseEntityDto } from './base-entity.dto';
+import { TaskLogTypeEnum, TaskTypeEnum } from '../enums/index.js';
+import { BaseEntityDto } from './base-entity.dto.js';
 
 export interface TaskLogDto extends BaseEntityDto {
   taskType: TaskTypeEnum;

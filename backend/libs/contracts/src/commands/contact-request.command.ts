@@ -5,7 +5,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { ContactTypeEnum } from '../enums';
+import { ContactTypeEnum } from '../enums/index.js';
 
 export class ContactRequestCommand {
   @IsNotEmpty()

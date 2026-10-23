@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { BaseService } from '../../shared/base/base-service';
+import { BaseService } from '../../shared/base/base-service.js';
 import { Model, PaginateModel, QueryFilter } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Identity, IdentityDocument } from '../model/identity.model';
+import { Identity, IdentityDocument } from '../model/identity.model.js';
 import { GetIdentitiesQuery, IdentityProviderEnum } from '@app/contracts';
 
 @Injectable()

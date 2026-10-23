@@ -1,8 +1,8 @@
-import { BaseMapper } from '../../shared/base/base-mapper';
-import { Identity } from '../model/identity.model';
+import { BaseMapper } from '../../shared/base/base-mapper.js';
+import { Identity } from '../model/identity.model.js';
 import { PaginateResult, Types } from 'mongoose';
 import { IdentityDto, PagedListDto } from '@app/contracts';
-import { UserMappers } from '../../users/mappers/user.mappers';
+import { UserMappers } from '../../users/mappers/user.mappers.js';
 
 export class IdentityMappers extends BaseMapper {
   public static toDtos(

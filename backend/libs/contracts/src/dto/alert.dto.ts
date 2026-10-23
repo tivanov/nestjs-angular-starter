@@ -1,4 +1,4 @@
-import { AlertTypeEnum } from '../enums/alert-type.enum';
+import { AlertTypeEnum } from '../enums/alert-type.enum.js';
 
 export interface AlertDto {
   id: string;

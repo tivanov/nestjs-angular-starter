@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
-import { CryptographyHelpersService } from './cryptography-helpers.service';
-import { createMockConfigService } from '../../../test/support/mocks/config.mock';
+import { CryptographyHelpersService } from './cryptography-helpers.service.js';
+import { createMockConfigService } from '../../../test/support/mocks/config.mock.js';
 
 describe('CryptographyHelpersService', () => {
   let service: CryptographyHelpersService;

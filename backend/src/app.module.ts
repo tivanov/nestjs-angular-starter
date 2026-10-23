@@ -1,26 +1,26 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as config from '../config';
+import config from '../config/index.js';
 import { MongooseModule } from '@nestjs/mongoose';
-import { IAppConfig, IDbConfig } from '../config/model';
+import { IAppConfig, IDbConfig } from '../config/model.js';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { SharedModule } from './shared/shared.module';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
+import { SharedModule } from './shared/shared.module.js';
+import { AuthModule } from './auth/auth.module.js';
+import { UsersModule } from './users/users.module.js';
 import { APP_GUARD } from '@nestjs/core';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { NotificationsModule } from './notifications/notifications.module';
-import { TasksModule } from './tasks/tasks.module';
+import { DashboardModule } from './dashboard/dashboard.module.js';
+import { NotificationsModule } from './notifications/notifications.module.js';
+import { TasksModule } from './tasks/tasks.module.js';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { UtilsModule } from './utils/utils.module';
-import { SystemModule } from './system/system.module';
-import { MeModule } from './me/me.module';
+import { UtilsModule } from './utils/utils.module.js';
+import { SystemModule } from './system/system.module.js';
+import { MeModule } from './me/me.module.js';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: config.default,
+      load: config,
     }),
     MongooseModule.forRootAsync({
       imports: [],

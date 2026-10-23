@@ -1,6 +1,17 @@
 import { registerAs } from '@nestjs/config';
+import development from './development.js';
+import production from './production.js';
+import stage from './stage.js';
+import test from './test.js';
 
-let env = 'development';
+const configs = {
+  development,
+  production,
+  stage,
+  test,
+};
+
+let env: keyof typeof configs = 'development';
 if (process.env.NODE_ENV === 'production') {
   env = 'production';
 } else if (process.env.NODE_ENV === 'stage') {
@@ -9,10 +20,7 @@ if (process.env.NODE_ENV === 'production') {
   env = 'test';
 }
 
-const path = `./${env}`;
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const config = require(path).default;
+const config = configs[env];
 
 const configsArray = [];
 for (const key in config) {

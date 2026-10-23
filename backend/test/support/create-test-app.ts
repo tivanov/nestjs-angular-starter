@@ -4,7 +4,7 @@ import {
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
-import { AppModule } from '../../src/app.module';
+import { AppModule } from '../../src/app.module.js';
 
 export async function createTestApp(): Promise<INestApplication> {
   const moduleFixture: TestingModule = await Test.createTestingModule({

@@ -1,16 +1,16 @@
-import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthorized-exception';
-import { TokenPayload } from '../model/token-payload';
+import { AppUnauthorizedException } from './../../shared/exceptions/app-unauthorized-exception.js';
+import { TokenPayload } from '../model/token-payload.js';
 import { ConfigService } from '@nestjs/config';
-import { RefreshToken } from '../model/refresh-token.model';
-import { User } from '../../users/model/user.model';
+import { RefreshToken } from '../model/refresh-token.model.js';
+import { User } from '../../users/model/user.model.js';
 import { Injectable, Logger } from '@nestjs/common';
-import { UsersService } from '../../users/services/users.service';
+import { UsersService } from '../../users/services/users.service.js';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Request } from 'express';
 import { getClientIp } from 'request-ip';
-import { IAuthConfig } from '../../../config/model';
+import { IAuthConfig } from '../../../config/model.js';
 import {
   CreateRefreshTokenCommand,
   ErrorCode,
@@ -19,9 +19,9 @@ import {
   UserDto,
 } from '@app/contracts';
 import ms from 'ms';
-import { IdentitiesService } from './identities.service';
-import { Identity } from '../model/identity.model';
-import { UserMappers } from '../../users/mappers/user.mappers';
+import { IdentitiesService } from './identities.service.js';
+import { Identity } from '../model/identity.model.js';
+import { UserMappers } from '../../users/mappers/user.mappers.js';
 
 @Injectable()
 export class AuthService {

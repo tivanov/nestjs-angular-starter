@@ -5,9 +5,9 @@ import {
   IdNameDto,
 } from '@app/contracts';
 import { PaginateResult, Types } from 'mongoose';
-import { BaseMapper } from 'src/shared/base/base-mapper';
-import { User } from '../model/user.model';
-import { UserSettings } from '../model/userSettings.model';
+import { BaseMapper } from 'src/shared/base/base-mapper.js';
+import { User } from '../model/user.model.js';
+import { UserSettings } from '../model/userSettings.model.js';
 
 export class UserMappers extends BaseMapper {
   public static toDtosPaged(

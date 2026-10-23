@@ -1,8 +1,8 @@
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { IAppConfig } from '../../config/model';
-import { setupCors } from './setup-cors';
-import { setupLogging } from './setup-logging';
+import { IAppConfig } from '../../config/model.js';
+import { setupCors } from './setup-cors.js';
+import { setupLogging } from './setup-logging.js';
 
 export function setupHttp(app: NestExpressApplication, appConfig: IAppConfig) {
   // raise the limit of the request body

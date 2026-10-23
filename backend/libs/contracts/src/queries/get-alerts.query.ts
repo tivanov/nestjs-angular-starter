@@ -1,7 +1,7 @@
 import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { ShapeableQuery } from './shapeable-query';
-import { AlertTypeEnum } from '../enums';
+import { ShapeableQuery } from './shapeable-query.js';
+import { AlertTypeEnum } from '../enums/index.js';
 
 export class GetAlertsQuery extends ShapeableQuery {
   @IsOptional()

@@ -1,8 +1,8 @@
-import { Task } from '../model/task.model';
+import { Task } from '../model/task.model.js';
 import { ModuleRef } from '@nestjs/core';
-import { RunScriptTask } from './run-script.task';
+import { RunScriptTask } from './run-script.task.js';
 import { TaskTypeEnum } from '@app/contracts';
-import { CleanAlertsTask } from './clean-alerts.task';
+import { CleanAlertsTask } from './clean-alerts.task.js';
 
 export class ImplementationRepository {
   public static get(

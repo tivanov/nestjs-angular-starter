@@ -1,6 +1,6 @@
 import { IsDateString, IsEnum, IsOptional } from 'class-validator';
-import { ShapeableQuery } from './shapeable-query';
-import { ContactRequestStatusEnum, ContactTypeEnum } from '../enums';
+import { ShapeableQuery } from './shapeable-query.js';
+import { ContactRequestStatusEnum, ContactTypeEnum } from '../enums/index.js';
 
 export class GetContactRequestQuery extends ShapeableQuery {
   @IsOptional()

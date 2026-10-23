@@ -8,8 +8,8 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { CreateUserSettingsCommand } from './create-user-settings.command';
-import { UserRoleEnum } from '../enums';
+import { CreateUserSettingsCommand } from './create-user-settings.command.js';
+import { UserRoleEnum } from '../enums/index.js';
 
 export class CreateUserCommand {
   @IsOptional()

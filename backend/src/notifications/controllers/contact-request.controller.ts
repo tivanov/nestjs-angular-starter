@@ -6,12 +6,12 @@ import {
   Param,
   Patch,
 } from '@nestjs/common';
-import { JwtGuard } from '../../auth/guards/jwt.guard';
+import { JwtGuard } from '../../auth/guards/jwt.guard.js';
 import { GetContactRequestQuery, UserRoleEnum } from '@app/contracts';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { ContactRequestMappers } from '../mappers/contact-request.mappers';
-import { ContactRequestService } from '../services/contact-request.service';
+import { RolesGuard } from 'src/auth/guards/roles-guard.js';
+import { Roles } from 'src/auth/decorators/roles.decorator.js';
+import { ContactRequestMappers } from '../mappers/contact-request.mappers.js';
+import { ContactRequestService } from '../services/contact-request.service.js';
 
 @Controller('contact-request')
 @UseGuards(JwtGuard, RolesGuard)

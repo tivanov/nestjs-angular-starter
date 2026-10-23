@@ -1,5 +1,5 @@
 import { Document, HydratedDocument } from 'mongoose';
-import { BaseEntity } from '../../shared/base/base-entity';
+import { BaseEntity } from '../../shared/base/base-entity.js';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { TaskTypeEnum } from '@app/contracts';
 import mongoosePaginate from 'mongoose-paginate-v2';

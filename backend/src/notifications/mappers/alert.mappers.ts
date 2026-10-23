@@ -1,6 +1,6 @@
 import { AlertDto, ContactRequestDto, PagedListDto } from '@app/contracts';
-import { BaseMapper } from 'src/shared/base/base-mapper';
-import { Alert } from '../model/alert.model';
+import { BaseMapper } from 'src/shared/base/base-mapper.js';
+import { Alert } from '../model/alert.model.js';
 import { PaginateResult, Types } from 'mongoose';
 
 export class AlertMappers extends BaseMapper {

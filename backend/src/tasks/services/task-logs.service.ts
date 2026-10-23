@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { TaskLog, TaskLogDocument } from '../model/task-log.model';
-import { BaseService } from 'src/shared/base/base-service';
+import { TaskLog, TaskLogDocument } from '../model/task-log.model.js';
+import { BaseService } from 'src/shared/base/base-service.js';
 import {
   Model,
   PaginateModel,

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from 'src/shared/base/base-entity';
+import { BaseEntity } from 'src/shared/base/base-entity.js';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import { Document } from 'mongoose';
 import { AlertTypeEnum } from '@app/contracts';

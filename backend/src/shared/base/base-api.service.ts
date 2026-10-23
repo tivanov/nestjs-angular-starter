@@ -1,13 +1,13 @@
 import { Logger } from '@nestjs/common';
-import { ApiResponseException } from '../exceptions/app-api-response-exception';
+import { ApiResponseException } from '../exceptions/app-api-response-exception.js';
 import {
   AxiosResponse,
   AxiosResponseHeaders,
   isAxiosError,
   RawAxiosResponseHeaders,
 } from 'axios';
-import { ErrorCode } from '@app/contracts/codes';
-import { AlertsService } from 'src/notifications/services/alerts.service';
+import { ErrorCode } from '@app/contracts/codes/index.js';
+import { AlertsService } from 'src/notifications/services/alerts.service.js';
 
 export class BaseApiService {
   protected baseUrl: string;

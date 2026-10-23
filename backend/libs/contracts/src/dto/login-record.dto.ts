@@ -1,5 +1,5 @@
-import { BaseEntityDto } from './base-entity.dto';
-import { IdNameDto } from './id-name.dto';
+import { BaseEntityDto } from './base-entity.dto.js';
+import { IdNameDto } from './id-name.dto.js';
 
 export interface LoginRecordDto extends BaseEntityDto {
   ip: string;

@@ -1,9 +1,9 @@
 import { Controller, Get, Logger, UseGuards } from '@nestjs/common';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { LoggedInUser } from 'src/shared/decorators/logged-in-user.decorator';
-import { UserMappers } from 'src/users/mappers/user.mappers';
-import { User } from 'src/users/model/user.model';
-import { UsersService } from 'src/users/services/users.service';
+import { JwtGuard } from 'src/auth/guards/jwt.guard.js';
+import { LoggedInUser } from 'src/shared/decorators/logged-in-user.decorator.js';
+import { UserMappers } from 'src/users/mappers/user.mappers.js';
+import { User } from 'src/users/model/user.model.js';
+import { UsersService } from 'src/users/services/users.service.js';
 
 @Controller('me')
 @UseGuards(JwtGuard)

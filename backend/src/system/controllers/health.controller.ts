@@ -5,9 +5,9 @@ import {
   MongooseHealthIndicator,
 } from '@nestjs/terminus';
 import { UserRoleEnum } from '@app/contracts';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RolesGuard } from 'src/auth/guards/roles-guard';
+import { Roles } from 'src/auth/decorators/roles.decorator.js';
+import { JwtGuard } from 'src/auth/guards/jwt.guard.js';
+import { RolesGuard } from 'src/auth/guards/roles-guard.js';
 
 @Controller('health')
 @Roles(UserRoleEnum.Admin)

@@ -1,5 +1,5 @@
 import { IsDateString, IsMongoId, IsOptional } from 'class-validator';
-import { ShapeableQuery } from './shapeable-query';
+import { ShapeableQuery } from './shapeable-query.js';
 
 export class GetLoginRecordsQuery extends ShapeableQuery {
   @IsOptional()

@@ -1,6 +1,6 @@
 import { IsEnum, IsMongoId, IsOptional } from 'class-validator';
-import { IdentityProviderEnum } from '../enums';
-import { ShapeableQuery } from './shapeable-query';
+import { IdentityProviderEnum } from '../enums/index.js';
+import { ShapeableQuery } from './shapeable-query.js';
 
 export class GetIdentitiesQuery extends ShapeableQuery {
   @IsOptional()

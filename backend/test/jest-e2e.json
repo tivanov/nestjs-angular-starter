@@ -1,19 +1,21 @@
 {
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "ts"
-  ],
+  "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
+  "extensionsToTreatAsEsm": [".ts"],
   "transform": {
-    "^.+\\.(t|j)s$": "ts-jest"
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        "useESM": true
+      }
+    ]
   },
   "moduleNameMapper": {
-    "^src/(.*)$": "<rootDir>/../src/$1",
-    "^config/(.*)$": "<rootDir>/../config/$1",
-    "^@app/contracts/(.*)$": "<rootDir>/../libs/contracts/src/$1",
-    "^@app/contracts$": "<rootDir>/../libs/contracts/src"
+    "^@app/contracts$": "<rootDir>/../libs/contracts/src/index.ts",
+    "^@app/contracts/(.*)\\.js$": "<rootDir>/../libs/contracts/src/$1",
+    "^src/(.*)\\.js$": "<rootDir>/../src/$1",
+    "^(\\.{1,2}/.*)\\.js$": "$1"
   }
 }
