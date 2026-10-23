@@ -1,6 +1,6 @@
 # Agent Instructions
 
-**Last updated:** 2026-09-03
+**Last updated:** 2026-10-24
 
 Before building new features, consult the project catalog. After building, update it.
 
@@ -26,16 +26,14 @@ Before building new features, consult the project catalog. After building, updat
 
 ### 2. When implementing
 
-The canonical coding rules for Cursor, Codex, and Claude Code live in [.cursor/rules/](.cursor/rules/). Read the `.mdc` files directly as Markdown with YAML frontmatter; do not maintain separate copies.
+Coding rules live only in [.cursor/rules/](.cursor/rules/). Do not copy them into this file, `CLAUDE.md`, or another rules directory. Adding a rule means adding a `.mdc` file there and nothing else.
 
-Before implementing changes:
+Cursor applies those files from their frontmatter. Codex reads this file. Claude Code reads this file through [CLAUDE.md](CLAUDE.md). Those harnesses do not load `.cursor/rules/` on their own, so before implementing:
 
-1. Discover all rules recursively with `rg --files --hidden .cursor/rules -g '*.mdc'` and inspect their frontmatter. Repeat discovery when the task scope changes so newly added rules are included.
-2. Read and follow every rule with `alwaysApply: true` for all tasks.
-3. For other rules, read and follow those whose `globs` match files you will read, create, or modify. Patterns are relative to the repository root; `globs` may be a comma-separated string or a YAML list. Check all rule directories because some rules span both backend and frontend.
-4. Also read rules whose `description` or subject applies to the task, including rules without globs, and follow relevant rule references.
-
-Add or update coding rules only in `.cursor/rules/`; new `.mdc` files are discovered through this workflow without updating an index. Codex uses this `AGENTS.md`; Claude Code loads the same instructions through the root `CLAUDE.md`.
+1. List every `.mdc` file under `.cursor/rules/`, including nested directories.
+2. Read each file's YAML frontmatter.
+3. Follow every rule with `alwaysApply: true`.
+4. Follow every other rule whose `globs` match a file you will read or edit, or whose `description` matches the task. Globs are relative to the repository root. A comma-separated string or a YAML list means any listed pattern matches. Repeat this when the files you touch change.
 
 ### 3. After building (required)
 
