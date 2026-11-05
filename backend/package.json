@@ -16,11 +16,11 @@
     "build-prod": "cross-env NODE_ENV=production nest build",
     "build-stage": "cross-env NODE_ENV=stage nest build",
     "lint": "ESLINT_USE_FLAT_CONFIG=false eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "test:cov": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-    "test:debug": "node --experimental-vm-modules --inspect-brk node_modules/jest/bin/jest.js --runInBand",
-    "test:e2e": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./test/jest-e2e.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "test:debug": "vitest --inspect-brk --no-file-parallelism",
+    "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
     "init-db:dev": "cross-env NODE_ENV=development nest start --entryFile maintenance/db-setup",
     "init-db:test": "cross-env NODE_ENV=test nest start --entryFile maintenance/db-setup"
   },
@@ -61,64 +61,25 @@
     "@nestjs/schematics": "^12.0.0",
     "@nestjs/testing": "^12.0.0",
     "@types/express": "^5.0.6",
-    "@types/jest": "^30.0.0",
     "@types/multer": "2.2.0",
     "@types/node": "^25.0.3",
     "@types/passport-local": "^1.0.38",
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.70.0",
     "@typescript-eslint/parser": "^8.70.0",
+    "@vitest/coverage-v8": "^4.1.11",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
-    "jest": "30.5.1",
     "prettier": "^3.7.4",
     "source-map-support": "^0.5.21",
     "supertest": "^7.1.4",
-    "ts-jest": "^29.4.12",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^6.0.0"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": ".",
-    "testRegex": ".*\\.spec\\.ts$",
-    "extensionsToTreatAsEsm": [".ts"],
-    "transform": {
-      "^.+\\.tsx?$": [
-        "ts-jest",
-        {
-          "useESM": true
-        }
-      ]
-    },
-    "collectCoverageFrom": [
-      "src/**/*.ts",
-      "!src/main.ts",
-      "!**/*.module.ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      ".model.ts"
-    ],
-    "coverageDirectory": "./coverage",
-    "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/src/",
-      "<rootDir>/libs/"
-    ],
-    "moduleNameMapper": {
-      "^@app/contracts$": "<rootDir>/libs/contracts/src/index.ts",
-      "^@app/contracts/(.*)\\.js$": "<rootDir>/libs/contracts/src/$1",
-      "^src/(.*)\\.js$": "<rootDir>/src/$1",
-      "^(\\.{1,2}/.*)\\.js$": "$1"
-    }
+    "typescript": "^6.0.0",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.11"
   }
 }

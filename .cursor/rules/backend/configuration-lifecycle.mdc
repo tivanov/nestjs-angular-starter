@@ -14,7 +14,7 @@ Use `backend/config/*.ts` for values that are stable at runtime and only change 
   - `backend/config/development.ts`
   - `backend/config/stage.ts`
   - `backend/config/production.ts`
-  - `backend/config/test.ts` (Jest / e2e)
+  - `backend/config/test.ts` (Vitest / e2e)
 - Each file exports one typed `config` object (`IConfig`) with the same shape.
 
 ## How loading works

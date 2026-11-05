@@ -1,4 +1,3 @@
-import { jest } from '@jest/globals';
 import { ConfigService } from '@nestjs/config';
 import { IAuthConfig, IAppConfig, IDbConfig } from '../../../config/model.js';
 import { TEST_MONGO_URI } from '../constants.js';
@@ -37,7 +36,7 @@ export function createMockConfigService(
   const db = { ...defaultDbConfig, ...overrides.db };
 
   return {
-    get: jest.fn((key: string) => {
+    get: vi.fn((key: string) => {
       if (key === 'auth') return auth;
       if (key === 'app') return app;
       if (key === 'db') return db;

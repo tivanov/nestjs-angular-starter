@@ -13,7 +13,17 @@ module.exports = {
   root: true,
   env: {
     node: true,
-    jest: true,
+  },
+  globals: {
+    describe: 'readonly',
+    it: 'readonly',
+    test: 'readonly',
+    expect: 'readonly',
+    beforeAll: 'readonly',
+    afterAll: 'readonly',
+    beforeEach: 'readonly',
+    afterEach: 'readonly',
+    vi: 'readonly',
   },
   ignorePatterns: ['.eslintrc.cjs'],
   rules: {

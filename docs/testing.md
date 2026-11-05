@@ -1,6 +1,6 @@
 # Testing
 
-**Last updated:** 2026-09-10
+**Last updated:** 2026-10-26
 
 Backend-first testing guide for this monorepo. Frontend testing is planned for a later phase.
 
@@ -26,7 +26,7 @@ cd backend && npm run test:cov      # unit + coverage report
 cd backend && npm run test:e2e      # e2e (requires MongoDB replica set rs0)
 ```
 
-E2E tests use the MongoDB URI from `backend/config/test.ts` (`NODE_ENV=test`): `mongodb://localhost/nest-angular-starter-test?replicaSet=rs0&retryWrites=true`. CI starts MongoDB 8.0 as replica set `rs0`. Local e2e needs the same — see [mongodb-replica-set.md](./mongodb-replica-set.md).
+The runner is [Vitest](https://vitest.dev/). `backend/vitest.config.e2e.ts` sets `NODE_ENV=test`, so e2e uses the MongoDB URI from `backend/config/test.ts`: `mongodb://localhost/nest-angular-starter-test?replicaSet=rs0&retryWrites=true`. CI starts MongoDB 8.0 as replica set `rs0`. Local e2e needs the same — see [mongodb-replica-set.md](./mongodb-replica-set.md).
 
 ## Conventions
 
@@ -76,9 +76,9 @@ describe('UsersService', () => {
   let service: UsersService;
 
   const mockUserModel = {
-    paginate: jest.fn(),
-    findById: jest.fn(),
-    find: jest.fn(),
+    paginate: vi.fn(),
+    findById: vi.fn(),
+    find: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -86,8 +86,8 @@ describe('UsersService', () => {
       providers: [
         UsersService,
         { provide: getModelToken(User.name), useValue: mockUserModel },
-        { provide: LoginRecordsService, useValue: { addInBackground: jest.fn() } },
-        { provide: IdentitiesService, useValue: { getValid: jest.fn() } },
+        { provide: LoginRecordsService, useValue: { addInBackground: vi.fn() } },
+        { provide: IdentitiesService, useValue: { getValid: vi.fn() } },
         { provide: ConfigService, useValue: createMockConfigService() },
       ],
     }).compile();
@@ -111,7 +111,7 @@ describe('UsersService', () => {
 ### E2E HTTP test
 
 ```typescript
-import * as request from 'supertest';
+import request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { createTestApp, closeTestApp } from './support/create-test-app';
 import { clearDatabase } from './support/e2e-db';
@@ -163,7 +163,7 @@ describe('Auth (e2e)', () => {
 
 Run `npm run test:cov` locally to inspect `backend/coverage/`.
 
-Jest collects coverage from `src/**/*.ts` (excluding `main.ts` and `*.module.ts`).
+Vitest collects coverage from `src/**/*.ts` (excluding `main.ts`, `*.module.ts`, and `*.model.ts`).
 
 Enable `coverageThreshold` at ~30% lines once the suite has ~10 unit spec files, then ramp toward 60–70% on services and mappers over time.
 

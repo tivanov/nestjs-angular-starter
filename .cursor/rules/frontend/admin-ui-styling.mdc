@@ -37,39 +37,16 @@ Theme is defined in `src/styles.scss` with `mat.theme()` (dark-only). Palettes l
 - Success/error: `MatSnackBar` — use `extractErrorMessage(error)` for API failures.
 - Confirm destructive actions: `MatDialog` or `DialogService` from common-ui.
 
-## Styling — Tailwind first
+## Styling
 
-**Default to Tailwind utility classes in templates.** The project already loads Tailwind 4 in `styles.scss`; use it for layout, spacing, typography, colors, and responsive behavior.
+Follow `.cursor/rules/frontend/tailwind-styles.mdc`. Tailwind utility classes in the template. No component `.scss`, `styleUrl`, or `styles:` unless Tailwind cannot express the rule.
 
-```html
-<!-- Good: Tailwind in template -->
-<div class="flex justify-between items-center gap-4 pb-4">
-  <mat-form-field class="w-full md:w-64">
-```
+Material exceptions that Tailwind cannot reach:
 
-### Prefer Tailwind for
+- Override Material internals with `mat.*-overrides` mixins — not `::ng-deep`.
+- Theme colors use `--mat-sys-*` (surface, surface-container-low, on-surface, outline-variant, error, primary, …), not hardcoded hex.
+- Permanent sidenav edges use `mat.sidenav-overrides` (`container-divider-color: outline-variant`) — M3 defaults that token to transparent.
 
-- Flex/grid layout, spacing, sizing, alignment
-- Responsive breakpoints (`md:`, `lg:`, …)
-- Conditional classes via `[class.xxx]` bindings (see angular-20.mdc)
-- Simple one-off visual tweaks on wrappers around Material components
-
-### Use component `.scss` only when necessary
-
-Reach for a co-located `.scss` file **only** when Tailwind cannot solve it cleanly:
-
-- Overriding Material internals via `mat.*-overrides` mixins — not `::ng-deep`
-- Global theme tokens in `styles.scss` (`mat.theme()`, `--mat-sys-*`)
-- Complex animations, pseudo-elements, or selectors Tailwind does not express well
-- Shared custom tokens reused across many components (e.g. `.bg-card` using `--mat-sys-surface-container`)
-
-Use `--mat-sys-*` (surface, surface-container-low, on-surface, outline-variant, error, primary, …) instead of hardcoded hex for colors that should follow the theme. Permanent sidenav edges must use `mat.sidenav-overrides` (`container-divider-color: outline-variant`) — M3 defaults that token to transparent.
-
-If you add `.scss`, keep it minimal and leave a short comment explaining why Tailwind was insufficient. Prefer an empty or omitted `styleUrl` when all styling lives in the template.
-
-### Other rules
-
-- Do not use inline `styles:` in `@Component` — use template classes or `.scss`.
 - Use native `[class.active]` bindings — no `ngClass` / `ngStyle` (see angular-20.mdc).
 - Register new Font Awesome icons in `AppComponent` FaIconLibrary when adding menu icons.
 

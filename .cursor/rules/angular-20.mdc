@@ -1,185 +1,70 @@
 ---
-description: This rule provides comprehensive best practices and coding standards for Angular development, focusing on modern TypeScript, standalone components, signals, and performance optimizations.
+description: Angular and TypeScript practices for frontend components, templates, and services.
 globs: frontend/projects/**/*.ts,frontend/projects/**/*.scss,frontend/projects/**/*.html
 alwaysApply: false
 ---
 
 # Angular Best Practices
 
-This repo uses **Angular 21**. Follow these Angular 20+ practices (standalone, signals, `OnPush`, zoneless-friendly components).
+Write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
+
+This repo uses **Angular 21** (`@angular/core` ^21) and was started before Angular 22. Items below that say Angular v22+ describe that version's API. Do not assume v22 defaults apply here.
 
 ## TypeScript Best Practices
 
-- **Strict Type Checking:** Always enable and adhere to strict type checking. This helps catch errors early and improves code quality.
-- **Prefer Type Inference:** Allow TypeScript to infer types when they are obvious from the context. This reduces verbosity while maintaining type safety.
-  - **Bad:**
-    ```typescript
-    let name: string = "Angular";
-    ```
-  - **Good:**
-    ```typescript
-    let name = "Angular";
-    ```
-- **Avoid `any`:** Do not use the `any` type unless absolutely necessary as it bypasses type checking. Prefer `unknown` when a type is uncertain and you need to handle it safely.
+- Use strict type checking
+- Prefer type inference when the type is obvious
+- Avoid the `any` type; use `unknown` when type is uncertain
 
 ## Angular Best Practices
 
-- **Standalone Components:** Always use standalone components, directives, and pipes. Avoid using `NgModules` for new features or refactoring existing ones.
-- **Implicit Standalone:** When creating standalone components, you do not need to explicitly set `standalone: true` inside the `@Component`, `@Directive` and `@Pipe` decorators, as it is implied by default.
-  - **Bad:**
-    ```typescript
-    @Component({
-      standalone: true,
-      // ...
-    })
-    export class MyComponent {}
-    ```
-  - **Good:**
-    ```typescript
-    @Component({
-      // `standalone: true` is implied
-      // ...
-    })
-    export class MyComponent {}
-    ```
-- **Signals for State Management:** Use Angular Signals for reactive state in all new components and services. Prefer signals over mutable class fields or RxJS subjects for component-local state.
-- **Lazy Loading:** Implement lazy loading for feature routes to improve initial load times of your application.
-- **NgOptimizedImage:** Use `NgOptimizedImage` for all static images to automatically optimize image loading and performance.
-- **Host bindings:** Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead.
+- Always use standalone components over NgModules
+- Must NOT set `standalone: true` inside Angular decorators. It's the default in Angular v20+.
+- Set `changeDetection: ChangeDetectionStrategy.OnPush` on every new component. On Angular 21, omitting it uses eager checking (`ChangeDetectionStrategy.Default`), not OnPush. Angular v22 makes OnPush the default only for components that set no strategy; `ng update` to v22 writes `ChangeDetectionStrategy.Eager` on existing components so they keep the old behavior.
+- Use signals for state management
+- Implement lazy loading for feature routes
+- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
+- Use `NgOptimizedImage` for all static images.
+  - `NgOptimizedImage` does not work for inline base64 images.
+
+## Accessibility Requirements
+
+- It MUST pass all AXE checks.
+- It MUST follow all WCAG AA minimums, including focus management, color contrast, and ARIA attributes.
 
 ## Components
 
-- **New components — required defaults:** Every new component MUST use `ChangeDetectionStrategy.OnPush` and signals for reactive state to ensure zoneless change detection works correctly. Use `input()` / `output()` for component API, `signal()` / `computed()` for local and derived state, and avoid class fields mutated outside the signal API.
-- **Exception policy:** If a component cannot use signals or `OnPush` due to a hard technical constraint, keep the exception minimal and add a short code comment explaining why.
-  - **Bad:**
-    ```typescript
-    @Component({
-      changeDetection: ChangeDetectionStrategy.Default,
-      // ...
-    })
-    export class MyComponent {
-      count = 0;
-      @Input() userId!: string;
-    }
-    ```
-  - **Good:**
-    ```typescript
-    @Component({
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      // ...
-    })
-    export class MyComponent {
-      userId = input<string>("");
-      count = signal(0);
-      doubled = computed(() => this.count() * 2);
-    }
-    ```
-- **Single Responsibility:** Keep components small, focused, and responsible for a single piece of functionality.
-- **`input()` and `output()` Functions:** Prefer `input()` and `output()` functions over the `@Input()` and `@Output()` decorators for defining component inputs and outputs.
-
-  - **Old Decorator Syntax:**
-    ```typescript
-    @Input() userId!: string;
-    @Output() userSelected = new EventEmitter<string>();
-    ```
-  - **New Function Syntax:**
-
-    ```typescript
-    import { input, output } from "@angular/core";
-
-    // ...
-    userId = input<string>("");
-    userSelected = output<string>();
-    ```
-
-- **`computed()` for Derived State:** Use the `computed()` function from `@angular/core` for derived state based on signals.
-- **`ChangeDetectionStrategy.OnPush`:** Required on all new components to maintain zoneless compatibility and reduce unnecessary change detection cycles.
-- **External files (required for new components):** Every new component MUST use separate `.ts` and `.html` files. Do not use inline `template:` or `styles:` in the `@Component` decorator. Component styles are **`.scss`** (not `.css`). Omit `styleUrl` when Tailwind in the template is enough — see `.cursor/rules/frontend/admin-ui-styling.mdc`.
-  - **Bad:**
-    ```typescript
-    @Component({
-      selector: "app-my-widget",
-      template: `<p>{{ title() }}</p>`,
-      styles: [`:host { display: block; }`],
-    })
-    export class MyWidgetComponent {}
-    ```
-  - **Good:**
-    ```typescript
-    @Component({
-      selector: "app-my-widget",
-      templateUrl: "./my-widget.component.html",
-      styleUrl: "./my-widget.component.scss",
-    })
-    export class MyWidgetComponent {}
-    ```
-  - Colocate files in the same folder: `my-widget.component.ts`, `my-widget.component.html`, `my-widget.component.scss`.
-- **Reactive Forms:** Prefer Reactive forms over Template-driven forms for complex forms, validation, and dynamic controls due to their explicit, immutable, and synchronous nature.
-- **No `ngClass` / `NgClass`:** Do not use the `ngClass` directive. Instead, use native `class` bindings for conditional styling.
-  - **Bad:**
-    ```html
-    <section [ngClass]="{'active': isActive}"></section>
-    ```
-  - **Good:**
-    ```html
-    <section [class.active]="isActive"></section>
-    <section [class]="{'active': isActive}"></section>
-    <section [class]="myClasses"></section>
-    ```
-- **No `ngStyle` / `NgStyle`:** Do not use the `ngStyle` directive. Instead, use native `style` bindings for conditional inline styles.
-  - **Bad:**
-    ```html
-    <section [ngStyle]="{'font-size': fontSize + 'px'}"></section>
-    ```
-  - **Good:**
-    ```html
-    <section [style.font-size.px]="fontSize"></section>
-    <section [style]="myStyles"></section>
-    ```
+- Keep components small and focused on a single responsibility
+- Use `input()` and `output()` functions instead of decorators
+- Use `model()` for two-way bound properties with `[(prop)]` syntax instead of pairing `input()` with `output()`
+- Use `computed()` for derived state
+- Use `linkedSignal()` for state derived from multiple reactive sources that must stay synchronized
+- Prefer inline templates for small components
+- Prefer Signal Forms (`@angular/forms/signals`) for new forms. They are stable in Angular v22+ and provide signal-based state, type-safe field access, and schema-based validation
+- When not using Signal Forms, prefer Reactive forms instead of Template-driven ones
+- Do NOT use `ngClass`, use `class` bindings instead
+- Do NOT use `ngStyle`, use `style` bindings instead
+- Do NOT import `CommonModule`, import only the directives and pipes the template uses, such as `AsyncPipe` or `DatePipe`
+- When using an external template or a justified stylesheet, use paths relative to the component TS file.
+- Style with Tailwind utility classes. Do not add component `.scss`, `styleUrl`, or `styles:` unless Tailwind cannot express the style. See `.cursor/rules/frontend/tailwind-styles.mdc`.
 
 ## State Management
 
-- **Signals for Local State:** Required for all new components — use `signal()` for local state instead of plain class properties.
-- **`computed()` for Derived State:** Leverage `computed()` for any state that can be derived from other signals.
-- **Pure and Predictable Transformations:** Ensure state transformations are pure functions (no side effects) and predictable.
-- **Signal value updates:** Do NOT use `mutate` on signals, use `update` or `set` instead.
+- Use signals for local component state
+- Use `computed()` for derived state
+- Keep state transformations pure and predictable
+- Do NOT use `mutate` on signals, use `update` or `set` instead
 
 ## Templates
 
-- **Simple Templates:** Keep templates as simple as possible, avoiding complex logic directly in the template. Delegate complex logic to the component's TypeScript code.
-- **Native Control Flow:** Use the new built-in control flow syntax (`@if`, `@for`, `@switch`) instead of the older structural directives (`*ngIf`, `*ngFor`, `*ngSwitch`).
-  - **Old Syntax:**
-    ```html
-    <section *ngIf="isVisible">Content</section>
-    <section *ngFor="let item of items">{{ item }}</section>
-    ```
-  - **New Syntax:**
-    ```html
-    @if (isVisible) {
-    <section>Content</section>
-    } @for (item of items; track item.id) {
-    <section>{{ item }}</section>
-    }
-    ```
-- **Async Pipe:** Use the `async` pipe to handle observables in templates. This automatically subscribes and unsubscribes, preventing memory leaks.
+- Keep templates simple and avoid complex logic
+- Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
+- Use the async pipe to handle observables
+- Do not assume globals like (`new Date()`) are available.
 
 ## Services
 
-- **Single Responsibility:** Design services around a single, well-defined responsibility.
-- **`providedIn: 'root'`:** Use the `providedIn: 'root'` option when declaring injectable services to ensure they are singletons and tree-shakable.
-- **`inject()` Function:** Prefer the `inject()` function over constructor injection when injecting dependencies, especially within `provide` functions, `computed` properties, or outside of constructor context.
-
-  - **Old Constructor Injection:**
-    ```typescript
-    constructor(private myService: MyService) {}
-    ```
-  - **New `inject()` Function:**
-
-    ```typescript
-    import { inject } from "@angular/core";
-
-    export class MyComponent {
-      private myService = inject(MyService);
-      // ...
-    }
-    ```
+- Design services around a single responsibility
+- Use the `providedIn: 'root'` option for singleton services
+- Prefer the `@Service` decorator over `@Injectable({providedIn: 'root'})` for new singleton services (Angular v22+)
+- Use the `inject()` function instead of constructor injection

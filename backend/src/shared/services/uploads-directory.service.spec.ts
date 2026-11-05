@@ -1,19 +1,17 @@
-import { jest } from '@jest/globals';
 import { Logger } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
+import * as fs from 'fs/promises';
 import { createMockConfigService } from '../../../test/support/mocks/config.mock.js';
+import { SharedModule } from '../shared.module.js';
 
-jest.unstable_mockModule('fs/promises', () => ({
-  mkdir: jest.fn(),
+vi.mock('fs/promises', () => ({
+  mkdir: vi.fn(),
 }));
-
-const fs = await import('fs/promises');
-const { SharedModule } = await import('../shared.module.js');
 
 describe('Uploads directory initialization', () => {
   const originalWorkerNumber = process.env.WORKER_NUMBER;
-  const mockMkdir = jest.mocked(fs.mkdir);
+  const mockMkdir = vi.mocked(fs.mkdir);
 
   beforeEach(() => {
     process.env.WORKER_NUMBER = '0';
@@ -27,7 +25,7 @@ describe('Uploads directory initialization', () => {
     } else {
       process.env.WORKER_NUMBER = originalWorkerNumber;
     }
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   async function initializeModule(uploadsDir: string = '/tmp/test-uploads') {
@@ -76,9 +74,7 @@ describe('Uploads directory initialization', () => {
   it('logs failures and continues initialization', async () => {
     const inputError = new Error('Permission denied');
     mockMkdir.mockRejectedValue(inputError);
-    const mockLog = jest
-      .spyOn(Logger, 'error')
-      .mockImplementation(() => undefined);
+    const mockLog = vi.spyOn(Logger, 'error').mockImplementation(() => undefined);
     await expect(initializeModule()).resolves.toBeUndefined();
     expect(mockLog).toHaveBeenCalledWith(inputError);
   });

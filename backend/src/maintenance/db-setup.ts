@@ -1,3 +1,4 @@
+import { pathToFileURL } from 'node:url';
 import { UsersService } from '../users/services/users.service.js';
 import { MaintenanceModule } from './maintenance.module.js';
 import { INestApplication } from '@nestjs/common';
@@ -94,6 +95,12 @@ const bootstrap = async (): Promise<void> => {
   }
 };
 
-if (require.main === module) {
-  bootstrap();
+const entry = process.argv[1];
+const entryUrl = entry ? pathToFileURL(entry).href : undefined;
+// `nest start` runs the compiled file without a .js suffix.
+const isDirectRun =
+  entryUrl === import.meta.url || `${entryUrl}.js` === import.meta.url;
+
+if (isDirectRun) {
+  void bootstrap();
 }

@@ -15,7 +15,7 @@
     "rootDir": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "types": ["node", "multer", "jest"],
+    "types": ["vitest/globals", "node", "multer"],
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,

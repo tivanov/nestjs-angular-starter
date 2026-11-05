@@ -45,6 +45,6 @@ Register schemas in `MongooseModule.forFeatureAsync`, export only services other
 
 ## Testing
 
-- Jest; co-located `*.spec.ts` for unit tests; `backend/test/*.e2e-spec.ts` for HTTP tests.
+- Vitest; co-located `*.spec.ts` for unit tests; `backend/test/*.e2e-spec.ts` for HTTP tests.
 - Follow `docs/testing.md` and `.cursor/rules/backend/testing.mdc`.
 - **Do not** add `admin/test` smoke endpoints on controllers.

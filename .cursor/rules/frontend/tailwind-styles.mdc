@@ -1,0 +1,38 @@
+---
+description: Style Angular templates with Tailwind. Component SCSS is forbidden unless Tailwind cannot express the style.
+globs: frontend/projects/**/*.ts,frontend/projects/**/*.html,frontend/projects/**/*.scss
+alwaysApply: false
+---
+
+# Tailwind, not component SCSS
+
+Use Tailwind utility classes for layout, spacing, sizing, typography, color, and responsive behavior. Both apps load Tailwind 4.
+
+Do **not** add a component stylesheet. No co-located `.scss`, no `styleUrl`, no `styleUrls`, and no `styles:` on `@Component`. Do not create an empty `.scss` file.
+
+```html
+<div class="flex items-center gap-4 pb-4">
+  <mat-form-field class="w-full md:w-64">
+```
+
+```typescript
+@Component({
+  selector: "app-my-widget",
+  templateUrl: "./my-widget.component.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+```
+
+Conditional styling uses class bindings (`[class.hidden]`, `[class]`), not `ngClass` or a stylesheet.
+
+## SCSS only when Tailwind cannot do it
+
+Add component SCSS only for a rule Tailwind cannot express. Keep the file to that rule and comment why Tailwind was not enough. Omit `styleUrl` when the template is entirely Tailwind.
+
+Allowed cases:
+
+- Angular Material internals in **admin-ui**, via `mat.*-overrides` mixins. Not `::ng-deep`.
+- Existing app theme files: `styles.scss`, `_theme-colors.scss`. Do not duplicate those tokens in a component file.
+- Animations, pseudo-elements, or selectors with no Tailwind equivalent.
+
+Anything else — flex, grid, gap, padding, margin, width, typography, breakpoints (`md:`, `lg:`), one-off wrappers around Material — is Tailwind in the template.

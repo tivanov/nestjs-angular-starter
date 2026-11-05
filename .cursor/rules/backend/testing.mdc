@@ -1,5 +1,5 @@
 ---
-description: Backend Jest unit and e2e test conventions
+description: Backend Vitest unit and e2e test conventions
 globs:
   - backend/**/*.spec.ts
   - backend/test/**/*.ts
@@ -22,6 +22,7 @@ Run: `npm test` (repo root) or `cd backend && npm run test:e2e` (needs MongoDB).
 ## Conventions
 
 - Arrange → Act → Assert; one behavior per `it()`.
+- Mocks use Vitest globals: `vi.fn()`, `vi.spyOn()`, `vi.mock()`. `vi.mock()` is hoisted.
 - Variables: `inputX`, `mockX`, `actualX`, `expectedX`.
 - Assert **service behavior** (filters, exceptions, return shapes) — not that Mongoose works.
 - **No** `admin/test` smoke endpoints on controllers.

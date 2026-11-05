@@ -1,4 +1,3 @@
-import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { MutexService } from './mutex.service.js';
@@ -9,20 +8,20 @@ import { ErrorCode } from '@app/contracts';
 describe('MutexService', () => {
   let service: MutexService;
 
-  const mockFindOneLean = jest.fn<(...args: any[]) => any>();
+  const mockFindOneLean = vi.fn<(...args: any[]) => any>();
 
   const mockMutexModel = {
-    findOneAndUpdate: jest.fn<(...args: any[]) => any>(),
-    findOne: jest.fn(() => ({ lean: mockFindOneLean })),
-    create: jest.fn<(...args: any[]) => any>(),
-    updateOne: jest.fn<(...args: any[]) => any>(),
-    deleteOne: jest.fn<(...args: any[]) => any>(),
+    findOneAndUpdate: vi.fn<(...args: any[]) => any>(),
+    findOne: vi.fn(() => ({ lean: mockFindOneLean })),
+    create: vi.fn<(...args: any[]) => any>(),
+    updateOne: vi.fn<(...args: any[]) => any>(),
+    deleteOne: vi.fn<(...args: any[]) => any>(),
   };
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockFindOneLean.mockReset();
-    jest.useFakeTimers();
+    vi.useFakeTimers();
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -38,7 +37,7 @@ describe('MutexService', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it('runs work while holding the lock and releases it afterward', async () => {
@@ -47,7 +46,7 @@ describe('MutexService', () => {
     mockMutexModel.create.mockResolvedValue({});
     mockMutexModel.deleteOne.mockResolvedValue({ deletedCount: 1 });
 
-    const work = jest.fn(async () => 'done');
+    const work = vi.fn(async () => 'done');
 
     const actual = await service.execWithMutex('resource-1', work);
 
@@ -137,7 +136,7 @@ describe('MutexService', () => {
       await work;
     });
 
-    await jest.advanceTimersByTimeAsync(20_000);
+    await vi.advanceTimersByTimeAsync(20_000);
 
     expect(mockMutexModel.updateOne).toHaveBeenCalledWith(
       expect.objectContaining({
