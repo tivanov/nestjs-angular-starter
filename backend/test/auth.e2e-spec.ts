@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { closeTestApp, createTestApp } from './support/create-test-app.js';
-import { clearDatabase, seedFullDatabase } from './support/e2e-db.js';
-import { loginAsAdmin } from './support/auth.helper.js';
+import { clearDatabase } from './support/e2e-db.js';
+import { loginAsAdmin, seedAdminUser } from './support/auth.helper.js';
 import { TEST_ADMIN } from './support/constants.js';
 
 describe('Auth (e2e)', () => {
@@ -11,7 +11,7 @@ describe('Auth (e2e)', () => {
   beforeAll(async () => {
     app = await createTestApp();
     await clearDatabase(app);
-    await seedFullDatabase(app);
+    await seedAdminUser(app);
   });
 
   afterAll(async () => {
