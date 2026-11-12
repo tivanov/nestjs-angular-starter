@@ -88,8 +88,10 @@ const bootstrap = async (): Promise<void> => {
     console.log('Created maintenance module.');
     await seedDatabase(context);
     console.log('Done');
+    process.exit(0);
   } catch (e) {
     console.error(e);
+    process.exit(1);
   } finally {
     await context.close();
   }
