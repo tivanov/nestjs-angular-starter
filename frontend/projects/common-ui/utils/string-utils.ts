@@ -21,6 +21,7 @@ export class StringUtils {
     for (let i = 0; i < str.length; i++) {
       result += str.charCodeAt(i).toString(16);
     }
+
     return result;
   }
 
@@ -56,6 +57,7 @@ export class StringUtils {
     if (!str) {
       return '';
     }
+
     const decoded = decode(str);
     return (decoded as any)?.toString();
   }
@@ -68,6 +70,7 @@ export class StringUtils {
         str += String.fromCharCode(code);
       }
     }
+
     return str;
   }
 

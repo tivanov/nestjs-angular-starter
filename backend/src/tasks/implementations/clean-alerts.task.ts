@@ -6,6 +6,7 @@ import { AlertsService } from 'src/notifications/services/alerts.service.js';
 
 export class CleanAlertsTask {
   private static readonly logger = new Logger(CleanAlertsTask.name);
+
   private static isRunning = false;
 
   public static async run(task: Task, moduleRef: ModuleRef) {

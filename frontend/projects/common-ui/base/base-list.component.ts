@@ -28,26 +28,37 @@ export abstract class BaseListComponent<T>
   implements OnInit, AfterViewInit
 {
   displayedColumns: string[] = [];
+
   defaultColumns: string[] = [];
+
   mobileColumns: string[] = [];
 
   totalItems: number;
+
   pageSizeOptions = [10, 100, 200];
+
   showFirstLastButtons = true;
 
   protected filterForm: FormGroup;
 
   dataSource = new MatTableDataSource<T>();
+
   selection = new SelectionModel<T>(true, []);
 
   formBuilder: FormBuilder = inject(FormBuilder);
+
   snackBar = inject(MatSnackBar);
+
   responsive = inject(BreakpointObserver);
+
   route = inject(ActivatedRoute);
+
   router = inject(Router);
+
   dialog = inject(MatDialog);
 
   sortBy: string | null = null;
+
   sortDirection: string | null = null;
 
   readonly disableFilterToQuery = model<boolean>(false);
@@ -80,11 +91,13 @@ export abstract class BaseListComponent<T>
       if (query['limit'] || !isNaN(query['limit'])) {
         pageSize = Number.parseInt(query['limit']);
       }
+
       this.filterForm?.patchValue({ ...filter, ...query });
       if (this.paginator) {
         this.paginator.pageIndex = pageIndex;
         this.paginator.pageSize = pageSize;
       }
+
       this.load({ pageIndex, pageSize });
     });
   }
@@ -173,6 +186,8 @@ export abstract class BaseListComponent<T>
   }
 
   public abstract load($event: { pageIndex: number; pageSize?: number });
+
   public abstract buildForm(): void;
+
   public abstract setColumns(): void;
 }

@@ -35,6 +35,7 @@ export class LoginRecordsByDeviceWidgetComponent
   @ViewChild('chart') chart: ChartComponent;
 
   private readonly dashboardService = inject(DashboardService);
+
   private readonly snackBar = inject(MatSnackBar);
 
   ngOnInit() {

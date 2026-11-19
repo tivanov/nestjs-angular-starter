@@ -27,6 +27,7 @@ import {
 })
 export class AppComponent {
   title = 'admin-ui';
+
   constructor(library: FaIconLibrary) {
     library.addIcons(
       faUser,

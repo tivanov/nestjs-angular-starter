@@ -54,11 +54,15 @@ export class UserComponent extends BaseEditComponent<UserDto> {
   roles = Object.values(UserRoleEnum);
 
   avatarUrl: string;
+
   avatarFile: File;
+
   uploadProgress: number;
+
   uploadSub: Subscription;
 
   private usersService = inject(UsersService);
+
   public env = inject(EnvironmentService);
 
   override ngOnInit(): void {
@@ -158,6 +162,7 @@ export class UserComponent extends BaseEditComponent<UserDto> {
         this.snackBar.open('Password is required', '', { duration: 2000 });
         return;
       }
+
       this.usersService.create(val).subscribe({
         next: (responseData) => {
           this.snackBar.open('User created', 'Close', { duration: 2000 });

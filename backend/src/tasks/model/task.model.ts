@@ -1,4 +1,4 @@
-import { Document, HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 import { BaseEntity } from '../../shared/base/base-entity.js';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { TaskTypeEnum } from '@app/contracts';

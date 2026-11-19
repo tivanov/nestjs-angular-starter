@@ -23,12 +23,15 @@ import { InsertionDirective } from './insertion.directive';
 })
 export class DialogComponent implements AfterViewInit, OnDestroy {
   componentRef: ComponentRef<any>;
+
   childComponentType: Type<any>;
 
   readonly insertionPoint = viewChild<InsertionDirective>(InsertionDirective);
+
   readonly dialogContainer = viewChild<ElementRef>('dialogContainer');
 
   private readonly _onClose = new Subject<any>();
+
   public onClose = this._onClose.asObservable();
 
   constructor(
@@ -87,6 +90,7 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
       event.stopPropagation();
       return true;
     }
+
     return false;
   }
 }

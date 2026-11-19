@@ -1,11 +1,6 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
 import {
   DomSanitizer,
-  SafeHtml,
-  SafeStyle,
-  SafeScript,
-  SafeUrl,
-  SafeResourceUrl,
 } from '@angular/platform-browser';
 import { CryptoNetworkEnum } from '@app/contracts';
 

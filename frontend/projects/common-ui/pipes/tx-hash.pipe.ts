@@ -10,7 +10,7 @@ export class TxHashPipe implements PipeTransform {
     txHash: string,
     network: CryptoNetworkEnum = CryptoNetworkEnum.Cardano,
   ): string {
-    if (!txHash || txHash.length <= 8) return txHash;
+    if (!txHash || txHash.length <= 8) {return txHash;}
 
     return `${txHash.slice(0, 4)}...${txHash.slice(-4)}`;
   }

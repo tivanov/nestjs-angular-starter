@@ -25,6 +25,7 @@ describe('Uploads directory initialization', () => {
     } else {
       process.env.WORKER_NUMBER = originalWorkerNumber;
     }
+
     vi.restoreAllMocks();
   });
 
@@ -74,7 +75,9 @@ describe('Uploads directory initialization', () => {
   it('logs failures and continues initialization', async () => {
     const inputError = new Error('Permission denied');
     mockMkdir.mockRejectedValue(inputError);
-    const mockLog = vi.spyOn(Logger, 'error').mockImplementation(() => undefined);
+    const mockLog = vi
+      .spyOn(Logger, 'error')
+      .mockImplementation(() => undefined);
     await expect(initializeModule()).resolves.toBeUndefined();
     expect(mockLog).toHaveBeenCalledWith(inputError);
   });

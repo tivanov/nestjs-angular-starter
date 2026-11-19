@@ -28,32 +28,46 @@ import { EnvironmentService } from '../services/environment.service';
 })
 export class BaseComponent implements OnDestroy {
   AuthSignal = AuthSignal;
+
   UserRoleEnum = UserRoleEnum;
+
   IdentityProviderEnum = IdentityProviderEnum;
+
   TaskTypeEnum = TaskTypeEnum;
 
   isNaN = isNaN;
+
   Constants = Constants;
 
   public readonly fullDateFormat = 'dd.MM.yyyy HH:mm:ss';
+
   public readonly inputDateTimeFormat = 'yyyy-MM-ddTHH:mm';
+
   public readonly separatorKeysCodes = [ENTER, COMMA] as const;
+
   public readonly ngUnsubscribe = new Subject<void>();
+
   public readonly dataLoaded = signal(true);
+
   public componentsLoaded = false;
+
   public subscriptions: Subscription[] = [];
+
   public locale: string;
+
   protected breakpointObserver = inject(BreakpointObserver);
 
   protected readonly navigator: Navigator = navigator;
 
   public defaultPrimaryColor = '#cd7c9e';
+
   // public defaultSecondaryColor = '#0a0f43';
   public readonly defaultSecondaryColor = signal(
     'linear-gradient(90deg, rgba(1,1,47,1) 0%, rgba(52,0,103,1) 100%)'
   );
 
   private defaultLocale = inject(LOCALE_ID);
+
   readonly environment = inject(EnvironmentService);
 
   public constructor() {
@@ -106,6 +120,7 @@ export class BaseComponent implements OnDestroy {
     } else {
       msg = 'An unknown error has occured.';
     }
+
     return msg;
   }
 
@@ -140,6 +155,7 @@ export class BaseComponent implements OnDestroy {
     ) {
       return this.defaultLocale;
     }
+
     const wn = this.window.navigator;
     let lang = wn.languages ? wn.languages[0] : this.defaultLocale;
     lang = lang || wn.language || wn.browserLanguage || wn.userLanguage;

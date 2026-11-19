@@ -6,7 +6,6 @@ import { CircuitBreakerOperation } from '@app/contracts';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 // Default values
-const DEFAULT_TIMEOUT_MS = 60000;
 const DEFAULT_RESET_TIMEOUT_MS = 300000;
 const DEFAULT_FAILURE_THRESHOLD = 5;
 const DEFAULT_SUCCESS_THRESHOLD = 3;

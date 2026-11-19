@@ -41,6 +41,7 @@ export class CircuitBreakersListComponent
   resourceId = input<string>();
 
   private readonly circuitBreakers = inject(CircuitBreakersService);
+
   public readonly operations = Object.values(CircuitBreakerOperation);
 
   public override load($event: { pageIndex: number; pageSize?: number }) {

@@ -65,7 +65,7 @@ export class ContactRequestComponent extends BaseEditComponent<ContactRequestDto
   }
 
   markAsRead(): void {
-    if (!this.entity) return;
+    if (!this.entity) {return;}
 
     this.contactRequest.markAsRead(this.entity.id).subscribe({
       next: (updated) => {

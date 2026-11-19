@@ -7,12 +7,15 @@ export class NumberUtils {
     if (!num) {
       return num;
     }
+
     if (num < 1) {
       if (num < 0.000001) {
         return Number(num.toFixed(12));
       }
+
       return Number(num.toFixed(6));
     }
+
     return Number(num.toFixed(2));
   }
 }

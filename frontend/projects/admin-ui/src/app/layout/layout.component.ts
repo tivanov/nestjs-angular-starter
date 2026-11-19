@@ -42,11 +42,15 @@ import { SideMenuComponent } from './side-menu/side-menu.component';
 })
 export class LayoutComponent extends BaseComponent implements OnInit {
   appName = 'Your Project Name';
+
   sidenavMode = signal<'over' | 'side'>('side');
+
   title = signal('Control Center');
 
   private readonly router = inject(Router);
+
   private readonly route = inject(ActivatedRoute);
+
   private readonly titleService = inject(Title);
 
   constructor() {
@@ -54,6 +58,7 @@ export class LayoutComponent extends BaseComponent implements OnInit {
     if (!this.checkAuth()) {
       return;
     }
+
     this.router.events
       .pipe(
         takeUntil(this.ngUnsubscribe),
@@ -67,6 +72,7 @@ export class LayoutComponent extends BaseComponent implements OnInit {
               break;
             }
           }
+
           const title = child?.snapshot.data['title'];
           if (title) {
             return title;
@@ -79,6 +85,7 @@ export class LayoutComponent extends BaseComponent implements OnInit {
         } else {
           this.title.set('Control Center');
         }
+
         this.titleService.setTitle(`${this.title()} | ${this.appName}`);
       });
   }
@@ -99,6 +106,7 @@ export class LayoutComponent extends BaseComponent implements OnInit {
       void this.router.navigate(['/auth/login']);
       return false;
     }
+
     return true;
   }
 }

@@ -38,6 +38,7 @@ export class JwtStrategy extends PassportStrategy(
     if (!user) {
       throw new AppUnauthorizedException(ErrorCode.USER_NOT_FOUND);
     }
+
     this.usersService.verifyIsAllowedToLogin(user);
 
     const identity = await this.identitiesService.getValid(
@@ -48,6 +49,7 @@ export class JwtStrategy extends PassportStrategy(
     if (!identity) {
       throw new AppUnauthorizedException(ErrorCode.IDENTITY_NOT_FOUND);
     }
+
     return user;
   }
 }

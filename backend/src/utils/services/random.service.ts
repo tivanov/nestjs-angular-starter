@@ -20,6 +20,7 @@ export class RandomService {
     if (min === max) {
       return min;
     }
+
     return crypto.randomInt(min, max);
   }
 
@@ -27,6 +28,7 @@ export class RandomService {
     if (!percentage || percentage === 0) {
       return false;
     }
+
     return this.getFloat(0, 100) <= percentage;
   }
 }

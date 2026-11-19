@@ -15,7 +15,7 @@
     "start:prod": "node dist/src/main.js",
     "build-prod": "cross-env NODE_ENV=production nest build",
     "build-stage": "cross-env NODE_ENV=stage nest build",
-    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",

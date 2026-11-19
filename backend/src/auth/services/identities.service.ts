@@ -99,6 +99,7 @@ export class IdentitiesService extends BaseService<Identity> {
     if (changeVersion) {
       updCommand['$inc'] = { version: 1 };
     }
+
     return this.objectModel.findByIdAndUpdate(id, updCommand, {
       new: true,
       lean: true,

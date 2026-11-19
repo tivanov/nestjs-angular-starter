@@ -6,6 +6,7 @@ import { TaskLogsService } from '../services/task-logs.service.js';
 
 export class RunScriptTask {
   private static readonly logger = new Logger(RunScriptTask.name);
+
   private static isRunning = false;
 
   public static async run(task: Task, moduleRef: ModuleRef) {

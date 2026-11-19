@@ -37,6 +37,7 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
       if (query.startDate) {
         filter.createdAt.$gte = new Date(query.startDate);
       }
+
       if (query.endDate) {
         filter.createdAt.$lte = new Date(query.endDate);
       }
@@ -117,6 +118,7 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
     } catch (error) {
       this.logger.error(error);
     }
+
     return null;
   }
 

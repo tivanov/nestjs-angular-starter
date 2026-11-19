@@ -14,6 +14,7 @@ export class TasksRuntimeService {
   private logger = new Logger(TasksRuntimeService.name);
 
   private managerIsRunning = false;
+
   private readonly managerInterval = 5000;
 
   constructor(
@@ -82,9 +83,11 @@ export class TasksRuntimeService {
       if (existingJob.cronTime.source === task.cronString) {
         return false;
       }
+
       if (existingJob.isActive) {
         existingJob.stop();
       }
+
       this.schedulerRegistry.deleteCronJob(task._id.toHexString());
       this.logger.debug(`Rescheduling task ${task.name}`);
     }
@@ -116,6 +119,7 @@ export class TasksRuntimeService {
             this.schedulerRegistry.deleteCronJob(task._id.toHexString());
           }
         }
+
         if (
           this.schedulerRegistry.doesExist('timeout', task._id.toHexString())
         ) {
@@ -128,6 +132,7 @@ export class TasksRuntimeService {
           }
         }
       }
+
       await this.tasks.setRunning(task, true);
       await TaskImplementations.get(task.type)(task, this.moduleRef);
     } catch (error) {
@@ -162,6 +167,7 @@ export class TasksRuntimeService {
             if (this.run(task)) {
               this.logger.debug(`Scheduling task ${task.name}`);
             }
+
             continue;
           }
 
@@ -178,6 +184,7 @@ export class TasksRuntimeService {
               if (existingTimeout) {
                 clearTimeout(existingTimeout);
               }
+
               this.schedulerRegistry.deleteTimeout(task._id.toHexString());
               this.logger.debug(`Stopping task ${task.name}`);
             }
@@ -191,6 +198,7 @@ export class TasksRuntimeService {
               if (existingJob.isActive) {
                 existingJob.stop();
               }
+
               this.schedulerRegistry.deleteCronJob(task._id.toHexString());
               this.logger.debug(`Stopping task ${task.name}`);
             }

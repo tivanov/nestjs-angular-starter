@@ -5,6 +5,7 @@ import { BaseService } from './base.service';
 
 export class BaseApiService extends BaseService {
   protected readonly http = inject(HttpClient);
+
   protected readonly env = inject(EnvironmentService);
 
   protected queryToParams(query: Record<string, any>): HttpParams {

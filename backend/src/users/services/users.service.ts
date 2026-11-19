@@ -30,7 +30,9 @@ import * as fs from 'fs/promises';
 @Injectable()
 export class UsersService extends BaseService<User> {
   private logger = new Logger(UsersService.name);
+
   private authConfig: IAuthConfig;
+
   private appConfig: IAppConfig;
 
   constructor(
@@ -73,6 +75,7 @@ export class UsersService extends BaseService<User> {
     if (!user) {
       throw new AppNotFoundException(ErrorCode.USER_NOT_FOUND);
     }
+
     const identity = await this.identities.getValid(
       userId,
       IdentityProviderEnum.UserName,
@@ -172,6 +175,7 @@ export class UsersService extends BaseService<User> {
     } catch (error) {
       this.logError(this.logger, error);
     }
+
     return existing;
   }
 

@@ -18,6 +18,7 @@ export async function bootstrapServer() {
   if (appConfig.port) {
     port = appConfig.port;
   }
+
   await app.listen(port);
   Logger.log(`Application is running on: ${await app.getUrl()}`);
 }

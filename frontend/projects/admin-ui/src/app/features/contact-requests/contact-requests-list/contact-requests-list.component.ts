@@ -40,9 +40,11 @@ export class ContactRequestsListComponent extends BaseListComponent<ContactReque
   private readonly contactRequest = inject(ContactRequestsService);
 
   ContactRequestStatusEnum = ContactRequestStatusEnum;
+
   ContactTypeEnum = ContactTypeEnum;
 
   contactRequestsStatus = Object.values(this.ContactRequestStatusEnum);
+
   contactRequestsType = Object.values(this.ContactTypeEnum);
 
   public override load($event: { pageIndex: number; pageSize?: number }) {

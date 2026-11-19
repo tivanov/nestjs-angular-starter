@@ -51,6 +51,7 @@ export class BaseApiService {
         // Something happened in setting up the request that triggered an Error
         errorData.message = error.message;
       }
+
       this.logger.error(
         `AxiosError: ${error.code} Status: ${error.response?.status}`,
         error.stack,

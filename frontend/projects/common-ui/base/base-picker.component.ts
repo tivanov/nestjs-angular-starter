@@ -22,7 +22,9 @@ export abstract class BasePickerComponent<T extends IdNameDto>
   implements OnInit
 {
   @Input() label: string | null;
+
   @Input() selectIfOnlyOne: boolean | null;
+
   @Input() protected set disabled(value: boolean) {
     if (value) {
       this.control?.disable();
@@ -30,17 +32,26 @@ export abstract class BasePickerComponent<T extends IdNameDto>
       this.control?.enable();
     }
   }
+
   @Input() required: boolean | null;
+
   @Input() placeholder: string | null;
+
   @Input() control: FormControl | null;
+
   @Input() controlName: string | null;
+
   @Input() formGroup: FormGroup | null;
+
   @Input() multiple: boolean | null;
+
   @Input() hint: string | null;
+
   @Input() protected set value(value: string | null) {
     this.control?.setValue(value);
     this.valueChange.emit(value);
   }
+
   @Output() readonly valueChange = new EventEmitter<string | null>();
 
   options: T[] | null = [];
@@ -57,6 +68,7 @@ export abstract class BasePickerComponent<T extends IdNameDto>
         );
       }
     }
+
     this.control = control ?? new FormControl('', []);
     if (this.control) {
       this.control.valueChanges
@@ -99,6 +111,7 @@ export abstract class BasePickerComponent<T extends IdNameDto>
         }
       }
     }
+
     setTimeout(() => {
       this.dataLoaded.set(true);
     });

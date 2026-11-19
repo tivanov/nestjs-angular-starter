@@ -18,6 +18,7 @@ export class DbTransactionsService {
       if (session.inTransaction()) {
         await session.abortTransaction();
       }
+
       throw e;
     } finally {
       session.endSession();

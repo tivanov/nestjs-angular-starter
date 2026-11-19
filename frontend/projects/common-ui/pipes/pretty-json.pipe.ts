@@ -62,6 +62,7 @@ export class PrettyJsonPipe implements PipeTransform {
         } else if (/null/.test(match)) {
           themeClass = 'null';
         }
+
         return '<span class="' + themeClass + '">' + match + '</span>';
       },
     );

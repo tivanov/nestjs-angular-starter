@@ -10,7 +10,8 @@ export class StatusEnumPipe implements PipeTransform {
   protected sanitizer: DomSanitizer = inject(DomSanitizer);
 
   public transform(value: string, joinChar?: string): string {
-    if (!value) return '';
+    if (!value) {return '';}
+
     if (value.includes('-')) {
       return StringUtils.kebabToTitleCase(value, joinChar);
     }

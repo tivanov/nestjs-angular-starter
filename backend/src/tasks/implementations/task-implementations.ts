@@ -19,6 +19,7 @@ export class TaskImplementations {
     if (!implementation) {
       throw new Error(`No implementation found for task type ${type}`);
     }
+
     return implementation;
   }
 }

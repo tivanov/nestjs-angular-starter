@@ -9,6 +9,7 @@ import { TasksDefinition } from 'src/tasks/definitions.js';
 
 class DbInitializer {
   private users: UsersService;
+
   private tasks: TasksService;
 
   constructor(context: INestApplication) {

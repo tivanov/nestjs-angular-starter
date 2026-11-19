@@ -44,6 +44,7 @@ export class AlertsWidgetComponent extends BaseListComponent<AlertDto> {
       error: this.onFetchError.bind(this),
     });
   }
+
   public override buildForm(): void {}
 
   override setColumns() {

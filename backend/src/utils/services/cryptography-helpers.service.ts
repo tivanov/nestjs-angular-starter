@@ -14,6 +14,7 @@ import {
 @Injectable()
 export class CryptographyHelpersService {
   private readonly logger = new Logger(CryptographyHelpersService.name);
+
   private readonly authConfig: IAuthConfig;
 
   constructor(config: ConfigService) {
@@ -67,12 +68,14 @@ export class CryptographyHelpersService {
       if (!state || state === 'undefined') {
         return false;
       }
+
       const uriDecoded = decodeURIComponent(state);
       const decoded = Buffer.from(uriDecoded, 'base64').toString('utf8');
       const statePlain = JSON.parse(decoded);
       if (!statePlain.r || !statePlain.s) {
         return false;
       }
+
       if (!this.verifyStateSignature(statePlain.r?.toString(), statePlain.s)) {
         return false;
       }
@@ -81,6 +84,7 @@ export class CryptographyHelpersService {
       if (now - statePlain.r > 1000 * 60 * 5) {
         return false;
       }
+
       return true;
     } catch (e) {
       this.logger.error(`Error verifying state ${state}`, e);

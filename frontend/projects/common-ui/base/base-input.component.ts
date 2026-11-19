@@ -17,33 +17,46 @@ import { BaseComponent } from './base.component';
 })
 export class BaseInputComponent extends BaseComponent implements OnInit {
   readonly type = input('text');
+
   readonly control = input<FormControl>();
+
   readonly controlName = input<string>();
+
   readonly formGroup = input<FormGroup>();
+
   readonly label = input<string>();
+
   readonly placeholder = input<string>('');
+
   readonly readonly = input<boolean>(false);
+
   readonly required = input<boolean>(false);
+
   readonly name = input<string>();
+
   readonly hint = input<string>();
+
   readonly valueChange = output<string>();
+
   readonly suffix = input<string | null>(null);
+
   readonly suffixActionIcon = input<string | null>(null);
+
   readonly suffixAction = output<void>();
 
   readonly actualControl = signal<FormControl>(null);
 
   readonly mandatory = computed(() => {
-    if (this.required()) return true;
+    if (this.required()) {return true;}
 
     const ctrl = this.actualControl();
-    if (!ctrl) return false;
+    if (!ctrl) {return false;}
 
-    if (ctrl.hasValidator?.(Validators.required)) return true;
+    if (ctrl.hasValidator?.(Validators.required)) {return true;}
 
     if (ctrl.validator) {
       const errors = ctrl.validator(ctrl);
-      if (errors?.['required']) return true;
+      if (errors?.['required']) {return true;}
     }
 
     return false;
@@ -64,8 +77,10 @@ export class BaseInputComponent extends BaseComponent implements OnInit {
       if (this.required()) {
         validators.push(Validators.required);
       }
+
       control = new FormControl('', validators);
     }
+
     this.actualControl.set(control);
 
     if (control) {

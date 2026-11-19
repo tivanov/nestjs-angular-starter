@@ -6,6 +6,7 @@ import { Injectable, Logger } from '@nestjs/common';
 @Injectable()
 export class IpLocationService {
   private readonly logger = new Logger(IpLocationService.name);
+
   private readonly baseUrl = 'https://api.iplocation.net';
 
   constructor(private readonly http: HttpService) {}

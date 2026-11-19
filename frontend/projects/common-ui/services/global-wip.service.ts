@@ -10,6 +10,7 @@ export interface GlobalWipStorage {
 @Injectable({ providedIn: 'root' })
 export class GlobalWipService {
   private readonly STORAGE_KEY = 'app-wip';
+
   private wip: GlobalWipStorage = {};
 
   constructor() {

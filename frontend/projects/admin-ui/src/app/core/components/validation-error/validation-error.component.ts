@@ -12,8 +12,11 @@ import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 })
 export class ValidationErrorComponent extends BaseComponent implements OnInit {
   @Input() control: AbstractControl;
+
   @Input() controlName!: string;
+
   @Input() messages!: Record<string, string>;
+
   @Input() defaultError = 'Please enter a valid value';
 
   private formGroupDirective = inject(FormGroupDirective);
@@ -25,7 +28,8 @@ export class ValidationErrorComponent extends BaseComponent implements OnInit {
   }
 
   get errorMessage(): string | null {
-    if (!this._control.errors) return null;
+    if (!this._control.errors) {return null;}
+
     if (this._control.errors['minlength']) {
       return `Minimum length is ${this._control.errors['minlength'].requiredLength}`;
     } else if (this._control.errors['maxlength']) {
@@ -41,6 +45,7 @@ export class ValidationErrorComponent extends BaseComponent implements OnInit {
     } else if (this._control.errors['max']) {
       return `Maximum value is ${this._control.errors['max'].max}`;
     }
+
     console.log(this._control.errors);
     const errorKey = Object.keys(this._control.errors)[0];
     return this.messages[errorKey] || this.defaultError;

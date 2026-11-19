@@ -37,6 +37,7 @@ import { SpinnerComponent } from '../../../core/components/spinner/spinner.compo
 })
 export class LoginComponent extends BaseComponent implements OnInit {
   form: FormGroup;
+
   errorMessage = signal<string>('');
 
   constructor(
@@ -78,6 +79,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.errorMessage.set('Login not allowed.');
         return;
       }
+
       logIn(loginResponse);
       this.form.reset();
       this.redirect();

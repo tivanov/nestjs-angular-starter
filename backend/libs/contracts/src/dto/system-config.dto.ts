@@ -1,3 +1,5 @@
 import { BaseEntityDto } from './base-entity.dto.js';
 
-export interface SystemConfigDto extends BaseEntityDto {}
+export interface SystemConfigDto extends BaseEntityDto {
+  // Add system config properties
+}

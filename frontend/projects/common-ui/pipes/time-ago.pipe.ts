@@ -5,6 +5,7 @@ import {
   Pipe,
   PipeTransform,
 } from '@angular/core';
+
 @Pipe({
   name: 'timeAgo',
   pure: false,
@@ -12,10 +13,12 @@ import {
 })
 export class TimeAgoPipe implements PipeTransform, OnDestroy {
   private timer: number;
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
   ) {}
+
   transform(value: string | number | null): string {
     if (!value) {
       return '';
@@ -36,6 +39,7 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
           });
         }, timeToUpdate);
       }
+
       return null;
     });
     const minutes = Math.round(Math.abs(seconds / 60));
@@ -70,15 +74,18 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
       return years.toString() + 'y ago';
     }
   }
+
   ngOnDestroy(): void {
     this.removeTimer();
   }
+
   private removeTimer() {
     if (this.timer) {
       window.clearTimeout(this.timer);
       this.timer = null;
     }
   }
+
   private getSecondsUntilUpdate(seconds: number) {
     const min = 60;
     const hr = min * 60;

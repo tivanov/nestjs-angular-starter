@@ -19,6 +19,7 @@ import { Observable, takeUntil } from 'rxjs';
 })
 export class UserTilesWidgetComponent extends BaseComponent implements OnInit {
   $tiles: Observable<any>;
+
   private readonly dashboardService = inject(DashboardService);
 
   async ngOnInit() {

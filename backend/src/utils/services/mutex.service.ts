@@ -88,6 +88,7 @@ export class MutexService extends BaseService<Mutex> {
           'Mutex locked',
         );
       }
+
       throw error;
     }
   }

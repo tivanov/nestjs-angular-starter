@@ -25,6 +25,7 @@ export class BaseService implements OnDestroy {
     } else {
       msg = 'An unknown error has occured.';
     }
+
     return msg;
   }
 

@@ -15,7 +15,6 @@ import {
   CreateRefreshTokenCommand,
   ErrorCode,
   IdentityProviderEnum,
-  IdNameDto,
   UserDto,
 } from '@app/contracts';
 import ms from 'ms';
@@ -26,6 +25,7 @@ import { UserMappers } from '../../users/mappers/user.mappers.js';
 @Injectable()
 export class AuthService {
   private logger = new Logger(AuthService.name);
+
   private authConfig: IAuthConfig;
 
   constructor(

@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { TimeAgoPipe } from '../../../../../../common-ui/pipes/time-ago.pipe';
+
 @Component({
   selector: 'app-text',
   templateUrl: './text.component.html',
@@ -21,7 +22,9 @@ import { TimeAgoPipe } from '../../../../../../common-ui/pipes/time-ago.pipe';
 })
 export class AppTextComponent extends BaseComponent {
   readonly label = input<string>();
+
   readonly value = input<any>();
+
   readonly type = input<
     | 'date'
     | 'datetime'
@@ -35,8 +38,11 @@ export class AppTextComponent extends BaseComponent {
     | 'time-ago'
     | 'enum'
   >();
+
   readonly showCopy = input<boolean>(false);
+
   readonly currency = input<string>('');
+
   readonly link = input<string | any[]>();
 
   protected override copyToClipboard(): void {

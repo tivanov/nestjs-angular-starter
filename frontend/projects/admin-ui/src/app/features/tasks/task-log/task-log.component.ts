@@ -22,6 +22,7 @@ import { AppTextComponent } from '../../../core/components/text/text.component';
 })
 export class TaskLogComponent extends BaseEditComponent<TaskLogDto> {
   private readonly taskLogs = inject(TaskLogsService);
+
   private readonly snackbar = inject(MatSnackBar);
 
   public additionalData: object | null = null;

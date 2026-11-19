@@ -48,7 +48,9 @@ export class TasksListComponent
   implements OnInit
 {
   taskId = input<string>();
+
   search = input<string>();
+
   public readonly Types = Object.values(TaskTypeEnum).sort((a, b) =>
     a.localeCompare(b)
   );
@@ -81,6 +83,7 @@ export class TasksListComponent
     if (!task.running || !task.workItemsTotal || task.workItemsTotal === 0) {
       return 0;
     }
+
     const completed = task.workItemsTotal - (task.workItemsRemaining || 0);
     return Math.round((completed / task.workItemsTotal) * 100);
   }
@@ -89,6 +92,7 @@ export class TasksListComponent
     if (!task.running || !task.workItemsTotal) {
       return '';
     }
+
     const completed = task.workItemsTotal - (task.workItemsRemaining || 0);
     return `${completed} / ${task.workItemsTotal} items completed`;
   }
@@ -101,6 +105,7 @@ export class TasksListComponent
     if (task.running) {
       return 'Task is currently running';
     }
+
     return 'Task is active but not running';
   }
 

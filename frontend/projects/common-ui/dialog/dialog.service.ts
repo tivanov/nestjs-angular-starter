@@ -18,6 +18,7 @@ import { DialogComponent } from './dialog.component';
 @Injectable({ providedIn: 'root' })
 export class DialogService {
   private dialogs: ComponentRef<DialogComponent>[] = [];
+
   private renderer: Renderer2;
 
   private viewContainerRef: ViewContainerRef;

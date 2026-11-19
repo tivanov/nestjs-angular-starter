@@ -41,7 +41,9 @@ export class HasErrorDirective implements OnInit, OnDestroy {
   }
 
   private errorName$ = new ReplaySubject<string>(1);
+
   private ctrl$ = this.hasErrorRoot.formControl$;
+
   private status$ = this.ctrl$.pipe(
     switchMap((ctrl) => (ctrl?.statusChanges || EMPTY).pipe(startWith(null)))
   );
@@ -61,6 +63,7 @@ export class HasErrorDirective implements OnInit, OnDestroy {
   );
 
   private view?: EmbeddedViewRef<HasErrorContext>;
+
   private subscription?: Subscription;
 
   constructor(

@@ -10,8 +10,9 @@ import { ShortNumberPipe } from '../../../../../../common-ui/pipes/short-number.
     styleUrl: './number-tile.component.scss'
 })
 export class NumberTileComponent extends BaseComponent implements OnInit {
-  @Input('text') text: any;
-  @Input('value') value: number;
+  @Input() text: any;
+
+  @Input() value: number;
 
   constructor() {
     super();

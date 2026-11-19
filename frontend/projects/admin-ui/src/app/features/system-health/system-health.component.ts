@@ -34,6 +34,7 @@ interface HealthIndicatorEntry {
 })
 export class SystemHealthComponent extends BaseComponent implements OnInit {
   private readonly healthService = inject(HealthService);
+
   private readonly snackBar = inject(MatSnackBar);
 
   readonly result = signal<HealthCheckResultDto | null>(null);

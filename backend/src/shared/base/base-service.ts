@@ -1,5 +1,4 @@
 import {
-  Document,
   Types,
   Model,
   ClientSession,
@@ -67,6 +66,7 @@ export class BaseService<T> {
     if ((idsToCheck?.length ?? 0) === 0) {
       this.throwBadRequest(errorCode);
     }
+
     const entities = await this.objectModel
       .find({
         _id: { $in: idsToCheck.map((id) => new Types.ObjectId(id)) },
@@ -208,6 +208,7 @@ export class BaseService<T> {
     if (typeof populate === 'string') {
       return populate;
     }
+
     return populate?.join(' ');
   }
 
@@ -217,8 +218,10 @@ export class BaseService<T> {
       if (projectStr.includes(',')) {
         return projectStr.split(',').join(' ');
       }
+
       return project;
     }
+
     return project?.join(' ');
   }
 
@@ -230,6 +233,7 @@ export class BaseService<T> {
     if (query.select?.length ?? null) {
       queryObj.projection(this.getProjectString(query.select));
     }
+
     return queryObj;
   }
 
@@ -249,6 +253,7 @@ export class BaseService<T> {
     if (obj) {
       return true;
     }
+
     return false;
   }
 

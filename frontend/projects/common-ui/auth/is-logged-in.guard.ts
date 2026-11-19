@@ -8,5 +8,6 @@ export const isLoggedIn = (route: ActivatedRouteSnapshot): boolean => {
     router.navigate(['/auth/login']);
     return false;
   }
+
   return true;
 };

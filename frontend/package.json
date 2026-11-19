@@ -13,7 +13,8 @@
     "build-stage:admin": "ng build admin-ui --configuration stage",
     "build-stage:user": "ng build user-ui --configuration stage",
     "build-stage": "npm run build-stage:admin && npm run build-stage:user",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "eslint \"projects/**/*.{ts,html}\" --fix"
   },
   "private": true,
   "dependencies": {
@@ -51,8 +52,10 @@
     "@angular/compiler-cli": "^21.0.6",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/jasmine": "~5.1.13",
-    "@typescript-eslint/eslint-plugin": "^8.50.1",
-    "@typescript-eslint/parser": "^8.50.1",
+    "@eslint/js": "^10.0.1",
+    "angular-eslint": "^21.4.0",
+    "eslint": "^10.14.0",
+    "typescript-eslint": "^8.72.2",
     "jasmine-core": "~5.13.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",

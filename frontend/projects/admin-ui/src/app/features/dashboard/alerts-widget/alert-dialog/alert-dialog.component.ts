@@ -34,9 +34,13 @@ export interface IAlertDialogData {
 })
 export class AlertDialogComponent extends BaseComponent {
   readonly dialogRef = inject(MatDialogRef<AlertDialogComponent>);
+
   readonly data = inject<IAlertDialogData>(MAT_DIALOG_DATA);
+
   readonly alert = model(this.data.alert);
+
   readonly alertService = inject(AlertsService);
+
   readonly snackbar = inject(MatSnackBar);
 
   dismiss() {

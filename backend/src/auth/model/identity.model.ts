@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { SchemaTypes, Document, Types, HydratedDocument } from 'mongoose';
+import { SchemaTypes, Types, HydratedDocument } from 'mongoose';
 import { User } from '../../users/model/user.model.js';
 import { BaseEntity } from '../../shared/base/base-entity.js';
 import { IdentityProviderEnum } from '@app/contracts';

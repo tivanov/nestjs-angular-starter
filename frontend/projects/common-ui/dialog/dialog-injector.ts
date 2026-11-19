@@ -7,11 +7,13 @@ export class DialogInjector implements Injector {
   ) {}
 
   get<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T;
+
   get(token: any, notFoundValue?: any);
+
   get(token: any, notFoundValue?: any) {
     const value = this._additionalTokens.get(token);
 
-    if (value) return value;
+    if (value) {return value;}
 
     return this._parentInjector.get<any>(token, notFoundValue);
   }

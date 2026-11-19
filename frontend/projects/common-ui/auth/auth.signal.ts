@@ -21,7 +21,7 @@ const blankState: ISessionState = {
 
 let initialState = blankState;
 
-let stateFromStorage = localStorage.getItem(localStorageKey);
+const stateFromStorage = localStorage.getItem(localStorageKey);
 if (stateFromStorage) {
   initialState = JSON.parse(stateFromStorage);
 }

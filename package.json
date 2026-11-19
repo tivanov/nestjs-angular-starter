@@ -10,7 +10,7 @@
     "build-stage": "concurrently \"cd backend && npm run build-stage\" \"cd frontend && npm run build-stage\"",
     "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
     "test": "cd backend && npm test && npm run test:e2e",
-    "lint": "cd backend && npm run lint"
+    "lint": "cd backend && npm run lint && cd ../frontend && npm run lint"
   },
   "author": "",
   "license": "ISC",

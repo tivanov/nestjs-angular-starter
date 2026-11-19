@@ -17,13 +17,19 @@ export abstract class BaseEditComponent<T>
   implements OnInit, AfterViewInit
 {
   entity: T | null = null;
+
   form: FormGroup;
 
   protected readonly route = inject(ActivatedRoute);
+
   protected readonly router = inject(Router);
+
   protected readonly formBuilder = inject(FormBuilder);
+
   protected readonly snackBar = inject(MatSnackBar);
+
   protected readonly location = inject(Location);
+
   protected readonly dialog = inject(MatDialog);
 
   ngOnInit() {
@@ -80,5 +86,6 @@ export abstract class BaseEditComponent<T>
   }
 
   public abstract load(id: string | null);
+
   public abstract buildForm(): void;
 }

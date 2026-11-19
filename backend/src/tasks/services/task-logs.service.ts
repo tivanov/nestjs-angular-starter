@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { TaskLog, TaskLogDocument } from '../model/task-log.model.js';
+import { TaskLog } from '../model/task-log.model.js';
 import { BaseService } from 'src/shared/base/base-service.js';
 import {
   Model,
@@ -39,6 +39,7 @@ export class TaskLogsService extends BaseService<TaskLog> {
       if (query.startDate) {
         filter.createdAt.$gte = new Date(query.startDate);
       }
+
       if (query.endDate) {
         filter.createdAt.$lte = new Date(query.endDate);
       }

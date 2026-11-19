@@ -35,7 +35,7 @@ export class LoginRecordsListComponent
   extends BaseListComponent<LoginRecordDto>
   implements OnInit, AfterViewInit
 {
-  @Input('userId') userId: string;
+  @Input() userId: string;
 
   private loginRecordsService = inject(LoginRecordsService);
 

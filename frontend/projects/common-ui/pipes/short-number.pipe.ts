@@ -7,16 +7,20 @@ import { NumberUtils } from './../utils/number-utils';
 })
 export class ShortNumberPipe implements PipeTransform {
   transform(value: any, args?: number): any {
-    if (value === null) return null;
-    if (value === 0) return '0';
+    if (value === null) {return null;}
+
+    if (value === 0) {return '0';}
+
     const fractionSize = 1;
     let decimalPlaces = 2;
     if (args !== undefined) {
       decimalPlaces = args;
     }
+
     if (decimalPlaces < 0) {
       decimalPlaces = 0;
     }
+
     let abs = NumberUtils.round(Math.abs(value), decimalPlaces);
     const rounder = Math.pow(10, fractionSize);
     const isNegative = value < 0;
@@ -37,6 +41,7 @@ export class ShortNumberPipe implements PipeTransform {
         break;
       }
     }
+
     return (isNegative ? '-' : '') + abs + key;
   }
 }

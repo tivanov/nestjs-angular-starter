@@ -40,6 +40,7 @@ import { UserMappers } from '../mappers/user.mappers.js';
 @Controller('users')
 export class UsersController {
   private readonly appConfig: IAppConfig;
+
   constructor(
     config: ConfigService,
     private usersService: UsersService,

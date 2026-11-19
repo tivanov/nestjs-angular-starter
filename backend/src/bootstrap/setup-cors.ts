@@ -5,6 +5,7 @@ export const setupCors = (app: INestApplication, appConfig: IAppConfig) => {
   if (!appConfig.enableCors) {
     return;
   }
+
   app.enableCors({
     origin: appConfig.corsOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

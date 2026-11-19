@@ -34,6 +34,7 @@ export class LoginRecordsByCountryWidgetComponent
   @ViewChild('chart') chart: ChartComponent;
 
   private readonly dashboardService = inject(DashboardService);
+
   private readonly snackBar = inject(MatSnackBar);
 
   ngOnInit() {
@@ -59,6 +60,7 @@ export class LoginRecordsByCountryWidgetComponent
         if (this.chart) {
           this.chart.updateOptions(this.chartOptions);
         }
+
         this.dataLoaded.set(true);
       },
       error: (error) => {

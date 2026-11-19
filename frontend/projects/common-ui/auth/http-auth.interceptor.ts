@@ -65,10 +65,12 @@ export const authInterceptor: HttpInterceptorFn = (
               logOut();
               void router.navigate(['/auth/login']);
             }
+
             return throwError(() => error);
           })
         );
       }
+
       return throwError(() => error);
     })
   );

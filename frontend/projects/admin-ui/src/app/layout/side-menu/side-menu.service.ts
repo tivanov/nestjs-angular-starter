@@ -87,15 +87,18 @@ export class SideMenuService {
       if (role === UserRoleEnum.Admin) {
         return true;
       }
+
       if (!item.roles) {
         return false;
       }
+
       const isVisible = item.roles.includes(role);
       if (isVisible && item.children) {
         item.children = item.children.filter((child) =>
           child.roles.includes(role)
         );
       }
+
       return isVisible;
     });
   }

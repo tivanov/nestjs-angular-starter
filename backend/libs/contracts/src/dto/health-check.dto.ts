@@ -1,8 +1,8 @@
 export type HealthIndicatorStatus = 'up' | 'down';
 
 export interface HealthIndicatorResultDto {
-  status: HealthIndicatorStatus;
   [key: string]: unknown;
+  status: HealthIndicatorStatus;
 }
 
 export type HealthCheckStatus = 'error' | 'ok' | 'shutting_down';

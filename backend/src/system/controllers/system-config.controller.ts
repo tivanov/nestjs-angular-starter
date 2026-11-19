@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { SystemConfigService } from '../services/system-config.service.js';
 import { UserRoleEnum } from '@app/contracts';
 import { Roles } from 'src/auth/decorators/roles.decorator.js';

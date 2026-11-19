@@ -79,6 +79,7 @@ export class CircuitBreakersService extends BaseService<CircuitBreaker> {
           await options.onOpen();
         }
       }
+
       throw error;
     }
   }
@@ -133,6 +134,7 @@ export class CircuitBreakersService extends BaseService<CircuitBreaker> {
     if (!circuitBreaker.nextAttemptTime) {
       return true;
     }
+
     return new Date() >= circuitBreaker.nextAttemptTime;
   }
 
