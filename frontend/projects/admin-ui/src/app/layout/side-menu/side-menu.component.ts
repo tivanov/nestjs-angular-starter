@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatListModule, MatNavList } from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 import { AuthSignal } from '../../../../../common-ui/auth/auth.signal';
 import { MenuLinkItemComponent } from './menu-link-item/menu-link-item.component';
 import { MenuDropdownItemComponent } from './menu-dropdown-item/menu-dropdown-item.component';

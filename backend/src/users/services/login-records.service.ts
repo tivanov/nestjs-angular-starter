@@ -9,7 +9,11 @@ import {
 import { User } from '../model/user.model.js';
 import { getClientIp } from 'request-ip';
 import DeviceDetector from 'device-detector-js';
-import { GetLoginRecordsQuery, UserRoleEnum } from '@app/contracts';
+import {
+  GetLoginRecordsQuery,
+  LoginRecordsSummaryDto,
+  UserRoleEnum,
+} from '@app/contracts';
 import { Request } from 'express';
 import { IpLocationService } from './iplocation.service.js';
 
@@ -48,39 +52,12 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
     ).paginate(filter, this.getPaginationOptions(query));
   }
 
-  public async weeklyByDeviceSummary() {
-    const startDate = new Date();
-    startDate.setTime(startDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-
-    const filter: QueryFilter<LoginRecordDocument> = {
-      createdAt: { $gte: startDate },
-    };
-
-    const res = await this.objectModel
-      .aggregate()
-      .match(filter)
-      .group({
-        _id: '$deviceType',
-        count: { $sum: 1 },
-      });
-    return res;
+  public weeklyByDeviceSummary(): Promise<LoginRecordsSummaryDto[]> {
+    return this.weeklyGroupSummary('deviceType');
   }
 
-  public async weeklyByCountrySummary() {
-    const startDate = new Date();
-    startDate.setTime(startDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const filter: QueryFilter<LoginRecordDocument> = {
-      createdAt: { $gte: startDate },
-    };
-
-    const res = await this.objectModel
-      .aggregate()
-      .match(filter)
-      .group({
-        _id: '$countryName',
-        count: { $sum: 1 },
-      });
-    return res;
+  public weeklyByCountrySummary(): Promise<LoginRecordsSummaryDto[]> {
+    return this.weeklyGroupSummary('countryName');
   }
 
   public async addLoginEntry(
@@ -128,5 +105,25 @@ export class LoginRecordsService extends BaseService<LoginRecordDocument> {
       .catch((err) =>
         this.logger.error('Error while saving login records', err.stack, err),
       );
+  }
+
+  private async weeklyGroupSummary(
+    field: 'deviceType' | 'countryName',
+  ): Promise<LoginRecordsSummaryDto[]> {
+    const startDate = new Date();
+    startDate.setTime(startDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+    const rows = await this.objectModel
+      .aggregate<{ _id: string | null; count: number }>()
+      .match({ createdAt: { $gte: startDate } })
+      .group({
+        _id: `$${field}`,
+        count: { $sum: 1 },
+      });
+
+    return rows.map((row) => ({
+      label: row._id ?? null,
+      count: row.count,
+    }));
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BaseComponent } from '../../../common-ui/base/base.component';
 import { SpinnerComponent } from './shared/components/spinner/spinner.component';
@@ -16,9 +16,12 @@ import { faSpinner, faTimes } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './app.component.scss',
 })
 export class AppComponent extends BaseComponent {
-  constructor(library: FaIconLibrary) {
+
+  private library = inject(FaIconLibrary);
+
+  constructor() {
     super();
-    library.addIcons(faSpinner, faTimes);
+    this.library.addIcons(faSpinner, faTimes);
     setTimeout(() => {
       this.dataLoaded.set(true);
     }, 700);

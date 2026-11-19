@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 
-import { takeUntil } from 'rxjs';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { MatCardModule } from '@angular/material/card';
 import {
@@ -56,7 +55,7 @@ export class LoginRecordsByDeviceWidgetComponent
             text: 'Logins This Week',
           },
           series: data.map((item) => item.count),
-          labels: data.map((item) => item._id || 'Unknown'),
+          labels: data.map((item) => item.label || 'Unknown'),
         };
 
         if (this.chart) {

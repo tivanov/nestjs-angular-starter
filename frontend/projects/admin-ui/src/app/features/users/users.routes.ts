@@ -1,7 +1,6 @@
 import { Route } from '@angular/router';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserComponent } from './user/user.component';
-import { isLoggedIn } from '../../../../../common-ui/auth/is-logged-in.guard';
 import { UserRoleEnum } from '@app/contracts';
 
 export const routes: Route[] = [

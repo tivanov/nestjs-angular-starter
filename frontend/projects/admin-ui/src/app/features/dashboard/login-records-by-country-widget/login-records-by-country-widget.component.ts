@@ -55,7 +55,7 @@ export class LoginRecordsByCountryWidgetComponent
             text: 'Logins This Week',
           },
           series: data.map((item) => item.count),
-          labels: data.map((item) => item._id?.substring(0, 20) || 'Unknown'),
+          labels: data.map((item) => item.label?.substring(0, 20) || 'Unknown'),
         };
         if (this.chart) {
           this.chart.updateOptions(this.chartOptions);

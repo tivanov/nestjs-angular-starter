@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { BaseComponent } from '../../../../../common-ui/base/base.component';
 
 import { UserTilesWidgetComponent } from './user-tiles-widget/user-tiles-widget.component';

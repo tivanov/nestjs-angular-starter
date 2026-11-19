@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
 import { RouterModule } from '@angular/router';
 
@@ -8,6 +8,5 @@ import { RouterModule } from '@angular/router';
     templateUrl: 'main-layout.component.html',
     styleUrls: ['main-layout.component.scss']
 })
-export class MainLayoutComponent extends BaseComponent implements OnInit {
-  ngOnInit() {}
+export class MainLayoutComponent extends BaseComponent {
 }

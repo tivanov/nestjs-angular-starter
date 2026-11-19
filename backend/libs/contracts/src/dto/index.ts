@@ -12,3 +12,5 @@ export * from './contact-request.dto.js';
 export * from './circuit-breaker.dto.js';
 export * from './system-config.dto.js';
 export * from './health-check.dto.js';
+export * from './users-tiles.dto.js';
+export * from './login-records-summary.dto.js';

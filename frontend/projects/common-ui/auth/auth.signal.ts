@@ -1,7 +1,6 @@
-import { inject, Signal, signal } from '@angular/core';
+import {  Signal, signal } from '@angular/core';
 import { ISignInResponse } from './auth.service';
 import { UserDto } from '@app/contracts';
-import { EnvironmentService } from '../services/environment.service';
 
 export interface ISessionState {
   isAuthenticated: boolean;

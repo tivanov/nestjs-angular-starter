@@ -1,15 +1,11 @@
-import { Breakpoints } from '@angular/cdk/layout';
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  computed,
   inject,
   OnInit,
   signal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';

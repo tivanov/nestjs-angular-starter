@@ -1,15 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseComponent } from '../../../../../../common-ui/base/base.component';
+import { UsersTilesDto } from '@app/contracts';
 import { DashboardService } from '../../../../../../common-ui/services/dashboard.service';
 import { MatCardModule } from '@angular/material/card';
 import { NumberTileComponent } from '../number-tile/number-tile.component';
-import { Observable, takeUntil } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-user-tiles-widget',
@@ -18,7 +14,7 @@ import { Observable, takeUntil } from 'rxjs';
     styleUrl: './user-tiles-widget.component.scss'
 })
 export class UserTilesWidgetComponent extends BaseComponent implements OnInit {
-  $tiles: Observable<any>;
+  $tiles: Observable<UsersTilesDto>;
 
   private readonly dashboardService = inject(DashboardService);
 

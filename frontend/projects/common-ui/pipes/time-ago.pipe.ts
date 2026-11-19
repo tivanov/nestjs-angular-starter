@@ -1,5 +1,6 @@
 import {
   ChangeDetectorRef,
+  inject,
   NgZone,
   OnDestroy,
   Pipe,
@@ -14,10 +15,9 @@ import {
 export class TimeAgoPipe implements PipeTransform, OnDestroy {
   private timer: number;
 
-  constructor(
-    private changeDetectorRef: ChangeDetectorRef,
-    private ngZone: NgZone,
-  ) {}
+  changeDetectorRef = inject(ChangeDetectorRef);
+
+  ngZone = inject(NgZone);
 
   transform(value: string | number | null): string {
     if (!value) {

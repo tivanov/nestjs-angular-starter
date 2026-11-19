@@ -1,12 +1,11 @@
 import { UserRoleEnum, UserDto } from '@app/contracts';
 import { Component, inject } from '@angular/core';
 import {
-  FormBuilder,
+  
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';

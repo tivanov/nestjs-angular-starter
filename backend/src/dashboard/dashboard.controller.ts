@@ -1,4 +1,8 @@
-import { UserRoleEnum } from '@app/contracts';
+import {
+  LoginRecordsSummaryDto,
+  UsersTilesDto,
+  UserRoleEnum,
+} from '@app/contracts';
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { Roles } from '../auth/decorators/roles.decorator.js';
 import { JwtGuard } from '../auth/guards/jwt.guard.js';
@@ -16,27 +20,27 @@ export class DashboardController {
   ) {}
 
   @Get('users-tiles')
-  async getUsersTiles() {
-    const results = await Promise.all([
+  async getUsersTiles(): Promise<UsersTilesDto> {
+    const [totalUsers, newUsersToday, totalInactive] = await Promise.all([
       this.users.getRegularUsersCount(),
       this.users.getRegisteredTodayCount(),
       this.users.getInactiveUsersCount(),
     ]);
 
     return {
-      totalUsers: results[0],
-      newUsersToday: results[1],
-      totalInactive: results[2],
+      totalUsers,
+      newUsersToday,
+      totalInactive,
     };
   }
 
   @Get('login-records-by-device')
-  async getLoginRecords() {
+  getLoginRecords(): Promise<LoginRecordsSummaryDto[]> {
     return this.loginRecords.weeklyByDeviceSummary();
   }
 
   @Get('login-records-by-country')
-  async getLoginRecordsByCountry() {
+  getLoginRecordsByCountry(): Promise<LoginRecordsSummaryDto[]> {
     return this.loginRecords.weeklyByCountrySummary();
   }
 }

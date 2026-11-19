@@ -111,6 +111,7 @@ Shared types live in `backend/libs/contracts/src/`. Key exports:
 | Notifications | `AlertDto`, `ContactRequestDto`                | `GetAlertsQuery`, `GetContactRequestQuery` | `ContactRequestCommand`                                                                                | `AlertTypeEnum`, `ContactRequestStatusEnum`, `ContactTypeEnum`, `CryptoNetworkEnum` |
 | Utils         | `CircuitBreakerDto`                            | `GetCircuitBreakersQuery`                  | —                                                                                                      | `CircuitBreakerOperation`                                      |
 | System        | `SystemConfigDto`, `HealthCheckResultDto`      | —                                          | —                                                                                                      | —                                                              |
+| Dashboard     | `UsersTilesDto`, `LoginRecordsSummaryDto`      | —                                          | —                                                                                                      | —                                                              |
 
 ## Reference Implementations
 
@@ -144,4 +145,4 @@ responses, request logging, and URI versioning.
 
 ## Last updated
 
-2026-10-23
+2026-11-19
