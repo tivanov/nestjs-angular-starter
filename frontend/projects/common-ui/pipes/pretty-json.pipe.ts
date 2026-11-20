@@ -6,34 +6,45 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class PrettyJsonPipe implements PipeTransform {
-  transform(value: any, args: any[]): any {
+  transform(
+    value: unknown,
+    showNumberLine = false,
+    padding = 4,
+  ): string {
     try {
       /**
        * check and try to parse value if it's not an object
        * if it fails to parse which means it is an invalid JSON
        */
+      const parsed = typeof value === 'object' ? value : this.parseJson(value);
+
       return this.applyColors(
-        typeof value === 'object' ? value : JSON.parse(value),
-        args[0],
-        args[1],
+        this.toJsonText(parsed),
+        showNumberLine,
+        padding,
       );
-    } catch (e) {
-      return this.applyColors({ error: 'Invalid JSON' }, args[0], args[1]);
+    } catch {
+      return this.applyColors(
+        { error: 'Invalid JSON' },
+        showNumberLine,
+        padding,
+      );
     }
   }
 
-  applyColors(obj: any, showNumeberLine: boolean = false, padding: number = 4) {
+  applyColors(
+    value: unknown,
+    showNumberLine = false,
+    padding = 4,
+  ): string {
     // line number start from 1
     let line = 1;
-
-    if (typeof obj != 'string') {
-      obj = JSON.stringify(obj, undefined, 3);
-    }
+    let json = this.stringify(value);
 
     /**
      * Converts special charaters like &, <, > to equivalent HTML code of it
      */
-    obj = obj
+    json = json
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;');
@@ -46,9 +57,9 @@ export class PrettyJsonPipe implements PipeTransform {
      * this is why needed custom themeClass which we created in _global.css
      * @return final bunch of span tags after all conversion
      */
-    obj = obj.replace(
-      /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-      (match: any) => {
+    json = json.replace(
+      /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
+      (match) => {
         // class to be applied inside pre tag
         let themeClass = 'number';
         if (/^"/.test(match)) {
@@ -70,12 +81,35 @@ export class PrettyJsonPipe implements PipeTransform {
     /**
      * Regex for the start of the line, insert a number-line themeClass tag before each line
      */
-    return showNumeberLine
-      ? obj.replace(
+    return showNumberLine
+      ? json.replace(
           /^/gm,
           () =>
             `<span class="number-line pl-3 select-none" >${String(line++).padEnd(padding)}</span>`,
         )
-      : obj;
+      : json;
+  }
+
+  private parseJson(value: unknown): unknown {
+    const text = typeof value === 'string' ? value : String(value);
+
+    return JSON.parse(text) as unknown;
+  }
+
+  private stringify(value: unknown): string {
+    if (typeof value === 'string') {
+      return value;
+    }
+
+    return this.toJsonText(value);
+  }
+
+  private toJsonText(value: unknown): string {
+    const text = JSON.stringify(value, undefined, 3);
+    if (typeof text !== 'string') {
+      throw new Error('Invalid JSON');
+    }
+
+    return text;
   }
 }

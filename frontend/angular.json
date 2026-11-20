@@ -139,6 +139,10 @@
               "zone.js/testing"
             ],
             "tsConfig": "projects/admin-ui/tsconfig.spec.json",
+            "include": [
+              "**/*.spec.ts",
+              "../../common-ui/**/*.spec.ts"
+            ],
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/admin-ui/src/favicon.png",

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import {  Component } from '@angular/core';
 import { BaseComponent } from '../../../../../common-ui/base/base.component';
 
 import { UserTilesWidgetComponent } from './user-tiles-widget/user-tiles-widget.component';
@@ -19,6 +19,4 @@ import { AlertsWidgetComponent } from './alerts-widget/alerts-widget.component';
     templateUrl: './dashboard.component.html',
     styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent extends BaseComponent implements AfterViewInit {
-  ngAfterViewInit() {}
-}
+export class DashboardComponent extends BaseComponent {}
