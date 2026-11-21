@@ -29,6 +29,10 @@ import * as fs from 'fs/promises';
 
 @Injectable()
 export class UsersService extends BaseService<User> {
+  /** Not a real credential. Equalizes bcrypt time when login cannot pick one user. */
+  private static readonly dummyPasswordHash =
+    '$2b$10$Pobh.GNclq7f5.uxSpLuUeAK55p8pcRnw3Soa/f.qtztgY1sGXdue';
+
   private logger = new Logger(UsersService.name);
 
   private authConfig: IAuthConfig;
@@ -127,14 +131,23 @@ export class UsersService extends BaseService<User> {
     password: string,
     request: Request,
   ): Promise<User> {
-    const user = await this.validateCredentialsGetUser(userName, password);
-    try {
-      await this.runPostLogin(user, true, request);
-      return user;
-    } catch (error) {
-      await this.runPostLogin(user, false, request);
-      throw error;
+    const user = await this.findLoginUser(userName);
+    if (!user) {
+      await this.fakePasswordCheck(password);
+      throw new AppUnauthorizedException(ErrorCode.INVALID_USERNAME_PASSWORD);
     }
+
+    this.verifyIsAllowedToLogin(user);
+
+    if (!(await this.passwordMatches(user, password))) {
+      await this.incrementLoginAttempts(user._id);
+      throw new AppUnauthorizedException(ErrorCode.INVALID_USERNAME_PASSWORD);
+    }
+
+    await this.resetLoginAttempts(user._id);
+    this.loginRecords.addInBackground(user, request);
+    await this.registerActivity(user._id.toHexString());
+    return user;
   }
 
   public verifyIsAllowedToLogin(user: User) {
@@ -254,15 +267,34 @@ export class UsersService extends BaseService<User> {
     );
   }
 
-  private async runPostLogin(user: User, success: boolean, request: Request) {
-    if (success) {
-      this.verifyIsAllowedToLogin(user);
-      await this.resetLoginAttempts(user._id as Types.ObjectId);
-      this.loginRecords.addInBackground(user, request);
-      await this.registerActivity(user._id.toHexString());
-    } else {
-      await this.incrementLoginAttempts(user._id as Types.ObjectId);
+  private async findLoginUser(userName: string): Promise<User | undefined> {
+    const users = await this.objectModel.find({ userName }).lean();
+    if (users?.length !== 1) {
+      return undefined;
     }
+
+    return users[0];
+  }
+
+  private async passwordMatches(
+    user: User,
+    password: string,
+  ): Promise<boolean> {
+    const identity = await this.identities.getValid(
+      user._id.toHexString(),
+      IdentityProviderEnum.UserName,
+    );
+
+    if (!identity?.secret) {
+      await this.fakePasswordCheck(password);
+      return false;
+    }
+
+    return bcrypt.compare(password, identity.secret);
+  }
+
+  private fakePasswordCheck(password: string): Promise<boolean> {
+    return bcrypt.compare(password, UsersService.dummyPasswordHash);
   }
 
   private async incrementLoginAttempts(userId: Types.ObjectId) {
@@ -281,37 +313,5 @@ export class UsersService extends BaseService<User> {
 
   private async resetLoginAttempts(userId: Types.ObjectId) {
     await this.objectModel.findByIdAndUpdate(userId, { loginAttempts: 0 });
-  }
-
-  private async validateCredentialsGetUser(
-    userName: string,
-    password: string,
-  ): Promise<User> {
-    const users = await this.objectModel
-      .find({
-        userName,
-      })
-      .lean();
-
-    if ((users?.length ?? 0) !== 1) {
-      throw new AppUnauthorizedException(ErrorCode.MULTIPLE_OR_NO_USERS_FOUND);
-    }
-
-    const user = users.pop();
-
-    const identity = await this.identities.getValid(
-      user._id.toHexString(),
-      IdentityProviderEnum.UserName,
-    );
-
-    if (!identity?.secret) {
-      throw new AppUnauthorizedException(ErrorCode.INVALID_USERNAME_PASSWORD);
-    }
-
-    if (!(await bcrypt.compare(password, identity.secret))) {
-      throw new AppUnauthorizedException(ErrorCode.INVALID_USERNAME_PASSWORD);
-    }
-
-    return user;
   }
 }
